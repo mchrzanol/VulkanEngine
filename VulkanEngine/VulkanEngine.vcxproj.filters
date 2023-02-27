@@ -1,21 +1,1886 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="main">
-      <UniqueIdentifier>{6A7F9A7C-56B6-9B0D-FFA2-8110EBB8170F}</UniqueIdentifier>
+    <Filter Include="external">
+      <UniqueIdentifier>{2839F3DC-1406-4EE8-3D1F-3C90294B8376}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Vulkan">
+      <UniqueIdentifier>{A86951F3-14F5-BEB7-1D06-42AC89101BB8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Vulkan\Include">
+      <UniqueIdentifier>{FB209A8B-6758-E222-7062-4646DC18091C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Vulkan\Include\SDL2">
+      <UniqueIdentifier>{3F24EECD-2BDF-DD79-D496-56C4C030280A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Vulkan\Include\Volk">
+      <UniqueIdentifier>{A684F0CD-923F-E079-3BF7-58C427912A0A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Vulkan\Include\dxc">
+      <UniqueIdentifier>{89A5831D-F5B2-B103-7E99-ADEEEAA57DBA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Vulkan\Include\glm">
+      <UniqueIdentifier>{CAB0831D-36BE-B103-BFA4-ADEE2BB17DBA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Vulkan\Include\glm\detail">
+      <UniqueIdentifier>{4CA1092D-38DD-0C97-A1EF-248E8D4AB5B1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Vulkan\Include\glm\ext">
+      <UniqueIdentifier>{2A893EA6-966C-4DE6-9F6F-7B220BD21337}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Vulkan\Include\glm\gtc">
+      <UniqueIdentifier>{17913EA6-8374-4DE6-8C77-7B22F8D91337}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Vulkan\Include\glm\gtx">
+      <UniqueIdentifier>{2C913EA6-9874-4DE6-A177-7B220DDA1337}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Vulkan\Include\glm\simd">
+      <UniqueIdentifier>{661B176E-526C-02B0-7BD0-F07167809519}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Vulkan\Include\glslang">
+      <UniqueIdentifier>{F27CCCA6-5E60-DBE6-6763-0923D3C5A137}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Vulkan\Include\glslang\Include">
+      <UniqueIdentifier>{45DE7072-B16D-325D-BA69-137526786D69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Vulkan\Include\glslang\MachineIndependent">
+      <UniqueIdentifier>{842E826D-70C2-7715-D986-D1C9C539B207}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Vulkan\Include\glslang\Public">
+      <UniqueIdentifier>{E0DBAEA7-CC2D-8697-B54C-C3A7A13D9F80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Vulkan\Include\glslang\SPIRV">
+      <UniqueIdentifier>{957174FD-0136-73ED-CA9B-A3B7361F0F23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Vulkan\Include\shaderc">
+      <UniqueIdentifier>{E4A8E837-508C-F777-598F-25B4C5F1BDC8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Vulkan\Include\spirv-headers">
+      <UniqueIdentifier>{077CCEB9-7340-CDA9-3CA6-FD73A82969DF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Vulkan\Include\spirv-tools">
+      <UniqueIdentifier>{DCAA0809-4864-73B3-D1C3-8D8D3D7C2923}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Vulkan\Include\spirv_cross">
+      <UniqueIdentifier>{C79F787C-3359-E326-BCB8-FD0028719996}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Vulkan\Include\vk_video">
+      <UniqueIdentifier>{C1584FDD-ADA9-3A1F-D60D-29E1C2BDCD88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Vulkan\Include\vma">
+      <UniqueIdentifier>{AEF0831D-1AFE-B103-A3E4-ADEE0FF17DBA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\Vulkan\Include\vulkan">
+      <UniqueIdentifier>{3BFA3557-2720-00BE-1066-8589FC2A258A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Core.h" />
-    <ClInclude Include="src\Engine.h" />
-    <ClInclude Include="src\Libraries.h" />
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_assert.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_atomic.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_audio.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_bits.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_blendmode.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_clipboard.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_config.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_copying.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_cpuinfo.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_egl.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_endian.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_error.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_events.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_filesystem.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_gamecontroller.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_gesture.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_guid.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_haptic.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_hidapi.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_hints.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_joystick.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_keyboard.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_keycode.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_loadso.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_locale.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_log.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_main.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_messagebox.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_metal.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_misc.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_mouse.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_mutex.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_name.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_opengl.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_opengl_glext.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_opengles.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_opengles2.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_opengles2_gl2.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_opengles2_gl2ext.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_opengles2_gl2platform.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_opengles2_khrplatform.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_pixels.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_platform.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_power.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_quit.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_rect.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_render.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_revision.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_rwops.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_scancode.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_sensor.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_shape.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_stdinc.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_surface.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_system.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_syswm.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_test.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_test_assert.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_test_common.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_test_compare.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_test_crc32.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_test_font.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_test_fuzzer.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_test_harness.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_test_images.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_test_log.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_test_md5.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_test_memory.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_test_random.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_thread.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_timer.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_touch.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_types.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_version.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_video.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\SDL_vulkan.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\begin_code.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\SDL2\close_code.h">
+      <Filter>external\Vulkan\Include\SDL2</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\Volk\volk.h">
+      <Filter>external\Vulkan\Include\Volk</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\dxc\dxcapi.h">
+      <Filter>external\Vulkan\Include\dxc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\common.hpp">
+      <Filter>external\Vulkan\Include\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\_features.hpp">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\_fixes.hpp">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\_noise.hpp">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\_swizzle.hpp">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\_swizzle_func.hpp">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\_vectorize.hpp">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\compute_common.hpp">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\compute_vector_relational.hpp">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\func_common.inl">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\func_common_simd.inl">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\func_exponential.inl">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\func_exponential_simd.inl">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\func_geometric.inl">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\func_geometric_simd.inl">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\func_integer.inl">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\func_integer_simd.inl">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\func_matrix.inl">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\func_matrix_simd.inl">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\func_packing.inl">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\func_packing_simd.inl">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\func_trigonometric.inl">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\func_trigonometric_simd.inl">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\func_vector_relational.inl">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\func_vector_relational_simd.inl">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\qualifier.hpp">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\setup.hpp">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\type_float.hpp">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\type_half.hpp">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\type_half.inl">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\type_mat2x2.hpp">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\type_mat2x2.inl">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\type_mat2x3.hpp">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\type_mat2x3.inl">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\type_mat2x4.hpp">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\type_mat2x4.inl">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\type_mat3x2.hpp">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\type_mat3x2.inl">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\type_mat3x3.hpp">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\type_mat3x3.inl">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\type_mat3x4.hpp">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\type_mat3x4.inl">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\type_mat4x2.hpp">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\type_mat4x2.inl">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\type_mat4x3.hpp">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\type_mat4x3.inl">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\type_mat4x4.hpp">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\type_mat4x4.inl">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\type_mat4x4_simd.inl">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\type_quat.hpp">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\type_quat.inl">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\type_quat_simd.inl">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\type_vec1.hpp">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\type_vec1.inl">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\type_vec2.hpp">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\type_vec2.inl">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\type_vec3.hpp">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\type_vec3.inl">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\type_vec4.hpp">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\type_vec4.inl">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\detail\type_vec4_simd.inl">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\exponential.hpp">
+      <Filter>external\Vulkan\Include\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext.hpp">
+      <Filter>external\Vulkan\Include\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_clip_space.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_clip_space.inl">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_common.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_common.inl">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_double2x2.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_double2x2_precision.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_double2x3.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_double2x3_precision.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_double2x4.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_double2x4_precision.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_double3x2.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_double3x2_precision.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_double3x3.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_double3x3_precision.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_double3x4.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_double3x4_precision.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_double4x2.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_double4x2_precision.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_double4x3.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_double4x3_precision.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_double4x4.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_double4x4_precision.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_float2x2.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_float2x2_precision.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_float2x3.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_float2x3_precision.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_float2x4.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_float2x4_precision.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_float3x2.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_float3x2_precision.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_float3x3.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_float3x3_precision.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_float3x4.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_float3x4_precision.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_float4x2.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_float4x2_precision.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_float4x3.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_float4x3_precision.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_float4x4.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_float4x4_precision.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_int2x2.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_int2x2_sized.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_int2x3.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_int2x3_sized.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_int2x4.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_int2x4_sized.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_int3x2.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_int3x2_sized.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_int3x3.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_int3x3_sized.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_int3x4.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_int3x4_sized.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_int4x2.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_int4x2_sized.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_int4x3.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_int4x3_sized.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_int4x4.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_int4x4_sized.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_projection.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_projection.inl">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_relational.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_relational.inl">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_transform.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_transform.inl">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_uint2x2.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_uint2x2_sized.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_uint2x3.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_uint2x3_sized.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_uint2x4.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_uint2x4_sized.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_uint3x2.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_uint3x2_sized.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_uint3x3.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_uint3x3_sized.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_uint3x4.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_uint3x4_sized.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_uint4x2.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_uint4x2_sized.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_uint4x3.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_uint4x3_sized.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_uint4x4.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\matrix_uint4x4_sized.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\quaternion_common.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\quaternion_common.inl">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\quaternion_common_simd.inl">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\quaternion_double.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\quaternion_double_precision.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\quaternion_exponential.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\quaternion_exponential.inl">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\quaternion_float.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\quaternion_float_precision.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\quaternion_geometric.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\quaternion_geometric.inl">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\quaternion_relational.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\quaternion_relational.inl">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\quaternion_transform.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\quaternion_transform.inl">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\quaternion_trigonometric.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\quaternion_trigonometric.inl">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\scalar_common.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\scalar_common.inl">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\scalar_constants.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\scalar_constants.inl">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\scalar_int_sized.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\scalar_integer.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\scalar_integer.inl">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\scalar_packing.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\scalar_packing.inl">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\scalar_relational.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\scalar_relational.inl">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\scalar_uint_sized.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\scalar_ulp.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\scalar_ulp.inl">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_bool1.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_bool1_precision.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_bool2.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_bool2_precision.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_bool3.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_bool3_precision.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_bool4.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_bool4_precision.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_common.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_common.inl">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_double1.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_double1_precision.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_double2.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_double2_precision.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_double3.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_double3_precision.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_double4.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_double4_precision.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_float1.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_float1_precision.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_float2.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_float2_precision.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_float3.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_float3_precision.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_float4.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_float4_precision.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_int1.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_int1_sized.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_int2.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_int2_sized.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_int3.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_int3_sized.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_int4.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_int4_sized.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_integer.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_integer.inl">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_packing.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_packing.inl">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_relational.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_relational.inl">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_uint1.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_uint1_sized.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_uint2.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_uint2_sized.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_uint3.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_uint3_sized.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_uint4.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_uint4_sized.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_ulp.hpp">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\ext\vector_ulp.inl">
+      <Filter>external\Vulkan\Include\glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\fwd.hpp">
+      <Filter>external\Vulkan\Include\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\geometric.hpp">
+      <Filter>external\Vulkan\Include\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\glm.hpp">
+      <Filter>external\Vulkan\Include\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\bitfield.hpp">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\bitfield.inl">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\color_space.hpp">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\color_space.inl">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\constants.hpp">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\constants.inl">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\epsilon.hpp">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\epsilon.inl">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\integer.hpp">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\integer.inl">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\matrix_access.hpp">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\matrix_access.inl">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\matrix_integer.hpp">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\matrix_inverse.hpp">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\matrix_inverse.inl">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\matrix_transform.hpp">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\matrix_transform.inl">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\noise.hpp">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\noise.inl">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\packing.hpp">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\packing.inl">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\quaternion.hpp">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\quaternion.inl">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\quaternion_simd.inl">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\random.hpp">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\random.inl">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\reciprocal.hpp">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\reciprocal.inl">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\round.hpp">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\round.inl">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\type_aligned.hpp">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\type_precision.hpp">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\type_precision.inl">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\type_ptr.hpp">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\type_ptr.inl">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\ulp.hpp">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\ulp.inl">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtc\vec1.hpp">
+      <Filter>external\Vulkan\Include\glm\gtc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\associated_min_max.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\associated_min_max.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\bit.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\bit.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\closest_point.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\closest_point.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\color_encoding.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\color_encoding.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\color_space.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\color_space.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\color_space_YCoCg.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\color_space_YCoCg.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\common.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\common.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\compatibility.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\compatibility.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\component_wise.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\component_wise.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\dual_quaternion.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\dual_quaternion.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\easing.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\easing.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\euler_angles.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\euler_angles.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\extend.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\extend.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\extended_min_max.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\extended_min_max.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\exterior_product.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\exterior_product.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\fast_exponential.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\fast_exponential.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\fast_square_root.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\fast_square_root.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\fast_trigonometry.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\fast_trigonometry.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\float_notmalize.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\functions.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\functions.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\gradient_paint.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\gradient_paint.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\handed_coordinate_space.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\handed_coordinate_space.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\hash.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\hash.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\integer.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\integer.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\intersect.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\intersect.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\io.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\io.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\log_base.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\log_base.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\matrix_cross_product.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\matrix_cross_product.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\matrix_decompose.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\matrix_decompose.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\matrix_factorisation.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\matrix_factorisation.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\matrix_interpolation.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\matrix_interpolation.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\matrix_major_storage.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\matrix_major_storage.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\matrix_operation.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\matrix_operation.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\matrix_query.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\matrix_query.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\matrix_transform_2d.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\matrix_transform_2d.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\mixed_product.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\mixed_product.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\norm.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\norm.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\normal.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\normal.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\normalize_dot.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\normalize_dot.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\number_precision.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\number_precision.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\optimum_pow.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\optimum_pow.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\orthonormalize.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\orthonormalize.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\perpendicular.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\perpendicular.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\polar_coordinates.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\polar_coordinates.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\projection.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\projection.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\quaternion.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\quaternion.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\range.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\raw_data.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\raw_data.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\rotate_normalized_axis.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\rotate_normalized_axis.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\rotate_vector.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\rotate_vector.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\scalar_multiplication.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\scalar_relational.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\scalar_relational.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\spline.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\spline.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\std_based_type.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\std_based_type.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\string_cast.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\string_cast.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\texture.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\texture.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\transform.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\transform.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\transform2.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\transform2.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\type_aligned.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\type_aligned.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\type_trait.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\type_trait.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\vec_swizzle.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\vector_angle.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\vector_angle.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\vector_query.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\vector_query.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\wrap.hpp">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\gtx\wrap.inl">
+      <Filter>external\Vulkan\Include\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\integer.hpp">
+      <Filter>external\Vulkan\Include\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\mat2x2.hpp">
+      <Filter>external\Vulkan\Include\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\mat2x3.hpp">
+      <Filter>external\Vulkan\Include\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\mat2x4.hpp">
+      <Filter>external\Vulkan\Include\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\mat3x2.hpp">
+      <Filter>external\Vulkan\Include\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\mat3x3.hpp">
+      <Filter>external\Vulkan\Include\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\mat3x4.hpp">
+      <Filter>external\Vulkan\Include\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\mat4x2.hpp">
+      <Filter>external\Vulkan\Include\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\mat4x3.hpp">
+      <Filter>external\Vulkan\Include\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\mat4x4.hpp">
+      <Filter>external\Vulkan\Include\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\matrix.hpp">
+      <Filter>external\Vulkan\Include\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\packing.hpp">
+      <Filter>external\Vulkan\Include\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\simd\common.h">
+      <Filter>external\Vulkan\Include\glm\simd</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\simd\exponential.h">
+      <Filter>external\Vulkan\Include\glm\simd</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\simd\geometric.h">
+      <Filter>external\Vulkan\Include\glm\simd</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\simd\integer.h">
+      <Filter>external\Vulkan\Include\glm\simd</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\simd\matrix.h">
+      <Filter>external\Vulkan\Include\glm\simd</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\simd\neon.h">
+      <Filter>external\Vulkan\Include\glm\simd</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\simd\packing.h">
+      <Filter>external\Vulkan\Include\glm\simd</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\simd\platform.h">
+      <Filter>external\Vulkan\Include\glm\simd</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\simd\trigonometric.h">
+      <Filter>external\Vulkan\Include\glm\simd</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\simd\vector_relational.h">
+      <Filter>external\Vulkan\Include\glm\simd</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\trigonometric.hpp">
+      <Filter>external\Vulkan\Include\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\vec2.hpp">
+      <Filter>external\Vulkan\Include\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\vec3.hpp">
+      <Filter>external\Vulkan\Include\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\vec4.hpp">
+      <Filter>external\Vulkan\Include\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glm\vector_relational.hpp">
+      <Filter>external\Vulkan\Include\glm</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glslang\Include\BaseTypes.h">
+      <Filter>external\Vulkan\Include\glslang\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glslang\Include\Common.h">
+      <Filter>external\Vulkan\Include\glslang\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glslang\Include\ConstantUnion.h">
+      <Filter>external\Vulkan\Include\glslang\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glslang\Include\PoolAlloc.h">
+      <Filter>external\Vulkan\Include\glslang\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glslang\Include\ResourceLimits.h">
+      <Filter>external\Vulkan\Include\glslang\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glslang\Include\SpirvIntrinsics.h">
+      <Filter>external\Vulkan\Include\glslang\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glslang\Include\Types.h">
+      <Filter>external\Vulkan\Include\glslang\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glslang\Include\arrays.h">
+      <Filter>external\Vulkan\Include\glslang\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glslang\Include\intermediate.h">
+      <Filter>external\Vulkan\Include\glslang\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glslang\MachineIndependent\Versions.h">
+      <Filter>external\Vulkan\Include\glslang\MachineIndependent</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glslang\MachineIndependent\localintermediate.h">
+      <Filter>external\Vulkan\Include\glslang\MachineIndependent</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glslang\Public\ResourceLimits.h">
+      <Filter>external\Vulkan\Include\glslang\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glslang\Public\ShaderLang.h">
+      <Filter>external\Vulkan\Include\glslang\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glslang\Public\resource_limits_c.h">
+      <Filter>external\Vulkan\Include\glslang\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glslang\SPIRV\GlslangToSpv.h">
+      <Filter>external\Vulkan\Include\glslang\SPIRV</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glslang\SPIRV\Logger.h">
+      <Filter>external\Vulkan\Include\glslang\SPIRV</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glslang\SPIRV\SPVRemapper.h">
+      <Filter>external\Vulkan\Include\glslang\SPIRV</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glslang\SPIRV\SpvTools.h">
+      <Filter>external\Vulkan\Include\glslang\SPIRV</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glslang\SPIRV\spirv.hpp">
+      <Filter>external\Vulkan\Include\glslang\SPIRV</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\glslang\SPIRV\spvIR.h">
+      <Filter>external\Vulkan\Include\glslang\SPIRV</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\shaderc\env.h">
+      <Filter>external\Vulkan\Include\shaderc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\shaderc\shaderc.h">
+      <Filter>external\Vulkan\Include\shaderc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\shaderc\shaderc.hpp">
+      <Filter>external\Vulkan\Include\shaderc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\shaderc\status.h">
+      <Filter>external\Vulkan\Include\shaderc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\shaderc\visibility.h">
+      <Filter>external\Vulkan\Include\shaderc</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\spirv-headers\GLSL.std.450.h">
+      <Filter>external\Vulkan\Include\spirv-headers</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\spirv-headers\spirv.h">
+      <Filter>external\Vulkan\Include\spirv-headers</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\spirv-headers\spirv.hpp">
+      <Filter>external\Vulkan\Include\spirv-headers</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\spirv-tools\libspirv.h">
+      <Filter>external\Vulkan\Include\spirv-tools</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\spirv-tools\libspirv.hpp">
+      <Filter>external\Vulkan\Include\spirv-tools</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\spirv-tools\linker.hpp">
+      <Filter>external\Vulkan\Include\spirv-tools</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\spirv-tools\optimizer.hpp">
+      <Filter>external\Vulkan\Include\spirv-tools</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\spirv_cross\GLSL.std.450.h">
+      <Filter>external\Vulkan\Include\spirv_cross</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\spirv_cross\spirv.h">
+      <Filter>external\Vulkan\Include\spirv_cross</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\spirv_cross\spirv.hpp">
+      <Filter>external\Vulkan\Include\spirv_cross</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\spirv_cross\spirv_cfg.hpp">
+      <Filter>external\Vulkan\Include\spirv_cross</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\spirv_cross\spirv_common.hpp">
+      <Filter>external\Vulkan\Include\spirv_cross</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\spirv_cross\spirv_cross.hpp">
+      <Filter>external\Vulkan\Include\spirv_cross</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\spirv_cross\spirv_cross_c.h">
+      <Filter>external\Vulkan\Include\spirv_cross</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\spirv_cross\spirv_cross_containers.hpp">
+      <Filter>external\Vulkan\Include\spirv_cross</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\spirv_cross\spirv_cross_error_handling.hpp">
+      <Filter>external\Vulkan\Include\spirv_cross</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\spirv_cross\spirv_cross_parsed_ir.hpp">
+      <Filter>external\Vulkan\Include\spirv_cross</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\spirv_cross\spirv_glsl.hpp">
+      <Filter>external\Vulkan\Include\spirv_cross</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\spirv_cross\spirv_hlsl.hpp">
+      <Filter>external\Vulkan\Include\spirv_cross</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\spirv_cross\spirv_msl.hpp">
+      <Filter>external\Vulkan\Include\spirv_cross</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\spirv_cross\spirv_parser.hpp">
+      <Filter>external\Vulkan\Include\spirv_cross</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\spirv_cross\spirv_reflect.hpp">
+      <Filter>external\Vulkan\Include\spirv_cross</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vk_video\vulkan_video_codec_h264std.h">
+      <Filter>external\Vulkan\Include\vk_video</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vk_video\vulkan_video_codec_h264std_decode.h">
+      <Filter>external\Vulkan\Include\vk_video</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vk_video\vulkan_video_codec_h264std_encode.h">
+      <Filter>external\Vulkan\Include\vk_video</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vk_video\vulkan_video_codec_h265std.h">
+      <Filter>external\Vulkan\Include\vk_video</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vk_video\vulkan_video_codec_h265std_decode.h">
+      <Filter>external\Vulkan\Include\vk_video</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vk_video\vulkan_video_codec_h265std_encode.h">
+      <Filter>external\Vulkan\Include\vk_video</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vk_video\vulkan_video_codecs_common.h">
+      <Filter>external\Vulkan\Include\vk_video</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vma\vk_mem_alloc.h">
+      <Filter>external\Vulkan\Include\vma</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vulkan\vk_enum_string_helper.h">
+      <Filter>external\Vulkan\Include\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vulkan\vk_icd.h">
+      <Filter>external\Vulkan\Include\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vulkan\vk_layer.h">
+      <Filter>external\Vulkan\Include\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vulkan\vk_platform.h">
+      <Filter>external\Vulkan\Include\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vulkan\vk_sdk_platform.h">
+      <Filter>external\Vulkan\Include\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vulkan\vulkan.h">
+      <Filter>external\Vulkan\Include\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vulkan\vulkan.hpp">
+      <Filter>external\Vulkan\Include\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vulkan\vulkan_android.h">
+      <Filter>external\Vulkan\Include\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vulkan\vulkan_beta.h">
+      <Filter>external\Vulkan\Include\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vulkan\vulkan_core.h">
+      <Filter>external\Vulkan\Include\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vulkan\vulkan_directfb.h">
+      <Filter>external\Vulkan\Include\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vulkan\vulkan_enums.hpp">
+      <Filter>external\Vulkan\Include\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vulkan\vulkan_format_traits.hpp">
+      <Filter>external\Vulkan\Include\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vulkan\vulkan_fuchsia.h">
+      <Filter>external\Vulkan\Include\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vulkan\vulkan_funcs.hpp">
+      <Filter>external\Vulkan\Include\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vulkan\vulkan_ggp.h">
+      <Filter>external\Vulkan\Include\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vulkan\vulkan_handles.hpp">
+      <Filter>external\Vulkan\Include\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vulkan\vulkan_hash.hpp">
+      <Filter>external\Vulkan\Include\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vulkan\vulkan_ios.h">
+      <Filter>external\Vulkan\Include\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vulkan\vulkan_macos.h">
+      <Filter>external\Vulkan\Include\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vulkan\vulkan_metal.h">
+      <Filter>external\Vulkan\Include\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vulkan\vulkan_profiles.h">
+      <Filter>external\Vulkan\Include\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vulkan\vulkan_profiles.hpp">
+      <Filter>external\Vulkan\Include\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vulkan\vulkan_raii.hpp">
+      <Filter>external\Vulkan\Include\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vulkan\vulkan_screen.h">
+      <Filter>external\Vulkan\Include\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vulkan\vulkan_static_assertions.hpp">
+      <Filter>external\Vulkan\Include\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vulkan\vulkan_structs.hpp">
+      <Filter>external\Vulkan\Include\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vulkan\vulkan_to_string.hpp">
+      <Filter>external\Vulkan\Include\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vulkan\vulkan_vi.h">
+      <Filter>external\Vulkan\Include\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vulkan\vulkan_wayland.h">
+      <Filter>external\Vulkan\Include\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vulkan\vulkan_win32.h">
+      <Filter>external\Vulkan\Include\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vulkan\vulkan_xcb.h">
+      <Filter>external\Vulkan\Include\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vulkan\vulkan_xlib.h">
+      <Filter>external\Vulkan\Include\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="external\Vulkan\Include\vulkan\vulkan_xlib_xrandr.h">
+      <Filter>external\Vulkan\Include\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Core.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Engine.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Libraries.h">
+      <Filter>src</Filter>
+    </ClInclude>
     <ClInclude Include="src\dllmain.h">
-      <Filter>main</Filter>
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\dllmain.cpp">
-      <Filter>main</Filter>
+    <ClCompile Include="external\Vulkan\Include\Volk\volk.c">
+      <Filter>external\Vulkan\Include\Volk</Filter>
     </ClCompile>
+    <ClCompile Include="external\Vulkan\Include\glm\detail\glm.cpp">
+      <Filter>external\Vulkan\Include\glm\detail</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dllmain.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="external\Vulkan\Include\glm\CMakeLists.txt">
+      <Filter>external\Vulkan\Include\glm</Filter>
+    </None>
+    <None Include="external\Vulkan\Include\spirv-headers\spirv.hpp11">
+      <Filter>external\Vulkan\Include\spirv-headers</Filter>
+    </None>
+    <None Include="external\Vulkan\Include\spirv-headers\spirv.json">
+      <Filter>external\Vulkan\Include\spirv-headers</Filter>
+    </None>
+    <None Include="external\Vulkan\Include\spirv-headers\spirv.lua">
+      <Filter>external\Vulkan\Include\spirv-headers</Filter>
+    </None>
+    <None Include="external\Vulkan\Include\spirv-headers\spirv.py">
+      <Filter>external\Vulkan\Include\spirv-headers</Filter>
+    </None>
   </ItemGroup>
 </Project>
