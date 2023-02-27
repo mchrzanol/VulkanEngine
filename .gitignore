@@ -1,3 +1,5 @@
 .vs
 .git
-VulkanEngine/external
+luaCopies/
+bin/
+VulkanEngine/external/**
