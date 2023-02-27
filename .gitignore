@@ -1,5 +1,5 @@
 .vs
 .git
-luaCopies/
 bin/
+luaCopies/
 VulkanEngine/external/**
