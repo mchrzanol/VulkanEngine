@@ -1,3 +1,5 @@
 .vs
 .git
+bin
+x64
 VulkanEngine/external
