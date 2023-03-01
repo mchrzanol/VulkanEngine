@@ -1,5 +1,6 @@
 .vs
 .git
-bin
-x64
-VulkanEngine/external
+bin/
+luaCopies/
+VulkanEngine/external/**
+!VulkanEngine/external/HERE_PUT_EXTERNAL_LIBS.txt

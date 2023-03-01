@@ -1,42 +1,23 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="src">
-      <UniqueIdentifier>{507f96c7-9235-4ee1-9979-ab97214a793e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Engine">
-      <UniqueIdentifier>{118c09f8-f410-448a-8f7d-d62979b4a6dd}</UniqueIdentifier>
+    <Filter Include="window">
+      <UniqueIdentifier>{5DFE1E25-49A0-49FB-325B-5D4F1E9CD04B}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Core.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Libraries.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Engine.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\main\dllmain.h">
-      <Filter>src\Engine</Filter>
+    <ClInclude Include="src\Core.h" />
+    <ClInclude Include="src\Engine.h" />
+    <ClInclude Include="src\Libraries.h" />
+    <ClInclude Include="src\dllmain.h" />
+    <ClInclude Include="src\window\window.h">
+      <Filter>window</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\main\dllmain.cpp">
-      <Filter>src\Engine</Filter>
+    <ClCompile Include="src\dllmain.cpp" />
+    <ClCompile Include="src\window\window.cpp">
+      <Filter>window</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
