@@ -146,7 +146,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="TestPlatform.cpp" />
+    <ClCompile Include="src\TestPlatform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VulkanEngine\VulkanEngine.vcxproj">
