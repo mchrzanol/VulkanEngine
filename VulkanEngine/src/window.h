@@ -1,13 +1,21 @@
 #pragma once
 #include "Libraries.h"
 
-uint32_t deafultWIDTH = 800;
-uint32_t deafultHEIGHT = 600;
+const uint32_t deafultWIDTH = 800;
+const uint32_t deafultHEIGHT = 600;
+
+const struct WindowData 
+{
+	std::string Title;
+	int Width = deafultWIDTH, Height = deafultHEIGHT;
+};
 
 class ENGINE_API windowClass
 {
 public:
-	GLFWwindow* window;
+	GLFWwindow* m_window;
+
+	WindowData m_Data;
 	
 	void addHint(int hint, int value);//it must be called before initWindow
 
@@ -15,7 +23,12 @@ public:
 
 	std::pair<int, int> getCurrentSize();
 
-	void main();
+	void destroyWindow();
+
+	bool isWindowClosed() { return glfwWindowShouldClose(m_window); };
+	void PoolEvents() { glfwPollEvents(); };
+
+	void main();//test
 private:
 	bool framebufferResized = false;
 private:
