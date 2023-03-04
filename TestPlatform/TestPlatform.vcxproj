@@ -149,7 +149,10 @@
     <ClInclude Include="src\TestPlatform.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\TestPlatform.cpp" />
+    <ClCompile Include="TestPlatform.cpp" />
+    <ClCompile Include="src\TestPlatform.cpp">
+      <ObjectFileName>$(IntDir)\TestPlatform1.obj</ObjectFileName>
+    </ClCompile>
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>

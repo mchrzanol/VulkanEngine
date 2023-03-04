@@ -2,5 +2,5 @@
 .git
 bin/
 luaCopies/
-VulkanEngine/external/**
+VulkanEngine/external/
 !VulkanEngine/external/HERE_PUT_EXTERNAL_LIBS.txt
