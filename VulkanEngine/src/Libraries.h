@@ -17,4 +17,5 @@
 
 //C++ references
 #include <iostream>
+#include <string>
 

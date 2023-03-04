@@ -146,12 +146,16 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\TestPlatform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VulkanEngine\VulkanEngine.vcxproj">
       <Project>{6CF6A763-5859-3708-01DF-6FBEED20038B}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\TestPlatform.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
