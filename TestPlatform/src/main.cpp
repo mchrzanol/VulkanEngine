@@ -8,7 +8,9 @@ int main()
 	{
 		a->run();
 	}
-	//JD
+
+	//Tak
+
 	catch (const std::exception& e) {
 		std::cerr << e.what() << std::endl;
 		return EXIT_FAILURE;
