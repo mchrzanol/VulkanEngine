@@ -10,7 +10,7 @@
     <ClInclude Include="src\Engine.h" />
     <ClInclude Include="src\Libraries.h" />
     <ClInclude Include="src\window.h" />
-    <ClInclude Include="src\logging\loggingh.h" />
+    <ClInclude Include="src\logging\logging.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\window.cpp" />
