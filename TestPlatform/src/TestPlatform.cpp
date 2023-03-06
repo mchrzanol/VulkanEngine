@@ -4,6 +4,7 @@ void TestPlatform::run() {
 	Init();
 	//window->main();
 	mainLoop();
+	CleanUp();
 }
 
 void TestPlatform::Init() {
@@ -16,5 +17,9 @@ void TestPlatform::mainLoop() {
 		std::cout << window->m_Data.Height << " " << window->m_Data.Width << std::endl;
 		window->PoolEvents();
 	}
+
+}
+
+void TestPlatform::CleanUp() {
 	window->destroyWindow();
 }

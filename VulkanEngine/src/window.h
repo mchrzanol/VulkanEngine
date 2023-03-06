@@ -28,7 +28,6 @@ public:
 	bool isWindowClosed() { return glfwWindowShouldClose(m_window); };
 	void PoolEvents() { glfwPollEvents(); };
 
-	void main();//test
 private:
 	bool framebufferResized = false;
 private:
