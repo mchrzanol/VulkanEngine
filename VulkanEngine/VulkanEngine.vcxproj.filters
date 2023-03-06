@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="VulkanClass">
+      <UniqueIdentifier>{2C6FC8A5-9824-419B-2119-3B728DCD379F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="logging">
+      <UniqueIdentifier>{CC00C087-38E0-3E23-41F8-C9F9AD56A584}</UniqueIdentifier>
+    </Filter>
     <Filter Include="window">
       <UniqueIdentifier>{5DFE1E25-49A0-49FB-325B-5D4F1E9CD04B}</UniqueIdentifier>
     </Filter>
@@ -9,11 +15,37 @@
     <ClInclude Include="src\Core.h" />
     <ClInclude Include="src\Engine.h" />
     <ClInclude Include="src\Libraries.h" />
-    <ClInclude Include="src\window.h" />
-    <ClInclude Include="src\logging\loggingh.h" />
+    <ClInclude Include="src\VulkanClass\VulkanClass.h">
+      <Filter>VulkanClass</Filter>
+    </ClInclude>
+    <ClInclude Include="src\logging\logging.h">
+      <Filter>logging</Filter>
+    </ClInclude>
+    <ClInclude Include="src\logging\loggingh.h">
+      <Filter>logging</Filter>
+    </ClInclude>
+    <ClInclude Include="src\window\window.h">
+      <Filter>window</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\window.cpp" />
-    <ClCompile Include="src\logging\logging.cpp" />
+    <ClCompile Include="src\VulkanClass\General.cpp">
+      <Filter>VulkanClass</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VulkanClass\PhysicalLogicalDevice.cpp">
+      <Filter>VulkanClass</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VulkanClass\Pipeline.cpp">
+      <Filter>VulkanClass</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VulkanClass\SwapChain.cpp">
+      <Filter>VulkanClass</Filter>
+    </ClCompile>
+    <ClCompile Include="src\logging\logging.cpp">
+      <Filter>logging</Filter>
+    </ClCompile>
+    <ClCompile Include="src\window\window.cpp">
+      <Filter>window</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
