@@ -9,15 +9,9 @@
     <ClInclude Include="src\Core.h" />
     <ClInclude Include="src\Engine.h" />
     <ClInclude Include="src\Libraries.h" />
-    <ClInclude Include="src\dllmain.h" />
-    <ClInclude Include="src\window\window.h">
-      <Filter>window</Filter>
-    </ClInclude>
+    <ClInclude Include="src\window.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\dllmain.cpp" />
-    <ClCompile Include="src\window\window.cpp">
-      <Filter>window</Filter>
-    </ClCompile>
+    <ClCompile Include="src\window.cpp" />
   </ItemGroup>
 </Project>
