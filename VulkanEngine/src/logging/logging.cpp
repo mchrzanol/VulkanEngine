@@ -1,4 +1,4 @@
-#include "loggingh.h"
+#include "logging.h"
 
 static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
     VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
