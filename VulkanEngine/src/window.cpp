@@ -31,14 +31,6 @@ void windowClass::framebufferResizeCallback(GLFWwindow* window, int width, int h
     glfwGetFramebufferSize(window, &app->m_Data.Width, &app->m_Data.Height);
 }
 
-void windowClass::main() {
-    //uint32_t extensionCount = 0;
-    //vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
-    while (!glfwWindowShouldClose(m_window)) {
-        glfwPollEvents();
-    }
-}
-
 std::pair<int, int> windowClass::getCurrentSize() {
     framebufferResized = false;
 

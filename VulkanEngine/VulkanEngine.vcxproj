@@ -146,9 +146,11 @@
     <ClInclude Include="src\Core.h" />
     <ClInclude Include="src\Engine.h" />
     <ClInclude Include="src\Libraries.h" />
+    <ClInclude Include="src\logging\loggingh.h" />
     <ClInclude Include="src\window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\logging\logging.cpp" />
     <ClCompile Include="src\window.cpp" />
   </ItemGroup>
   <ItemGroup>
