@@ -18,12 +18,9 @@
 //C++ references
 #include <iostream>
 #include <string>
-<<<<<<< Updated upstream
-
-=======
 #include <vector>
 #include <optional>
 #include <set>
 #include <fstream>
 #include <array>
->>>>>>> Stashed changes
+
