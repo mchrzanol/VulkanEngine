@@ -139,13 +139,9 @@ private:
     //Physical / Logical Device
 
     void pickPhysicalDevice();
-
     bool isDeviceSuitable(VkPhysicalDevice device);
-
     void createLogicalDevice();
-
     bool checkDeviceExtensionSupport(VkPhysicalDevice device);
-
     QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
 
     //SwapChain
