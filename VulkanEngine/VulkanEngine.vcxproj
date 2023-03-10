@@ -146,11 +146,20 @@
     <ClInclude Include="src\Core.h" />
     <ClInclude Include="src\Engine.h" />
     <ClInclude Include="src\Libraries.h" />
+    <ClInclude Include="src\Renderer\Buffers.h" />
+    <ClInclude Include="src\Renderer\CommandPool.h" />
+    <ClInclude Include="src\Renderer\UniformBuffer.h" />
+    <ClInclude Include="src\Renderer\VertexIndexBuffer.h" />
     <ClInclude Include="src\VulkanClass\VulkanClass.h" />
     <ClInclude Include="src\logging\logging.h" />
     <ClInclude Include="src\window\window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Renderer\Buffers.cpp" />
+    <ClCompile Include="src\Renderer\CommandPool.cpp" />
+    <ClCompile Include="src\Renderer\UniformBuffer.cpp" />
+    <ClCompile Include="src\Renderer\VertexIndexBuffer.cpp" />
+    <ClCompile Include="src\VulkanClass\FrameBuffer.cpp" />
     <ClCompile Include="src\VulkanClass\General.cpp" />
     <ClCompile Include="src\VulkanClass\PhysicalLogicalDevice.cpp" />
     <ClCompile Include="src\VulkanClass\Pipeline.cpp" />

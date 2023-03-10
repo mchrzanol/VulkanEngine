@@ -8,6 +8,7 @@ const struct WindowData
 {
 	std::string Title;
 	int Width = deafultWIDTH, Height = deafultHEIGHT;
+	bool framebufferResized = false;
 };
 
 class ENGINE_API windowClass
@@ -27,9 +28,6 @@ public:
 
 	bool isWindowClosed() { return glfwWindowShouldClose(m_window); };
 	void PoolEvents() { glfwPollEvents(); };
-
-private:
-	bool framebufferResized = false;
 private:
 	static void framebufferResizeCallback(GLFWwindow* window, int width, int height);
 };

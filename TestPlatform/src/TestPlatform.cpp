@@ -2,7 +2,6 @@
 
 void TestPlatform::run() {
 	Init();
-	//window->main();
 	mainLoop();
 	CleanUp();
 }
@@ -10,12 +9,33 @@ void TestPlatform::run() {
 void TestPlatform::Init() {
 	window = new windowClass;
 	window->initWindow("TestPlatform");
+
+	initUniform = new UniformBuffer(2);
+	initVertices = new VertexBuffer();
+	initIndices = new IndexBuffer();
+
+	initVulkan = new VulkanClass(window->m_window, initUniform);
+	initVulkan->init();
+
+	initCommandPool = new CommandPool(initVulkan, initUniform, initIndices, initVertices, window);
+	initCommandPool->createCommandPool();
+
+	initVertices->createVertexBuffer(initVulkan->GetDevice(), initCommandPool->GetCommandPool(), initVulkan->GetGraphicsQueue(), initVulkan->GetPhyscicalDevice());
+	initIndices->createIndexBuffer(initVulkan->GetDevice(), initCommandPool->GetCommandPool(), initVulkan->GetGraphicsQueue(), initVulkan->GetPhyscicalDevice());
+	initUniform->createUnifromBuffer(initVulkan->GetDevice(), initVulkan->GetPhyscicalDevice());
+	
+	initUniform->createDescriptorPool(initVulkan->GetDevice());
+	initUniform->createDescriptorSets(initVulkan->GetDevice());
+
+	initCommandPool->createCommandBuffers();
+	initCommandPool->createSyncObjects();
 }
 
 void TestPlatform::mainLoop() {
 	while (!window->isWindowClosed()) {
 		std::cout << window->m_Data.Height << " " << window->m_Data.Width << std::endl;
 		window->PoolEvents();
+		initCommandPool->drawFrame();
 	}
 
 }

@@ -26,13 +26,13 @@ void windowClass::initWindow(const char * WindowName, uint32_t width, uint32_t h
 
 void windowClass::framebufferResizeCallback(GLFWwindow* window, int width, int height) {
     auto app = reinterpret_cast<windowClass*>(glfwGetWindowUserPointer(window));
-    app->framebufferResized = true;
+    app->m_Data.framebufferResized = true;
 
     glfwGetFramebufferSize(window, &app->m_Data.Width, &app->m_Data.Height);
 }
 
 std::pair<int, int> windowClass::getCurrentSize() {
-    framebufferResized = false;
+    m_Data.framebufferResized = false;
 
     int width, height;
     glfwGetFramebufferSize(m_window, &width, &height);

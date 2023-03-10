@@ -164,7 +164,7 @@ void VulkanClass::recreateSwapChain() {
 
     createSwapChain();
     createImageViews();
-    framebuffer.createFramebuffers(device, swapChainImageViews, swapChainExtent, renderPass);
+    createFramebuffers();
 }
 
 void VulkanClass::cleanupSwapChain() {

@@ -1,4 +1,5 @@
 #include "VulkanClass.h"
+#include "Renderer/VertexIndexBuffer.h"
 
 //Pipeline
 
@@ -86,10 +87,12 @@ VkShaderModule ENGINE_API createShaderModule(const std::vector<char>& code, VkDe
 
 }
 
+
+extern Vertex;
 void VulkanClass::createGraphicsPipeline()
 {
-    auto vertShaderCode = readFile("shaders/vert.spv");
-    auto fragShaderCode = readFile("shaders/frag.spv");
+    auto vertShaderCode = readFile("D:\Vulkan/VulkanEngine/VulkanEngine/shaders/vert.spv");
+    auto fragShaderCode = readFile("D:\Vulkan/VulkanEngine/VulkanEngine/shaders/frag.spv");
 
     VkShaderModule vertShaderModule = createShaderModule(vertShaderCode, device);
     VkShaderModule fragShaderModule = createShaderModule(fragShaderCode, device);
@@ -171,7 +174,7 @@ void VulkanClass::createGraphicsPipeline()
     VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
     pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
     pipelineLayoutInfo.setLayoutCount = 1;
-    pipelineLayoutInfo.pSetLayouts = &descriptorSetLayout;
+    pipelineLayoutInfo.pSetLayouts = &uniformBuffer->GetDescriptorSetLayout();
     pipelineLayoutInfo.pushConstantRangeCount = 0;
 
     if (vkCreatePipelineLayout(device, &pipelineLayoutInfo, nullptr, &pipelineLayout) != VK_SUCCESS) {

@@ -3,6 +3,7 @@
 #include "logging/logging.h"
 #include "window/window.h"
 #include "Libraries.h"
+#include "Renderer/UniformBuffer.h"
 
 struct QueueFamilyIndices {
     std::optional<uint32_t> graphicsFamily;
@@ -13,33 +14,7 @@ struct QueueFamilyIndices {
     }
 };
 
-struct Vertex {
-    glm::vec2 pos;
-    glm::vec3 color;
-
-    static VkVertexInputBindingDescription getBindingDescription() {
-        VkVertexInputBindingDescription bindingDescription{};
-        bindingDescription.binding = 0;
-        bindingDescription.stride = sizeof(Vertex);
-        bindingDescription.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
-
-        return bindingDescription;
-    }
-
-    static std::array<VkVertexInputAttributeDescription, 2> getAttributeDescriptions() {
-        std::array<VkVertexInputAttributeDescription, 2> attributeDescriptions{};
-        attributeDescriptions[0].binding = 0;
-        attributeDescriptions[0].location = 0;
-        attributeDescriptions[0].format = VK_FORMAT_R32G32_SFLOAT;
-        attributeDescriptions[0].offset = offsetof(Vertex, pos);
-
-        attributeDescriptions[1].binding = 0;
-        attributeDescriptions[1].location = 1;
-        attributeDescriptions[1].format = VK_FORMAT_R32G32B32_SFLOAT;
-        attributeDescriptions[1].offset = offsetof(Vertex, color);
-        return attributeDescriptions;
-    }
-};
+const int MAX_FRAMES_IN_FLIGHT = 2;
 
 struct SwapChainSupportDetails {
     VkSurfaceCapabilitiesKHR capabilities;
@@ -57,8 +32,8 @@ const std::vector<const char*> deviceExtensions = {
 
 class ENGINE_API VulkanClass {
 public:
-    VulkanClass(GLFWwindow*& window)//including reference to window
-        :window(window) {};
+    VulkanClass(GLFWwindow*& window, UniformBuffer*& uniformBuffer)//including reference to window
+        :window(window), uniformBuffer(uniformBuffer) {};
 	void init() {
         createInstance();
         setupDebugMessenger();
@@ -69,15 +44,14 @@ public:
         createImageViews();
 
         createRenderPass();
-        createDecriptorSetLayout();
+        uniformBuffer->createDecriptorSetLayout(device);
         createGraphicsPipeline();
-
+        createFramebuffers();
 	}
 
     void cleanup() {
-        //cleanupSwapChain();
+        cleanupSwapChain();
 
-        vkDestroyDescriptorSetLayout(device, descriptorSetLayout, nullptr);
         vkDestroyPipeline(device, graphicsPipeline, nullptr);
         vkDestroyPipelineLayout(device, pipelineLayout, nullptr);
 
@@ -96,6 +70,7 @@ public:
 private:
     #pragma region externalMembers
     GLFWwindow* window;
+    UniformBuffer* uniformBuffer;
     #pragma endregion
 
     #pragma region Members
@@ -116,7 +91,6 @@ private:
     std::vector<VkImageView> swapChainImageViews;
     std::vector<VkFramebuffer> swapChainFramebuffers;
 
-    VkDescriptorSetLayout descriptorSetLayout;
     VkPipeline graphicsPipeline;
     VkRenderPass renderPass;
     VkPipelineLayout pipelineLayout;
@@ -142,7 +116,6 @@ private:
     bool isDeviceSuitable(VkPhysicalDevice device);
     void createLogicalDevice();
     bool checkDeviceExtensionSupport(VkPhysicalDevice device);
-    QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
 
     //SwapChain
     SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device);
@@ -150,7 +123,6 @@ private:
     VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
     VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
     void createSwapChain();
-    void recreateSwapChain();
     void createImageViews();
     void cleanupSwapChain();
 
@@ -158,9 +130,25 @@ private:
     void createRenderPass();
     void createGraphicsPipeline();
 
-
-
-
+    //FrameBuffer
+    void createFramebuffers();
+    
     bool checkValidationLayerSupport();
-    void createDecriptorSetLayout();
+
+
+public:
+    //Physical / Logical Device
+    QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
+    void recreateSwapChain();
+
+    inline VkPhysicalDevice GetPhyscicalDevice() { return physicalDevice; };
+    inline VkDevice GetDevice() { return device; };
+    inline VkExtent2D GetSwapChainExtent() { return swapChainExtent; };
+    inline VkPipelineLayout GetPipelineLayout() { return pipelineLayout; };
+    inline VkQueue GetGraphicsQueue() { return graphicsQueue; };
+    inline VkPipeline& GetGraphicsPipeline() { return graphicsPipeline; };
+    inline VkSwapchainKHR GetSwapChain() { return swapChain;};
+    inline VkRenderPass& GetRenderPass() { return renderPass; };
+    inline std::vector<VkFramebuffer> GetSwapChainFrameBuffers() {return swapChainFramebuffers; };
+    inline VkQueue GetPresentQueue() { return presentQueue; };
 };
