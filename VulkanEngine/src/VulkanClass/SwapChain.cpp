@@ -150,7 +150,7 @@ VkExtent2D VulkanClass::chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabil
     }
 }
 
-void VulkanClass::recreateSwapChain() {
+void VulkanClass::recreateSwapChain(WindowData data) {
     int width = 0, height = 0;
     glfwGetFramebufferSize(window, &width, &height);
     while (width == 0 || height == 0) {

@@ -139,7 +139,7 @@ private:
 public:
     //Physical / Logical Device
     QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
-    void recreateSwapChain();
+    void recreateSwapChain(WindowData data);
 
     inline VkPhysicalDevice GetPhyscicalDevice() { return physicalDevice; };
     inline VkDevice GetDevice() { return device; };

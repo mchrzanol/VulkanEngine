@@ -31,13 +31,10 @@ void windowClass::framebufferResizeCallback(GLFWwindow* window, int width, int h
     glfwGetFramebufferSize(window, &app->m_Data.Width, &app->m_Data.Height);
 }
 
-std::pair<int, int> windowClass::getCurrentSize() {
+void windowClass::UpdateWindowSize() {
     m_Data.framebufferResized = false;
 
-    int width, height;
-    glfwGetFramebufferSize(m_window, &width, &height);
-
-    return { width, height };
+    glfwGetFramebufferSize(m_window, &m_Data.Width, &m_Data.Height);
 }
 
 void windowClass::destroyWindow() {

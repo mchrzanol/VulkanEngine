@@ -1,9 +1,9 @@
 #include "TestPlatform.h"
+#include <fstream>
 
 int main()
 {
 	TestPlatform* a = new TestPlatform;
-
 	try
 	{
 		a->run();

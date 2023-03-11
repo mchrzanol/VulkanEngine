@@ -57,17 +57,18 @@ void VulkanClass::createRenderPass()
 }
 
 std::vector<char> ENGINE_API readFile(const std::string& filename) {
-    std::ifstream file(filename, std::ios::ate | std::ios::binary);
+    std::ifstream* file = new std::ifstream;
+    file->open(filename, std::ios::ate | std::ios::binary);
 
-    if (!file.is_open()) {
+    if (!file->is_open()) {
         throw std::runtime_error("failed to open file!");
     }
 
-    size_t fileSize = (size_t)file.tellg();
+    size_t fileSize = (size_t)file->tellg();
     std::vector<char> buffer(fileSize);
 
-    file.seekg(0);
-    file.read(buffer.data(), fileSize);
+    file->seekg(0);
+    file->read(buffer.data(), fileSize);
 
     return buffer;
 }
@@ -91,8 +92,13 @@ VkShaderModule ENGINE_API createShaderModule(const std::vector<char>& code, VkDe
 extern Vertex;
 void VulkanClass::createGraphicsPipeline()
 {
-    auto vertShaderCode = readFile("D:\Vulkan/VulkanEngine/VulkanEngine/shaders/vert.spv");
-    auto fragShaderCode = readFile("D:\Vulkan/VulkanEngine/VulkanEngine/shaders/frag.spv");
+    std::fstream file("shaders/tak.txt", std::ios::out);
+    if (!file.good())
+        std::cout << "dupa" << std::endl;
+    file.close();
+    //std::cout << std::filesystem::current_path().string() << std::endl;
+    auto vertShaderCode = readFile("shaders/vert.spv");
+    auto fragShaderCode = readFile("shaders/frag.spv");
 
     VkShaderModule vertShaderModule = createShaderModule(vertShaderCode, device);
     VkShaderModule fragShaderModule = createShaderModule(fragShaderCode, device);

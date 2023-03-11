@@ -116,7 +116,8 @@ void CommandPool::drawFrame() {
     VkResult result = vkAcquireNextImageKHR(initVulkan->GetDevice(), initVulkan->GetSwapChain(), UINT64_MAX, imageAvailableSemaphores[currentFrame], VK_NULL_HANDLE, &imageIndex);
 
     if (result == VK_ERROR_OUT_OF_DATE_KHR) {
-        initVulkan->recreateSwapChain();
+        initWindow->UpdateWindowSize();
+        initVulkan->recreateSwapChain(initWindow->m_Data);
         return;
     }
     else if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
@@ -165,8 +166,8 @@ void CommandPool::drawFrame() {
     result = vkQueuePresentKHR(initVulkan->GetPresentQueue(), &presentInfo);
 
     if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || initWindow->m_Data.framebufferResized) {
-        initWindow->m_Data.framebufferResized = false;
-        initVulkan->recreateSwapChain();//daj tutaj funkcje sprawdzajaca rozmiar okna z klasy okno 
+        initWindow->UpdateWindowSize();
+        initVulkan->recreateSwapChain(initWindow->m_Data);//daj tutaj funkcje sprawdzajaca rozmiar okna z klasy okno 
     }
     else if (result != VK_SUCCESS) {
         throw std::runtime_error("failed to present swap chain image!");
