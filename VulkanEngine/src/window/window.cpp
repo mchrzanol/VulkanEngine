@@ -14,16 +14,16 @@ void windowClass::initWindow(const char * WindowName, uint32_t width, uint32_t h
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
     if(isResizable)
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
+    else
+        glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
     m_window = glfwCreateWindow(width, height, WindowName, nullptr, nullptr);
     
     if (m_window == NULL)
         throw std::runtime_error("failed to create window!");//maybe some log later
 
-    if (isResizable) {
-        glfwSetWindowUserPointer(m_window, this);
-        glfwSetFramebufferSizeCallback(m_window, framebufferResizeCallback);
-    }
+    glfwSetWindowUserPointer(m_window, this);
+    glfwSetFramebufferSizeCallback(m_window, framebufferResizeCallback);
 }
 
 void windowClass::framebufferResizeCallback(GLFWwindow* window, int width, int height) {
