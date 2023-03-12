@@ -88,17 +88,10 @@ VkShaderModule ENGINE_API createShaderModule(const std::vector<char>& code, VkDe
 
 }
 
-
-extern Vertex;
 void VulkanClass::createGraphicsPipeline()
 {
-    std::fstream file("shaders/tak.txt", std::ios::out);
-    if (!file.good())
-        std::cout << "dupa" << std::endl;
-    file.close();
-    //std::cout << std::filesystem::current_path().string() << std::endl;
-    auto vertShaderCode = readFile("shaders/vert.spv");
-    auto fragShaderCode = readFile("shaders/frag.spv");
+    auto vertShaderCode = readFile("../shaders/vert.spv");
+    auto fragShaderCode = readFile("../shaders/frag.spv");
 
     VkShaderModule vertShaderModule = createShaderModule(vertShaderCode, device);
     VkShaderModule fragShaderModule = createShaderModule(fragShaderCode, device);

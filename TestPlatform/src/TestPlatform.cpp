@@ -7,17 +7,18 @@ void TestPlatform::run() {
 }
 
 void TestPlatform::Init() {
-	window = new windowClass;
-	window->initWindow("TestPlatform");
 
-	initUniform = new UniformBuffer(2);
+	window = new windowClass;
+	window->initWindow("TestPlatform", 1080, 980);
+
+	initUniform = new UniformBuffer(MAX_FRAMES_IN_FLIGHT);
 	initVertices = new VertexBuffer();
 	initIndices = new IndexBuffer();
 
 	initVulkan = new VulkanClass(window->m_window, initUniform);
 	initVulkan->init();
 
-	initCommandPool = new CommandPool(initVulkan, initUniform, initIndices, initVertices, window);
+	initCommandPool = new CommandPool(initVulkan, initUniform, initIndices, initVertices, window, MAX_FRAMES_IN_FLIGHT);
 	initCommandPool->createCommandPool();
 
 	initVertices->createVertexBuffer(initVulkan->GetDevice(), initCommandPool->GetCommandPool(), initVulkan->GetGraphicsQueue(), initVulkan->GetPhyscicalDevice());

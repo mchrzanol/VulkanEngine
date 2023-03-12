@@ -8,6 +8,8 @@ void windowClass::initWindow(const char * WindowName, uint32_t width, uint32_t h
     glfwInit();
 
     m_Data.Title = WindowName;
+    m_Data.Width = width;
+    m_Data.Height = height;
 
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
     if(isResizable)

@@ -22,9 +22,11 @@ private:
     std::vector<VkSemaphore> imageAvailableSemaphores;
     std::vector<VkSemaphore> renderFinishedSemaphores;
     std::vector<VkFence> inFlightFences;
+
+    int MAX_FRAMES_IN_FLIGHT;
 public:
-    CommandPool(VulkanClass*& initVulkan, UniformBuffer*& initUniform, IndexBuffer*& initIndeces, VertexBuffer*& initVertices, windowClass*& initWindow)
-        :initVulkan(initVulkan), initUniform(initUniform), initIndeces(initIndeces), initVertices(initVertices),initWindow(initWindow){};
+    CommandPool(VulkanClass*& initVulkan, UniformBuffer*& initUniform, IndexBuffer*& initIndeces, VertexBuffer*& initVertices, windowClass*& initWindow, int MAX_FRAMES_IN_FLIGHT)
+        :initVulkan(initVulkan), initUniform(initUniform), initIndeces(initIndeces), initVertices(initVertices),initWindow(initWindow),MAX_FRAMES_IN_FLIGHT(MAX_FRAMES_IN_FLIGHT){};
     void createCommandPool();
     void createCommandBuffers();
     void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex, VkRenderPass& renderPass,
