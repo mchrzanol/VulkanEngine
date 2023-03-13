@@ -6,6 +6,8 @@
 #include "Renderer/UniformBuffer.h"
 
 #pragma warning(disable: 26495)
+#include "logging.h"
+#include "Libraries.h"
 
 struct QueueFamilyIndices {
     std::optional<uint32_t> graphicsFamily;
@@ -21,6 +23,7 @@ struct SwapChainSupportDetails {
     std::vector<VkSurfaceFormatKHR> formats;
     std::vector<VkPresentModeKHR> presentModes;
 };
+
 
 const std::vector<const char*> validationLayers = {
     "VK_LAYER_KHRONOS_validation"
@@ -113,6 +116,7 @@ private:
     //Physical / Logical Device
 
     void pickPhysicalDevice();
+
     bool isDeviceSuitable(VkPhysicalDevice device);
     void createLogicalDevice();
     bool checkDeviceExtensionSupport(VkPhysicalDevice device);
@@ -152,4 +156,5 @@ public:
     inline VkQueue GetPresentQueue() { return presentQueue; };
 
     inline void WaitIdle() { vkDeviceWaitIdle(device); };
+
 };
