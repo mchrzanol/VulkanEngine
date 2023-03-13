@@ -1,19 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="VulkanClass">
+      <UniqueIdentifier>{2C6FC8A5-9824-419B-2119-3B728DCD379F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="logging">
+      <UniqueIdentifier>{CC00C087-38E0-3E23-41F8-C9F9AD56A584}</UniqueIdentifier>
+    </Filter>
     <Filter Include="window">
       <UniqueIdentifier>{5DFE1E25-49A0-49FB-325B-5D4F1E9CD04B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CommandPool">
+      <UniqueIdentifier>{77545fc8-d479-4b5b-8f76-3ca3f0fe320b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="VertexBuffer">
+      <UniqueIdentifier>{60db2c94-81cd-4a09-b59e-e15aa1b1340a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IndexBuffer">
+      <UniqueIdentifier>{cd6d8191-e800-49fd-b785-48934fc52f07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UniformBuffer">
+      <UniqueIdentifier>{bc9ba9e7-c038-4307-a47d-d67b60f9d88a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Core.h" />
     <ClInclude Include="src\Engine.h" />
     <ClInclude Include="src\Libraries.h" />
-    <ClInclude Include="src\window.h" />
-    <ClInclude Include="src\logging\logging.h" />
+    <ClInclude Include="src\VulkanClass\VulkanClass.h">
+      <Filter>VulkanClass</Filter>
+    </ClInclude>
+    <ClInclude Include="src\logging\logging.h">
+      <Filter>logging</Filter>
+    </ClInclude>
+    <ClInclude Include="src\window\window.h">
+      <Filter>window</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\CommandPool.h">
+      <Filter>CommandPool</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\UniformBuffer.h" />
+    <ClInclude Include="src\Renderer\Buffers.h" />
+    <ClInclude Include="src\Renderer\VertexIndexBuffer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\window.cpp" />
-    <ClCompile Include="src\logging\logging.cpp" />
+    <ClCompile Include="src\VulkanClass\General.cpp">
+      <Filter>VulkanClass</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VulkanClass\PhysicalLogicalDevice.cpp">
+      <Filter>VulkanClass</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VulkanClass\Pipeline.cpp">
+      <Filter>VulkanClass</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VulkanClass\SwapChain.cpp">
+      <Filter>VulkanClass</Filter>
+    </ClCompile>
+    <ClCompile Include="src\logging\logging.cpp">
+      <Filter>logging</Filter>
+    </ClCompile>
+    <ClCompile Include="src\window\window.cpp">
+      <Filter>window</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VulkanClass\FrameBuffer.cpp">
+      <Filter>VulkanClass</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer\UniformBuffer.cpp" />
+    <ClCompile Include="src\Renderer\Buffers.cpp" />
+    <ClCompile Include="src\Renderer\CommandPool.cpp" />
+    <ClCompile Include="src\Renderer\VertexIndexBuffer.cpp" />
   </ItemGroup>
 </Project>

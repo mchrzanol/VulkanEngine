@@ -1,7 +1,8 @@
 #pragma once
 #include "Libraries.h"
 
-static VKAPI_ATTR VkBool32 VKAPI_CALL ENGINE_API debugCallback(
+
+VKAPI_ATTR VkBool32 ENGINE_API VKAPI_CALL debugCallback(
     VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
     VkDebugUtilsMessageTypeFlagsEXT messageType,
     const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
@@ -11,4 +12,7 @@ VkResult ENGINE_API CreateDebugUtilsMessengerEXT(VkInstance instance, const VkDe
     const VkAllocationCallbacks* pAllocator, VkDebugUtilsMessengerEXT* pDebugMessenger);
 
 
+
 void ENGINE_API DestroyDebugUtilsMessengerEXT(VkInstance instance, VkDebugUtilsMessengerEXT debugMessenger, const VkAllocationCallbacks* pAllocator);
+
+void ENGINE_API populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo);

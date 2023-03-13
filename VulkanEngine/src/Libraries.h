@@ -15,8 +15,15 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <imgui.h>
 
+#include <CppCoreCheck\Warnings.h>
+
 //C++ references
 #include <iostream>
 #include <string>
 #include <vector>
 #include <optional>
+#include <set>
+#include <fstream>
+#include <array>
+#include <algorithm>
+#include <chrono>

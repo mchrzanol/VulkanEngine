@@ -43,7 +43,6 @@ project "VulkanEngine"
 	includedirs
 	{
 		"%{prj.name}/src/",
-		"%{prj.name}/src/window",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Vulkan}",
 		"%{IncludeDir.glm}",
