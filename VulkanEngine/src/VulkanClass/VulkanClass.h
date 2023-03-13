@@ -6,8 +6,6 @@
 #include "Renderer/UniformBuffer.h"
 
 #pragma warning(disable: 26495)
-#include "logging.h"
-#include "Libraries.h"
 
 struct QueueFamilyIndices {
     std::optional<uint32_t> graphicsFamily;
