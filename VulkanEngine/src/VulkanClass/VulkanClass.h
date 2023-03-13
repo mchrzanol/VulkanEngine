@@ -5,6 +5,8 @@
 #include "Libraries.h"
 #include "Renderer/UniformBuffer.h"
 
+#pragma warning(disable: 26495)
+
 struct QueueFamilyIndices {
     std::optional<uint32_t> graphicsFamily;
     std::optional<uint32_t> presentFamily;
@@ -106,7 +108,6 @@ private:
 
     //Surface
     void createSurface();
-
     
     //Physical / Logical Device
 

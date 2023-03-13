@@ -1,6 +1,8 @@
 #pragma once
 #include "Libraries.h"
 
+#pragma warning(disable: 26495)
+
 const uint32_t deafultWIDTH = 800;
 const uint32_t deafultHEIGHT = 600;
 
