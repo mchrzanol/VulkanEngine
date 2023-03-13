@@ -29,6 +29,8 @@ public:
     void createDescriptorPool(VkDevice device);
     void createDescriptorSets(VkDevice device);
 
+    void cleanup(VkDevice &device);
+
     std::vector<VkDescriptorSet> GetDescriptorSets() { return descriptorSets; };
     VkDescriptorSetLayout& GetDescriptorSetLayout() { return descriptorSetLayout; };
 };

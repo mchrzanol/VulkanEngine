@@ -35,6 +35,8 @@ public:
 
     void drawFrame();
 
+    void cleanup();
+
     VkCommandPool GetCommandPool() { return commandPool; };
 
 

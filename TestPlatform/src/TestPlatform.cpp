@@ -9,7 +9,7 @@ void TestPlatform::run() {
 void TestPlatform::Init() {
 
 	window = new windowClass;
-	window->initWindow("TestPlatform", 1080, 980);
+	window->initWindow("TestPlatform");
 
 	initUniform = new UniformBuffer(MAX_FRAMES_IN_FLIGHT);
 	initVertices = new VertexBuffer();
@@ -34,13 +34,27 @@ void TestPlatform::Init() {
 
 void TestPlatform::mainLoop() {
 	while (!window->isWindowClosed()) {
-		std::cout << window->m_Data.Height << " " << window->m_Data.Width << std::endl;
+		//std::cout << window->m_Data.Height << " " << window->m_Data.Width << std::endl;
 		window->PoolEvents();
 		initCommandPool->drawFrame();
 	}
 
+	initVulkan->WaitIdle();
 }
 
 void TestPlatform::CleanUp() {
+
+	initVulkan->cleanupSwapChain();
+
+	initUniform->cleanup(initVulkan->GetDevice());
+
+	initIndices->cleanup(initVulkan->GetDevice());
+
+	initVertices->cleanup(initVulkan->GetDevice());
+
+	initCommandPool->cleanup();
+
+	initVulkan->cleanup();
+
 	window->destroyWindow();
 }

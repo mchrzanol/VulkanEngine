@@ -22,7 +22,7 @@ public:
 	
 	void addHint(int hint, int value);//it must be called before initWindow
 
-	void initWindow(const char * WindowName, uint32_t width = deafultHEIGHT, uint32_t height = deafultHEIGHT, bool isResizable = true);
+	void initWindow(const char * WindowName, uint32_t width = deafultWIDTH, uint32_t height = deafultHEIGHT, bool isResizable = true);
 
 	void UpdateWindowSize();
 

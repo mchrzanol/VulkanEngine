@@ -11,6 +11,15 @@ void VulkanClass::pickPhysicalDevice() {
     std::vector<VkPhysicalDevice> devices(deviceCount);
     vkEnumeratePhysicalDevices(instance, &deviceCount, devices.data());
 
+    std::vector<VkPhysicalDeviceProperties> devicesProps(deviceCount);
+
+    std::cout << "Physical Devices:\n";
+    for (int i = 0; i < deviceCount; i++)
+    {
+        vkGetPhysicalDeviceProperties(devices[i], &devicesProps[i]);
+        std::cout << '\t' << devicesProps[i].deviceName << '\n';
+    }
+
     for (const auto& device : devices) {
         if (isDeviceSuitable(device)) {
             physicalDevice = device;

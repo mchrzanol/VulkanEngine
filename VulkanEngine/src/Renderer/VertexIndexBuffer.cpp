@@ -20,6 +20,11 @@ void VertexBuffer::createVertexBuffer(VkDevice device, VkCommandPool commandPool
     vkFreeMemory(device, stagingBufferMemory, nullptr);
 }
 
+void VertexBuffer::cleanup(VkDevice & device) {
+    vkDestroyBuffer(device, vertexBuffer, nullptr);
+    vkFreeMemory(device, vertexBufferMemory, nullptr);
+}
+
 void IndexBuffer::createIndexBuffer(VkDevice device, VkCommandPool commandPool, VkQueue graphicsQueue, VkPhysicalDevice physicalDevice) {
     VkDeviceSize bufferSize = sizeof(indices[0]) * indices.size();
 
@@ -38,4 +43,9 @@ void IndexBuffer::createIndexBuffer(VkDevice device, VkCommandPool commandPool, 
 
     vkDestroyBuffer(device, stagingBuffer, nullptr);
     vkFreeMemory(device, stagingBufferMemory, nullptr);
+}
+
+void IndexBuffer::cleanup(VkDevice & device) {
+    vkDestroyBuffer(device, indexBuffer, nullptr);
+    vkFreeMemory(device, indexBufferMemory, nullptr);
 }

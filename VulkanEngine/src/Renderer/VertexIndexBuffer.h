@@ -45,6 +45,8 @@ private:
 public:
     void createVertexBuffer(VkDevice device, VkCommandPool commandPool, VkQueue graphicsQueue, VkPhysicalDevice physicalDevice);
 
+    void cleanup(VkDevice & device);
+
     VkBuffer GetVertexBuffer() { return vertexBuffer; };
 };
 
@@ -58,6 +60,8 @@ private:
 
 public:
     void createIndexBuffer(VkDevice device, VkCommandPool commandPool, VkQueue graphicsQueue, VkPhysicalDevice physicalDevice);
+
+    void cleanup(VkDevice & device);
 
     VkBuffer GetIndexBuffer() { return indexBuffer; };
     std::vector<uint16_t> GetIndicies() { return indices; };

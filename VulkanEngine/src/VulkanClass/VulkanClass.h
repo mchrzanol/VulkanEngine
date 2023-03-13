@@ -50,22 +50,23 @@ public:
 	}
 
     void cleanup() {
-        cleanupSwapChain();
 
         vkDestroyPipeline(device, graphicsPipeline, nullptr);
         vkDestroyPipelineLayout(device, pipelineLayout, nullptr);
-
         vkDestroyRenderPass(device, renderPass, nullptr);
+
+
+        if (enableValidationLayers) {
+            DestroyDebugUtilsMessengerEXT(instance, debugMessenger, nullptr);
+        }
 
         vkDestroyDevice(device, nullptr);
 
         vkDestroySurfaceKHR(instance, surface, nullptr);
         vkDestroyInstance(instance, nullptr);
-
-        if (enableValidationLayers) {
-            DestroyDebugUtilsMessengerEXT(instance, debugMessenger, nullptr);
-        }
     }
+
+    void cleanupSwapChain();
 
 private:
     #pragma region externalMembers
@@ -123,7 +124,6 @@ private:
     VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
     void createSwapChain();
     void createImageViews();
-    void cleanupSwapChain();
 
     //Pipeline
     void createRenderPass();
@@ -141,7 +141,7 @@ public:
     void recreateSwapChain(WindowData data);
 
     inline VkPhysicalDevice GetPhyscicalDevice() { return physicalDevice; };
-    inline VkDevice GetDevice() { return device; };
+    inline VkDevice& GetDevice() { return device; };
     inline VkExtent2D GetSwapChainExtent() { return swapChainExtent; };
     inline VkPipelineLayout GetPipelineLayout() { return pipelineLayout; };
     inline VkQueue GetGraphicsQueue() { return graphicsQueue; };
@@ -150,4 +150,6 @@ public:
     inline VkRenderPass& GetRenderPass() { return renderPass; };
     inline std::vector<VkFramebuffer> GetSwapChainFrameBuffers() {return swapChainFramebuffers; };
     inline VkQueue GetPresentQueue() { return presentQueue; };
+
+    inline void WaitIdle() { vkDeviceWaitIdle(device); };
 };

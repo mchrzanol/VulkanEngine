@@ -176,3 +176,14 @@ void CommandPool::drawFrame() {
     currentFrame = (currentFrame + 1) % MAX_FRAMES_IN_FLIGHT;
 }
 
+void CommandPool::cleanup() {
+
+    vkDestroyCommandPool(initVulkan->GetDevice(), commandPool, nullptr);
+
+    for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
+        vkDestroySemaphore(initVulkan->GetDevice(), renderFinishedSemaphores[i], nullptr);
+        vkDestroySemaphore(initVulkan->GetDevice(), imageAvailableSemaphores[i], nullptr);
+        vkDestroyFence(initVulkan->GetDevice(), inFlightFences[i], nullptr);
+    }
+}
+
