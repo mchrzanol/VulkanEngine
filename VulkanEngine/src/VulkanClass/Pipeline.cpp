@@ -57,8 +57,7 @@ void VulkanClass::createRenderPass()
 }
 
 std::vector<char> ENGINE_API readFile(const std::string& filename) {
-    #Zmien na smart pointer
-    std::ifstream* file = new std::ifstream;
+    std::unique_ptr<std::ifstream> file = std::make_unique<std::ifstream>();
     file->open(filename, std::ios::ate | std::ios::binary);
 
     if (!file->is_open()) {
