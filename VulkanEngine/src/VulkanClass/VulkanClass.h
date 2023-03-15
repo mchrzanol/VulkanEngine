@@ -5,6 +5,8 @@
 #include "Libraries.h"
 #include "Renderer/UniformBuffer.h"
 
+extern GlobalUtl utils;
+
 #pragma warning(disable: 26495)
 
 struct QueueFamilyIndices {
@@ -48,6 +50,11 @@ public:
         uniformBuffer->createDecriptorSetLayout(device);
         createGraphicsPipeline();
         createFramebuffers();
+
+
+        utils.BindDevice(device);
+        utils.BindGraphicsQueue(graphicsQueue);
+        utils.BindPhysicalDevice(physicalDevice);
 	}
 
     void cleanup() {
