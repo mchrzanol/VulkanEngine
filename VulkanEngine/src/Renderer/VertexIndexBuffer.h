@@ -31,6 +31,8 @@ struct Vertex {
     }
 };
 
+extern GlobalUtl utils;
+
 class ENGINE_API VertexBuffer {
 private:
     const std::vector<Vertex> vertices = {
@@ -42,10 +44,11 @@ private:
     VkBuffer vertexBuffer;
     VkDeviceMemory vertexBufferMemory;
 
-public:
-    void createVertexBuffer(VkDevice device, VkCommandPool commandPool, VkQueue graphicsQueue, VkPhysicalDevice physicalDevice);
 
-    void cleanup(VkDevice & device);
+public:
+    void createVertexBuffer();
+
+    void cleanup();
 
     VkBuffer GetVertexBuffer() { return vertexBuffer; };
 };
@@ -59,9 +62,9 @@ private:
     VkDeviceMemory indexBufferMemory;
 
 public:
-    void createIndexBuffer(VkDevice device, VkCommandPool commandPool, VkQueue graphicsQueue, VkPhysicalDevice physicalDevice);
+    void createIndexBuffer();
 
-    void cleanup(VkDevice & device);
+    void cleanup();
 
     VkBuffer GetIndexBuffer() { return indexBuffer; };
     std::vector<uint16_t> GetIndicies() { return indices; };

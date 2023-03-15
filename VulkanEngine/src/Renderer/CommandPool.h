@@ -6,6 +6,8 @@
 #include "VertexIndexBuffer.h"
 #include "window/window.h"
 
+extern GlobalUtl utils;
+
 class ENGINE_API CommandPool {
 private:
     VulkanClass* initVulkan;

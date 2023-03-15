@@ -7,3 +7,4 @@
 #include "Renderer/CommandPool.h"
 #include "Renderer/UniformBuffer.h"
 #include "Renderer/VertexIndexBuffer.h"
+#include "GlobalVariables.h"

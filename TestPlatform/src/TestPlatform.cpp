@@ -21,12 +21,13 @@ void TestPlatform::Init() {
 	initCommandPool = new CommandPool(initVulkan, initUniform, initIndices, initVertices, window, MAX_FRAMES_IN_FLIGHT);
 	initCommandPool->createCommandPool();
 
-	initVertices->createVertexBuffer(initVulkan->GetDevice(), initCommandPool->GetCommandPool(), initVulkan->GetGraphicsQueue(), initVulkan->GetPhyscicalDevice());
-	initIndices->createIndexBuffer(initVulkan->GetDevice(), initCommandPool->GetCommandPool(), initVulkan->GetGraphicsQueue(), initVulkan->GetPhyscicalDevice());
-	initUniform->createUnifromBuffer(initVulkan->GetDevice(), initVulkan->GetPhyscicalDevice());
+	initVertices->createVertexBuffer();
+	initIndices->createIndexBuffer();
+
+	initUniform->createUnifromBuffer();
 	
-	initUniform->createDescriptorPool(initVulkan->GetDevice());
-	initUniform->createDescriptorSets(initVulkan->GetDevice());
+	initUniform->createDescriptorPool();
+	initUniform->createDescriptorSets();
 
 	initCommandPool->createCommandBuffers();
 	initCommandPool->createSyncObjects();
@@ -46,11 +47,11 @@ void TestPlatform::CleanUp() {
 
 	initVulkan->cleanupSwapChain();
 
-	initUniform->cleanup(initVulkan->GetDevice());
+	initUniform->cleanup();
 
-	initIndices->cleanup(initVulkan->GetDevice());
+	initIndices->cleanup();
 
-	initVertices->cleanup(initVulkan->GetDevice());
+	initVertices->cleanup();
 
 	initCommandPool->cleanup();
 

@@ -16,6 +16,7 @@
 #include <imgui.h>
 
 #include <CppCoreCheck\Warnings.h>
+#include "GlobalVariables.h"
 
 //C++ references
 #include <iostream>
