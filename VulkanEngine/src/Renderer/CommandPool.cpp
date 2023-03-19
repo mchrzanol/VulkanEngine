@@ -70,17 +70,7 @@ void CommandPool::recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t im
 
     vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, graphicsPipeline);
 
-    VkBuffer vertexBuffers[] = { initVertices->GetVertexBuffer()};
-    VkDeviceSize offsets[] = { 0 };
-    vkCmdBindVertexBuffers(commandBuffer, 0, 1, vertexBuffers, offsets);
-
-    vkCmdBindIndexBuffer(commandBuffer, initIndeces->GetIndexBuffer(), 0, VK_INDEX_TYPE_UINT16);//uint16 as type of variable
-
-    vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, initVulkan->GetPipelineLayout(), 0, 1, &initUniform->GetDescriptorSets()[currentFrame], 0, nullptr);
-    vkCmdDrawIndexed(commandBuffer, static_cast<uint32_t>(initIndeces->GetIndicies().size()), 1, 0, 0, 0);
-
-    //vkCmdDraw(commandBuffer, static_cast<uint32_t>(vertices.size()), 1, 0, 0);
-    vkCmdDrawIndexed(commandBuffer, static_cast<uint32_t>(initIndeces->GetIndicies().size()), 1, 0, 0, 0);
+    drawObject(commandBuffer, initVertices->GetVertexBuffer(), initIndeces->GetIndexBuffer(), initIndeces->GetIndicies());
 
     vkCmdEndRenderPass(commandBuffer);
 
@@ -109,6 +99,19 @@ void CommandPool::createSyncObjects() {
             throw std::runtime_error("failed to create synchronization objects for a frame!");
         }
     }
+}
+
+void CommandPool::drawObject(VkCommandBuffer commandBuffer, VkBuffer vertexBuffer, VkBuffer indexBuffer, std::vector<uint16_t> indices) {
+    VkBuffer vertexBuffers[] = { vertexBuffer };
+    VkDeviceSize offsets[] = { 0 };
+    vkCmdBindVertexBuffers(commandBuffer, 0, 1, vertexBuffers, offsets);
+
+    vkCmdBindIndexBuffer(commandBuffer, indexBuffer, 0, VK_INDEX_TYPE_UINT16);//uint16 as type of variable
+
+    vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, initVulkan->GetPipelineLayout(), 0, 1, &initUniform->GetDescriptorSets()[currentFrame], 0, nullptr);
+
+    vkCmdDrawIndexed(commandBuffer, static_cast<uint32_t>(indices.size()), 1, 0, 0, 0);
+
 }
 
 void CommandPool::drawFrame() {
@@ -169,7 +172,7 @@ void CommandPool::drawFrame() {
 
     if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || initWindow->m_Data.framebufferResized) {
         initWindow->UpdateWindowSize();
-        initVulkan->recreateSwapChain(initWindow->m_Data);//daj tutaj funkcje sprawdzajaca rozmiar okna z klasy okno 
+        initVulkan->recreateSwapChain(initWindow->m_Data);
     }
     else if (result != VK_SUCCESS) {
         throw std::runtime_error("failed to present swap chain image!");

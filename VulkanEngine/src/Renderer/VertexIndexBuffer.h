@@ -4,7 +4,7 @@
 #include "Buffers.h"
 
 struct Vertex {
-    glm::vec2 pos;
+    glm::vec3 pos;
     glm::vec3 color;
 
     static VkVertexInputBindingDescription getBindingDescription() {
@@ -35,18 +35,12 @@ extern GlobalUtl utils;
 
 class ENGINE_API VertexBuffer {
 private:
-    const std::vector<Vertex> vertices = {
-    {{-0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}},
-    {{0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}},
-    {{0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}},
-    {{-0.5f, 0.5f}, {1.0f, 1.0f, 1.0f}}
-    };
     VkBuffer vertexBuffer;
     VkDeviceMemory vertexBufferMemory;
 
 
 public:
-    void createVertexBuffer();
+    void createVertexBuffer(std::vector<Vertex> & vertices);
 
     void cleanup();
 
@@ -55,17 +49,16 @@ public:
 
 class ENGINE_API IndexBuffer {
 private:
-    const std::vector<uint16_t> indices = {
-    0, 1, 2, 2, 3, 0
-    };
     VkBuffer indexBuffer;
     VkDeviceMemory indexBufferMemory;
 
+    std::vector<uint16_t> m_indices;
+
 public:
-    void createIndexBuffer();
+    void createIndexBuffer(std::vector<uint16_t> & indices);
 
     void cleanup();
 
     VkBuffer GetIndexBuffer() { return indexBuffer; };
-    std::vector<uint16_t> GetIndicies() { return indices; };
+    std::vector<uint16_t> GetIndicies() { return m_indices; };
 };

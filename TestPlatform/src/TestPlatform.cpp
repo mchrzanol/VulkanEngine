@@ -20,9 +20,19 @@ void TestPlatform::Init() {
 
 	initCommandPool = new CommandPool(initVulkan, initUniform, initIndices, initVertices, window, MAX_FRAMES_IN_FLIGHT);
 	initCommandPool->createCommandPool();
+	 std::vector<Vertex> vertices = {
+{{-0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}},
+{{0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}},
+{{0.5f, 0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}},
+{{-0.5f, 0.5f, 0.0f}, {1.0f, 1.0f, 1.0f}}
+	};
 
-	initVertices->createVertexBuffer();
-	initIndices->createIndexBuffer();
+	initVertices->createVertexBuffer(vertices);
+
+	 std::vector<uint16_t> indices = {
+0, 1, 2, 2, 3, 0
+	};
+	initIndices->createIndexBuffer(indices);
 
 	initUniform->createUnifromBuffer();
 	

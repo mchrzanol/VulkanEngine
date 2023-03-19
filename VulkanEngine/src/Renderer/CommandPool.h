@@ -36,6 +36,7 @@ public:
     void createSyncObjects();
 
     void drawFrame();
+    void drawObject(VkCommandBuffer commandBuffer, VkBuffer vertexBuffer, VkBuffer indexBuffer, std::vector<uint16_t> indices);
 
     void cleanup();
 

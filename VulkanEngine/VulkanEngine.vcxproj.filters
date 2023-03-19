@@ -43,6 +43,7 @@
     <ClInclude Include="src\Renderer\Buffers.h" />
     <ClInclude Include="src\Renderer\VertexIndexBuffer.h" />
     <ClInclude Include="src\GlobalVariables.h" />
+    <ClInclude Include="src\BasicObjects\2D\Triangle.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\VulkanClass\General.cpp">
@@ -71,5 +72,6 @@
     <ClCompile Include="src\Renderer\CommandPool.cpp" />
     <ClCompile Include="src\Renderer\VertexIndexBuffer.cpp" />
     <ClCompile Include="src\GlobalVariables.cpp" />
+    <ClCompile Include="src\BasicObjects\2D\Triangle.cpp" />
   </ItemGroup>
 </Project>

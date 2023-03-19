@@ -22,5 +22,4 @@ public:
 	void BindPhysicalDevice(VkPhysicalDevice physicalDevice) { this->physicalDevice = physicalDevice; };
 	VkPhysicalDevice GetPhyscicalDevice() { return physicalDevice; };
 
-
 };

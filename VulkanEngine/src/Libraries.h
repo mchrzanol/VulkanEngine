@@ -28,3 +28,4 @@
 #include <array>
 #include <algorithm>
 #include <chrono>
+#include <functional>

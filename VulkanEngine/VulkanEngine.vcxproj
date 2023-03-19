@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\BasicObjects\2D\Triangle.h" />
     <ClInclude Include="src\Core.h" />
     <ClInclude Include="src\Engine.h" />
     <ClInclude Include="src\GlobalVariables.h" />
@@ -156,6 +157,7 @@
     <ClInclude Include="src\window\window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\BasicObjects\2D\Triangle.cpp" />
     <ClCompile Include="src\GlobalVariables.cpp" />
     <ClCompile Include="src\Renderer\Buffers.cpp" />
     <ClCompile Include="src\Renderer\CommandPool.cpp" />

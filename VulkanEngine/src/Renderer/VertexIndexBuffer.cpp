@@ -1,6 +1,6 @@
 #include "VertexIndexBuffer.h"
 
-void VertexBuffer::createVertexBuffer() {
+void VertexBuffer::createVertexBuffer(std::vector<Vertex> & vertices) {
     VkDeviceSize bufferSize = sizeof(vertices[0]) * vertices.size();
 
     VkBuffer stagingBuffer;
@@ -25,8 +25,10 @@ void VertexBuffer::cleanup() {
     vkFreeMemory(utils.GetDevice(), vertexBufferMemory, nullptr);
 }
 
-void IndexBuffer::createIndexBuffer() {
+void IndexBuffer::createIndexBuffer(std::vector<uint16_t> & indices) {
     VkDeviceSize bufferSize = sizeof(indices[0]) * indices.size();
+
+    m_indices = indices;
 
     VkBuffer stagingBuffer;
     VkDeviceMemory stagingBufferMemory;
