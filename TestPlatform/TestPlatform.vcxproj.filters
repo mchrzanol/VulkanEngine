@@ -9,6 +9,7 @@
     <ClInclude Include="src\TestPlatform.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\Keys.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TestPlatform.cpp">

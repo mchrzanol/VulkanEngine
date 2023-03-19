@@ -1,5 +1,6 @@
 #pragma once
 #include "Libraries.h"
+#include "Input/Input.h"
 
 #pragma warning(disable: 26495)
 
@@ -24,6 +25,8 @@ public:
 
 	void initWindow(const char * WindowName, uint32_t width = deafultWIDTH, uint32_t height = deafultHEIGHT, bool isResizable = true);
 
+	void addUserPointer(Input* input);
+
 	void UpdateWindowSize();
 
 	void destroyWindow();
@@ -31,5 +34,7 @@ public:
 	bool isWindowClosed() { return glfwWindowShouldClose(m_window); };
 	void PoolEvents() { glfwPollEvents(); };
 private:
+	Input* input;
+
 	static void framebufferResizeCallback(GLFWwindow* window, int width, int height);
 };

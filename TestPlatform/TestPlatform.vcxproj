@@ -146,6 +146,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Keys.h" />
     <ClInclude Include="src\TestPlatform.h" />
   </ItemGroup>
   <ItemGroup>
