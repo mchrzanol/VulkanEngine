@@ -24,7 +24,6 @@ struct SwapChainSupportDetails {
     std::vector<VkPresentModeKHR> presentModes;
 };
 
-
 const std::vector<const char*> validationLayers = {
     "VK_LAYER_KHRONOS_validation"
 };
@@ -32,6 +31,7 @@ const std::vector<const char*> validationLayers = {
 const std::vector<const char*> deviceExtensions = {
     VK_KHR_SWAPCHAIN_EXTENSION_NAME
 };
+
 
 class ENGINE_API VulkanClass {
 public:
@@ -50,7 +50,6 @@ public:
         uniformBuffer->createDecriptorSetLayout(device);
         createGraphicsPipeline();
         createFramebuffers();
-
 
         utils.BindDevice(device);
         utils.BindGraphicsQueue(graphicsQueue);
@@ -142,7 +141,6 @@ private:
     void createFramebuffers();
     
     bool checkValidationLayerSupport();
-
 
 public:
     //Physical / Logical Device

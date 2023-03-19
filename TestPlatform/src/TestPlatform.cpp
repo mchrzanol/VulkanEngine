@@ -1,4 +1,6 @@
 #include "TestPlatform.h"
+#include "Keys.h"
+
 
 void TestPlatform::run() {
 	Init();
@@ -7,13 +9,17 @@ void TestPlatform::run() {
 }
 
 void TestPlatform::Init() {
-
+	
 	window = new windowClass;
+
 	window->initWindow("TestPlatform");
+	initInput = new Input(window->m_window);
+	window->addUserPointer(initInput);
 
 	initUniform = new UniformBuffer(MAX_FRAMES_IN_FLIGHT);
 	initVertices = new VertexBuffer();
 	initIndices = new IndexBuffer();
+
 
 	initVulkan = new VulkanClass(window->m_window, initUniform);
 	initVulkan->init();
@@ -38,6 +44,11 @@ void TestPlatform::mainLoop() {
 		//std::cout << window->m_Data.Height << " " << window->m_Data.Width << std::endl;
 		window->PoolEvents();
 		initCommandPool->drawFrame();
+
+		if (initInput->keyState[KEY_ESCAPE].press) {
+			break;
+		}
+		
 	}
 
 	initVulkan->WaitIdle();

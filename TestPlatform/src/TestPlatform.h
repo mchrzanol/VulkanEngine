@@ -16,7 +16,7 @@ private:
 	VertexBuffer* initVertices;
 	IndexBuffer* initIndices;
 	CommandPool* initCommandPool;
-
+	Input* initInput;
 
 	void Init();
 

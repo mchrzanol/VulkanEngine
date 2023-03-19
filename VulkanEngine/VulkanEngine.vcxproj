@@ -145,6 +145,7 @@
   <ItemGroup>
     <ClInclude Include="src\Core.h" />
     <ClInclude Include="src\Engine.h" />
+    <ClInclude Include="src\Input\Input.h" />
     <ClInclude Include="src\GlobalVariables.h" />
     <ClInclude Include="src\Libraries.h" />
     <ClInclude Include="src\Renderer\Buffers.h" />

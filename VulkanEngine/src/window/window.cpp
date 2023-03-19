@@ -22,8 +22,13 @@ void windowClass::initWindow(const char * WindowName, uint32_t width, uint32_t h
     if (m_window == NULL)
         throw std::runtime_error("failed to create window!");//maybe some log later
 
-    glfwSetWindowUserPointer(m_window, this);
     glfwSetFramebufferSizeCallback(m_window, framebufferResizeCallback);
+}
+
+void windowClass::addUserPointer(Input* input) {
+    this->input = input;
+
+    glfwSetWindowUserPointer(m_window, this->input);
 }
 
 void windowClass::framebufferResizeCallback(GLFWwindow* window, int width, int height) {
