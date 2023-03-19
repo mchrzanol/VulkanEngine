@@ -45,10 +45,11 @@ void TestPlatform::mainLoop() {
 		window->PoolEvents();
 		initCommandPool->drawFrame();
 
-		if (initInput->keyState[KEY_ESCAPE].press) {
+		if (initInput->keyState[KEY_ESCAPE].press == true) {
 			break;
 		}
 		
+		initInput->ClearKeyState();
 	}
 
 	initVulkan->WaitIdle();
