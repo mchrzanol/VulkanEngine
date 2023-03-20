@@ -13,6 +13,6 @@ TO DO(in close period):
 
 -lighting(light source) 
 
--2D sprites
+-2D sprites(GUI) 
 
 
