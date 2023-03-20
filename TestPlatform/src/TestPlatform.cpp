@@ -79,10 +79,11 @@ void TestPlatform::mainLoop() {
 		window->PoolEvents();
 		initCommandPool->drawFrame(objects.m_triangles[0].GetVertexBuffer(), objects.m_triangles[0].GetIndexBuffer(), objects.m_triangles[0].GetIndices());
 
-		if (initInput->keyState[KEY_ESCAPE].press) {
+		if (initInput->keyState[KEY_ESCAPE].press == true) {
 			break;
 		}
 		
+		initInput->ClearKeyState();
 	}
 
 	initVulkan->WaitIdle();
