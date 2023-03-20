@@ -5,6 +5,7 @@
 #include "UniformBuffer.h"
 #include "VertexIndexBuffer.h"
 #include "window/window.h"
+#include "BasicObjects/2D/2DObjects.h"
 
 extern GlobalUtl utils;
 
@@ -12,8 +13,6 @@ class ENGINE_API CommandPool {
 private:
     VulkanClass* initVulkan;
     UniformBuffer* initUniform;
-    IndexBuffer* initIndeces;
-    VertexBuffer* initVertices;
     windowClass* initWindow;
 
 
@@ -27,16 +26,17 @@ private:
 
     int MAX_FRAMES_IN_FLIGHT;
 public:
-    CommandPool(VulkanClass*& initVulkan, UniformBuffer*& initUniform, IndexBuffer*& initIndeces, VertexBuffer*& initVertices, windowClass*& initWindow, int MAX_FRAMES_IN_FLIGHT)
-        :initVulkan(initVulkan), initUniform(initUniform), initIndeces(initIndeces), initVertices(initVertices),initWindow(initWindow),MAX_FRAMES_IN_FLIGHT(MAX_FRAMES_IN_FLIGHT){};
+    CommandPool(VulkanClass*& initVulkan, UniformBuffer*& initUniform, windowClass*& initWindow, int MAX_FRAMES_IN_FLIGHT)
+        :initVulkan(initVulkan), initUniform(initUniform),initWindow(initWindow),MAX_FRAMES_IN_FLIGHT(MAX_FRAMES_IN_FLIGHT){};
     void createCommandPool();
     void createCommandBuffers();
     void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex, VkRenderPass& renderPass,
-        std::vector<VkFramebuffer>& swapChainFramebuffers, VkPipeline& graphicsPipeline);
+        std::vector<VkFramebuffer>& swapChainFramebuffers, VkPipeline& graphicsPipeline, VkBuffer vertexBuffer, VkBuffer indexBuffer, std::vector<uint16_t> indices);
     void createSyncObjects();
 
-    void drawFrame();
     void drawObject(VkCommandBuffer commandBuffer, VkBuffer vertexBuffer, VkBuffer indexBuffer, std::vector<uint16_t> indices);
+
+    void drawFrame(VkBuffer vertexBuffer, VkBuffer indexBuffer, std::vector<uint16_t> indices);
 
     void cleanup();
 

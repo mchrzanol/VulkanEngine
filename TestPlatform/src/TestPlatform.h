@@ -16,6 +16,9 @@ private:
 	VertexBuffer* initVertices;
 	IndexBuffer* initIndices;
 	CommandPool* initCommandPool;
+	Input* initInput;
+
+	Objects2D objects;
 
 
 	void Init();

@@ -24,8 +24,8 @@ private:
 
 	std::vector<uint16_t> Indices;
 
-	VertexBuffer m_Vertices;
-	IndexBuffer m_Indices;
+	VertexBuffer * m_Vertices;
+	IndexBuffer * m_Indices;
 public:
 	triangle() {
 		verticesInfo.resize(3);
@@ -37,4 +37,8 @@ public:
 	void update() ;
 
 	void destroy() ;
+
+	inline VkBuffer GetVertexBuffer() { return m_Vertices->GetVertexBuffer(); };
+	inline VkBuffer GetIndexBuffer() { return m_Indices->GetIndexBuffer(); };
+	inline std::vector<uint16_t> GetIndices() { return m_Indices->GetIndicies(); };
 };

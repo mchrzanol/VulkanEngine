@@ -82,7 +82,7 @@
       <AdditionalIncludeDirectories>src;external\GLFW\include;external\Vulkan\Include;external\glm;external\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -143,9 +143,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\BasicObjects\2D\2DObjects.h" />
     <ClInclude Include="src\BasicObjects\2D\Triangle.h" />
     <ClInclude Include="src\Core.h" />
     <ClInclude Include="src\Engine.h" />
+    <ClInclude Include="src\Input\Input.h" />
     <ClInclude Include="src\GlobalVariables.h" />
     <ClInclude Include="src\Libraries.h" />
     <ClInclude Include="src\Renderer\Buffers.h" />
