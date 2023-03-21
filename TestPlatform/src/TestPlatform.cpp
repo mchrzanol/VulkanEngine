@@ -27,24 +27,46 @@ void TestPlatform::Init() {
 	initCommandPool = new CommandPool(initVulkan, initUniform, window, MAX_FRAMES_IN_FLIGHT);
 	initCommandPool->createCommandPool();
 
-	triangle* object1 = new triangle();
+	//std::unique_ptr<triangle> object1 = std::make_unique<triangle>();
 	glm::vec3 color[3] = { {1.0f, 0.0f, 0.0f} , {0.0f, 1.0f, 0.0f} ,{0.0f, 0.0f, 1.0f} };
-	glm::vec3 testVertex[3] = { {-0.5f, -0.433013f, 0.0f} , {0.5f, -0.433013f, 0.0f}, {0.5f, 0.433013f, 0.0f} };
-
+	glm::vec3 testVertex[3] = { {0.5f, -0.433013f, 0.0f} , {-0.5f, 0.433013f, 0.0f}, {-0.5f, -0.433013f, 0.0f} };
 	//object1->create(testVertex, color);
-	object1->create(glm::vec3(0.0, 0.0, 0.0), 1.f, color);
+	//object1->create(glm::vec3(0.0, 0.5, 0.0), 0.5f, color);
+	//objects.PushTriangleBack(object1);
 
+	//object1 = std::make_unique<triangle>();
+	//object1->create(glm::vec3(0.0, -0.5, 0.0), 0.5f, color);
+	//objects.PushTriangleBack(object1);
 
-	objects.m_triangles.push_back(*object1);
+	std::srand(time(NULL));
+	std::unique_ptr<triangle> object1;
+	int minus[2] = { 1, 1 };
+	for (int i = 0; i < 10000000; i++)
+	{
+		if (i % 100000 == 0) {
+			for (int& a : minus)
+			{
+				switch (rand() % 2+1)
+				{
+					case 1:
+					{
+						a = 1;
+						break;
+					}
+					case 2:
+					{
+						a = -1;
+						break;
+					}
+				}
+			}
+			object1 = std::make_unique<triangle>();
+			std::cout << "Object no: " << objects.GetTriangleSize() << std::endl;
+			object1->create(glm::vec3(((float)rand() / (RAND_MAX))*(rand()%2+1)*minus[0], ((float)rand() / (RAND_MAX)) * (rand() % 2 + 1) * minus[1], 0.0), 0.5f, color);
+			objects.PushTriangleBack(object1);
 
-
-
-
-
-
-
-
-
+		}
+	}
 
 
 
@@ -57,12 +79,12 @@ void TestPlatform::Init() {
 
 
 
-	initVertices->createVertexBuffer(vertices);
+	//initVertices->createVertexBuffer(vertices);
 
 	 std::vector<uint16_t> indices = {
 0, 1, 2, 2, 3, 0
 	};
-	initIndices->createIndexBuffer(indices);
+	//initIndices->createIndexBuffer(indices);
 
 	initUniform->createUnifromBuffer();
 	
@@ -77,7 +99,7 @@ void TestPlatform::mainLoop() {
 	while (!window->isWindowClosed()) {
 		//std::cout << window->m_Data.Height << " " << window->m_Data.Width << std::endl;
 		window->PoolEvents();
-		initCommandPool->drawFrame(objects.m_triangles[0].GetVertexBuffer(), objects.m_triangles[0].GetIndexBuffer(), objects.m_triangles[0].GetIndices());
+		initCommandPool->drawFrame(objects);
 
 		if (initInput->keyState[KEY_ESCAPE].press == true) {
 			break;
@@ -91,13 +113,15 @@ void TestPlatform::mainLoop() {
 
 void TestPlatform::CleanUp() {
 
+	objects.destroy();
+
 	initVulkan->cleanupSwapChain();
 
 	initUniform->cleanup();
 
-	initIndices->cleanup();
+	//initIndices->cleanup();
 
-	initVertices->cleanup();
+	//initVertices->cleanup();
 
 	initCommandPool->cleanup();
 

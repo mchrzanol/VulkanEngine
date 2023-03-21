@@ -30,7 +30,7 @@ void CommandPool::createCommandBuffers() {
 }
 
 void CommandPool::recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex, VkRenderPass& renderPass,
-    std::vector<VkFramebuffer>& swapChainFramebuffers, VkPipeline& graphicsPipeline, VkBuffer vertexBuffer, VkBuffer indexBuffer, std::vector<uint16_t> indices) {
+    std::vector<VkFramebuffer>& swapChainFramebuffers, VkPipeline& graphicsPipeline, Objects2D & objects) {
     VkCommandBufferBeginInfo beginInfo{};
     beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
     beginInfo.flags = VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT;//from comment(it works without it but idk i've just added it)
@@ -71,8 +71,8 @@ void CommandPool::recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t im
     vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, graphicsPipeline);
 
     //for(auto triangle :triangles)
-      drawObject(commandBuffer, vertexBuffer, indexBuffer, indices);
-   // objects.draw2DObjects(commandBuffer, initVulkan->GetPipelineLayout(), initUniform->GetDescriptorSets()[currentFrame]);
+      //drawObject(commandBuffer, objects.m_triangles[0].get()->GetVertexBuffer(), objects.m_triangles[0].get()->GetIndexBuffer(), objects.m_triangles[0].get()->GetIndices());
+    objects.draw2DObjects(commandBuffer, initVulkan->GetPipelineLayout(), initUniform->GetDescriptorSets()[currentFrame]);
 
     vkCmdEndRenderPass(commandBuffer);
 
@@ -91,6 +91,7 @@ void CommandPool::drawObject(VkCommandBuffer commandBuffer, VkBuffer vertexBuffe
     vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, initVulkan->GetPipelineLayout(), 0, 1, &initUniform->GetDescriptorSets()[currentFrame], 0, nullptr);
 
     vkCmdDrawIndexed(commandBuffer, static_cast<uint32_t>(indices.size()), 1, 0, 0, 0);
+    //vkCmdDraw(commandBuffer, 3, 1, 0, 0);
 
 }
 
@@ -116,7 +117,7 @@ void CommandPool::createSyncObjects() {
     }
 }
 
-void CommandPool::drawFrame(VkBuffer vertexBuffer, VkBuffer indexBuffer, std::vector<uint16_t> indices) {
+void CommandPool::drawFrame(Objects2D& objects) {
     vkWaitForFences(initVulkan->GetDevice(), 1, &inFlightFences[currentFrame], VK_TRUE, UINT64_MAX);
 
     uint32_t imageIndex;
@@ -139,7 +140,7 @@ void CommandPool::drawFrame(VkBuffer vertexBuffer, VkBuffer indexBuffer, std::ve
 
 
     recordCommandBuffer(commandBuffers[currentFrame], imageIndex, initVulkan->GetRenderPass(), initVulkan->GetSwapChainFrameBuffers(), 
-        initVulkan->GetGraphicsPipeline(), vertexBuffer, indexBuffer, indices);
+        initVulkan->GetGraphicsPipeline(), objects);
 
 
     VkSubmitInfo submitInfo{};

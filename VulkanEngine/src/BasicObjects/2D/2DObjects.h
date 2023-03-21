@@ -31,19 +31,35 @@ private:
 
 	}
 
+	std::vector<std::unique_ptr<triangle>> m_triangles;
 public:
-	std::vector<triangle> m_triangles;
+	~Objects2D() {
+		m_triangles.clear();
+	}
+	//line
+	//circle
+	//rectanngle
 
 	void PushTriangleBack() {
-		m_triangles.push_back(triangle());
+		m_triangles.push_back(std::make_unique<triangle>());
+	}
+
+	void PushTriangleBack(std::unique_ptr<triangle> & object) {
+		m_triangles.push_back(std::move(object));
 	}
 
 	void draw2DObjects(VkCommandBuffer & commandBuffer, VkPipelineLayout pipelineLayout, VkDescriptorSet& descriptorSet) {
-		for (auto triangle : m_triangles)
-			drawObject(commandBuffer, triangle.GetVertexBuffer(), triangle.GetIndexBuffer(),
-				triangle.GetIndices(), pipelineLayout, descriptorSet);
+		for (auto it = m_triangles.begin(); it != m_triangles.end(); it++)
+			drawObject(commandBuffer, it._Ptr->get()->GetVertexBuffer(), it._Ptr->get()->GetIndexBuffer(),
+				it._Ptr->get()->GetIndices(), pipelineLayout, descriptorSet);
 
 	}
+
+	void destroy() {
+		m_triangles.clear();
+	}
+
+	inline int GetTriangleSize() { return m_triangles.size(); };
 		//cos takiego jak przy registerclass
 
 };

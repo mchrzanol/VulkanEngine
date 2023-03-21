@@ -15,10 +15,8 @@ void triangle::create(glm::vec3 origin, float size, glm::vec3 color[3]) {
 	//verticesInfo[1] = { glm::vec3(0.5, 0.433013, 0.0f), color[1] };//right
 	std::cout << "verticesInfo[2]: " << verticesInfo[2].pos.x << " " << verticesInfo[2].pos.y << " " << verticesInfo[2].pos.z << std::endl;
 
-	m_Vertices = new VertexBuffer();
 	m_Vertices->createVertexBuffer(verticesInfo);
 
-	m_Indices = new IndexBuffer();
 	m_Indices->createIndexBuffer(Indices);
 }
 
@@ -32,9 +30,7 @@ void triangle::create(glm::vec3 vertices[3], glm::vec3 color[3]) {
 	verticesInfo[2] = { vertices[2], color[2]};
 	std::cout << "verticesInfo[2]: " << verticesInfo[2].pos.x << " " << verticesInfo[2].pos.y << " " << verticesInfo[2].pos.z << std::endl;
 
-	m_Vertices = new VertexBuffer();
 	m_Vertices->createVertexBuffer(verticesInfo);
 
-	m_Indices = new IndexBuffer();
 	m_Indices->createIndexBuffer(Indices);
 }

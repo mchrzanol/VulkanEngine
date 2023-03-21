@@ -31,12 +31,12 @@ public:
     void createCommandPool();
     void createCommandBuffers();
     void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex, VkRenderPass& renderPass,
-        std::vector<VkFramebuffer>& swapChainFramebuffers, VkPipeline& graphicsPipeline, VkBuffer vertexBuffer, VkBuffer indexBuffer, std::vector<uint16_t> indices);
+        std::vector<VkFramebuffer>& swapChainFramebuffers, VkPipeline& graphicsPipeline, Objects2D& objects);
     void createSyncObjects();
 
     void drawObject(VkCommandBuffer commandBuffer, VkBuffer vertexBuffer, VkBuffer indexBuffer, std::vector<uint16_t> indices);
 
-    void drawFrame(VkBuffer vertexBuffer, VkBuffer indexBuffer, std::vector<uint16_t> indices);
+    void drawFrame(Objects2D& objects);
 
     void cleanup();
 

@@ -20,7 +20,7 @@ void VertexBuffer::createVertexBuffer(std::vector<Vertex> & vertices) {
     vkFreeMemory(utils.GetDevice(), stagingBufferMemory, nullptr);
 }
 
-void VertexBuffer::cleanup() {
+VertexBuffer::~VertexBuffer() {
     vkDestroyBuffer(utils.GetDevice(), vertexBuffer, nullptr);
     vkFreeMemory(utils.GetDevice(), vertexBufferMemory, nullptr);
 }
@@ -47,7 +47,7 @@ void IndexBuffer::createIndexBuffer(std::vector<uint16_t> & indices) {
     vkFreeMemory(utils.GetDevice(), stagingBufferMemory, nullptr);
 }
 
-void IndexBuffer::cleanup() {
+IndexBuffer::~IndexBuffer() {
     vkDestroyBuffer(utils.GetDevice(), indexBuffer, nullptr);
     vkFreeMemory(utils.GetDevice(), indexBufferMemory, nullptr);
 }

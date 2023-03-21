@@ -40,9 +40,9 @@ private:
 
 
 public:
-    void createVertexBuffer(std::vector<Vertex> & vertices);
+    ~VertexBuffer();
 
-    void cleanup();
+    void createVertexBuffer(std::vector<Vertex> & vertices);
 
     VkBuffer GetVertexBuffer() { return vertexBuffer; };
 };
@@ -55,9 +55,9 @@ private:
     std::vector<uint16_t> m_indices;
 
 public:
-    void createIndexBuffer(std::vector<uint16_t> & indices);
+    ~IndexBuffer();
 
-    void cleanup();
+    void createIndexBuffer(std::vector<uint16_t> & indices);
 
     VkBuffer GetIndexBuffer() { return indexBuffer; };
     std::vector<uint16_t> GetIndicies() { return m_indices; };
