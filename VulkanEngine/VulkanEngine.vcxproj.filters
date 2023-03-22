@@ -14,6 +14,7 @@
     <ClCompile Include="src\VulkanClass\SwapChain.cpp" />
     <ClCompile Include="src\logging\logging.cpp" />
     <ClCompile Include="src\window\window.cpp" />
+    <ClCompile Include="src\BasicObjects\2D\Rectangle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BasicObjects\2D\Triangle.h" />
@@ -30,5 +31,6 @@
     <ClInclude Include="src\logging\logging.h" />
     <ClInclude Include="src\window\window.h" />
     <ClInclude Include="src\BasicObjects\2D\2DObjects.h" />
+    <ClInclude Include="src\BasicObjects\2D\Rectangle.h" />
   </ItemGroup>
 </Project>

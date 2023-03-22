@@ -28,10 +28,10 @@ void TestPlatform::Init() {
 	initCommandPool->createCommandPool();
 
 	//std::unique_ptr<triangle> object1 = std::make_unique<triangle>();
-	glm::vec3 color[3] = { {1.0f, 0.0f, 0.0f} , {0.0f, 1.0f, 0.0f} ,{0.0f, 0.0f, 1.0f} };
-	glm::vec3 testVertex[3] = { {0.5f, -0.433013f, 0.0f} , {-0.5f, 0.433013f, 0.0f}, {-0.5f, -0.433013f, 0.0f} };
+	glm::vec3 color[3];//= { {1.0f, 0.0f, 0.0f} , {0.0f, 1.0f, 0.0f} ,{0.0f, 0.0f, 1.0f} };
+	glm::vec3 testVertex[3] = { {-0.5f, -0.5f, 0.0f} , {0.5f, 0.5, 0.0f}, {0.5f, -0.5f, 0.0f} };
 	//object1->create(testVertex, color);
-	//object1->create(glm::vec3(0.0, 0.5, 0.0), 0.5f, color);
+	//object1->create(glm::vec3(0.0, 0.0, 10), 1.f, color);
 	//objects.PushTriangleBack(object1);
 
 	//object1 = std::make_unique<triangle>();
@@ -61,7 +61,11 @@ void TestPlatform::Init() {
 				}
 			}
 			object1 = std::make_unique<triangle>();
-			std::cout << "Object no: " << objects.GetTriangleSize() << std::endl;
+			std::cout << "Object no: " << objects.GetTriangleSize()+1 << std::endl;
+			color[0] = { (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX) };
+			color[1] = { (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX) , (float)rand() / (RAND_MAX) };
+			color[2] = { (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX) , (float)rand() / (RAND_MAX) };
+
 			object1->create(glm::vec3(((float)rand() / (RAND_MAX))*(rand()%2+1)*minus[0], ((float)rand() / (RAND_MAX)) * (rand() % 2 + 1) * minus[1], 0.0), 0.5f, color);
 			objects.PushTriangleBack(object1);
 
