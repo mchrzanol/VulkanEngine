@@ -15,8 +15,6 @@ private:
 	windowClass* window;
 	VulkanClass* initVulkan;
 	UniformBuffer* initUniform;
-	VertexBuffer* initVertices;
-	IndexBuffer* initIndices;
 	CommandPool* initCommandPool;
 	Input* initInput;
 

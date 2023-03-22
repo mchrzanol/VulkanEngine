@@ -29,12 +29,17 @@ public:
 
 	void UpdateWindowSize();
 
+	void setWindowFPS();
+
 	void destroyWindow();
 
 	bool isWindowClosed() { return glfwWindowShouldClose(m_window); };
 	void PoolEvents() { glfwPollEvents(); };
 private:
 	Input* input;
+
+	int Frames = 0;
+	float lastTime = 0;
 
 	static void framebufferResizeCallback(GLFWwindow* window, int width, int height);
 };
