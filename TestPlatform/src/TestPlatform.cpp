@@ -18,6 +18,7 @@ void TestPlatform::Init() {
 
 	initUniform = new UniformBuffer(MAX_FRAMES_IN_FLIGHT);
 
+	initUniform->createUniform(0, sizeof(UniformBufferObject), VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, TypeOfUniform::GlobalUniform);
 
 	initVulkan = new VulkanClass(window->m_window, initUniform);
 	initVulkan->init();
@@ -102,9 +103,8 @@ void TestPlatform::Init() {
 		}
 
 	}
-
-	initUniform->createUnifromBuffer();
 	
+	initUniform->createUniformBuffers();
 	initUniform->createDescriptorPool();
 	initUniform->createDescriptorSets();
 

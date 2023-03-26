@@ -47,11 +47,11 @@ public:
         createImageViews();
 
         createRenderPass();
-        uniformBuffer->createDecriptorSetLayout(device);
+        utils.BindDevice(device);
+        uniformBuffer->createDecriptorSetsLayout();
         createGraphicsPipeline();
         createFramebuffers();
 
-        utils.BindDevice(device);
         utils.BindGraphicsQueue(graphicsQueue);
         utils.BindPhysicalDevice(physicalDevice);
 	}
