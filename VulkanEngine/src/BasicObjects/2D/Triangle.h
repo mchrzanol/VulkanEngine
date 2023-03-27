@@ -4,17 +4,6 @@
 
 extern GlobalUtl utils;
 
-struct TriangleInfo {
-	glm::vec3 orientation;//later
-	
-	//equilater/
-	glm::vec3 origin;
-	float size;
-
-	//other
-	glm::vec3 customVertex[3];
-};
-
 class ENGINE_API triangle {
 private:
 	glm::vec3 origin;
@@ -38,8 +27,8 @@ public:
 		m_Vertices = std::make_unique<VertexBuffer>();
 		m_Indices = std::make_unique<IndexBuffer>();
 	}
-	void create(glm::vec3 origin, float size, glm::vec3 color[3]);
-	void create(glm::vec3 vertices[3], glm::vec3 color[3]);
+	void create(glm::vec3 origin, float size, glm::vec3 color[3]);//glm::vec3 orientation;
+	void create(glm::vec3 vertices[3], glm::vec3 color[3]);//glm::vec3 orientation;
 
 	void update() ;
 

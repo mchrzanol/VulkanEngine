@@ -20,7 +20,7 @@ enum class TypeOfUniform {
 };
 
 struct BindingData {
-    size_t offset;
+    size_t sizeofData;
     VkDescriptorType DescriptorType;
 };
 
@@ -69,9 +69,16 @@ public:
 	void createDecriptorSetsLayout();
 
     void createUniformBuffers();
-    void updateUniformBuffer(uint32_t currentImage, VkExtent2D swapChainExtent);
     void createDescriptorPool();
     void createDescriptorSets();
+
+    template<class T>
+    void updateUniformBuffer(unsigned int binding, TypeOfUniform UniformType, T& data, uint32_t currentImage) {
+
+        // memcpy(uniformBuffersMapped[0][currentImage], &data, sizeofObject);// BindingData[0][0].sizeofData);
+
+        memcpy(uniformBuffersMapped[static_cast<int>(UniformType)][binding * (currentImage + 1)], &data, BindingData[static_cast<int>(UniformType)][binding].sizeofData);
+    }
 
     void cleanup();
 

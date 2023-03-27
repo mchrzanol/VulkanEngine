@@ -40,7 +40,9 @@ public:
 
     void cleanup();
 
-    VkCommandPool GetCommandPool() { return commandPool; };
+    inline VkCommandPool GetCommandPool() { return commandPool; };
+
+    inline uint32_t GetCurrentFrame() { return currentFrame; };
 
 
 };

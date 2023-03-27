@@ -70,8 +70,6 @@ void CommandPool::recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t im
 
     vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, graphicsPipeline);
 
-    //for(auto triangle :triangles)
-      //drawObject(commandBuffer, objects.m_triangles[0].get()->GetVertexBuffer(), objects.m_triangles[0].get()->GetIndexBuffer(), objects.m_triangles[0].get()->GetIndices());
     objects.draw2DObjects(commandBuffer, initVulkan->GetPipelineLayout(), initUniform->GetDescriptorSets()[currentFrame]);
 
     vkCmdEndRenderPass(commandBuffer);
@@ -131,8 +129,6 @@ void CommandPool::drawFrame(Objects2D& objects) {
     else if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
         throw std::runtime_error("failed to acquire swap chain image!");
     }
-
-    initUniform->updateUniformBuffer(currentFrame, initVulkan->GetSwapChainExtent());
 
     vkResetFences(initVulkan->GetDevice(), 1, &inFlightFences[currentFrame]);
 

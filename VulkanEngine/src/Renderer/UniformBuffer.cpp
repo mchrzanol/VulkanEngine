@@ -21,44 +21,47 @@ void UniformBuffer::createDecriptorSetsLayout() {
     }
 }
 void UniformBuffer::createUniform(unsigned int binding, size_t sizeofBindingValue, VkDescriptorType DescriptorType, TypeOfUniform UniformType) {
-    unsigned int index = static_cast<int>(UniformType);
+    unsigned int set = static_cast<int>(UniformType);
 
-    bindingQueue[index].push_back(binding);
+    bindingQueue[set].push_back(binding);
 
-    UniformsCount[index]++;
+    UniformsCount[set]++;
 
-    BindingData[index][binding] = { sizeofBindingValue, DescriptorType };
+    BindingData[set][binding] = { sizeofBindingValue, DescriptorType };
 
-    uboLayoutBinding[index].resize(UniformsCount[index]);
-    uboLayoutBinding[index][UniformsCount[index] -1].binding = binding;
-    uboLayoutBinding[index][UniformsCount[index] - 1].descriptorType = DescriptorType;
-    uboLayoutBinding[index][UniformsCount[index] - 1].descriptorCount = 1;
+    uboLayoutBinding[set].resize(UniformsCount[set]);
+    uboLayoutBinding[set][UniformsCount[set] -1].binding = binding;
+    uboLayoutBinding[set][UniformsCount[set] - 1].descriptorType = DescriptorType;
+    uboLayoutBinding[set][UniformsCount[set] - 1].descriptorCount = 1;
 
-    uboLayoutBinding[index][UniformsCount[index] - 1].stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
+    uboLayoutBinding[set][UniformsCount[set] - 1].stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
 }
 
 void UniformBuffer::createUniformBuffers() {
     for (size_t frame = 1; frame < MAX_FRAMES_IN_FLIGHT + 1; frame++) {
-        for (size_t index = 0; index < 2; index++) {
-            for (auto& bind : bindingQueue[index]) {
-                uniformBuffers[index].resize(UniformsCount[index] * frame);
-                uniformBuffersMemory[index].resize(UniformsCount[index] * frame);
-                uniformBuffersMapped[index].resize(UniformsCount[index] * frame);
+        for (size_t set = 0; set < 2; set++) {
+            uniformBuffers[set].resize(UniformsCount[set] * frame);
+            uniformBuffersMemory[set].resize(UniformsCount[set] * frame);
+            uniformBuffersMapped[set].resize(UniformsCount[set] * frame);
 
-                VkDeviceSize bufferSize;
-                for (size_t i = (UniformsCount[index] - 1) * frame; i < UniformsCount[index] * frame; i++) {
-                    bufferSize = BindingData[index][bind].offset;
+            VkDeviceSize bufferSize;
+            VkDescriptorPoolSize poolSize{};
+            for (int bind = 0; bind < bindingQueue[set].size();bind++) {
+                size_t i = (frame - 1) * UniformsCount[set];
 
-                    createBuffer(bufferSize, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, uniformBuffers[index][i], uniformBuffersMemory[index][i], utils.GetDevice(), utils.GetPhyscicalDevice());
+                bufferSize = BindingData[set][bindingQueue[set][bind]].sizeofData;
 
-                    vkMapMemory(utils.GetDevice(), uniformBuffersMemory[index][i], 0, bufferSize, 0, &uniformBuffersMapped[index][i]);
-                }
+                createBuffer(bufferSize, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, uniformBuffers[set][i], uniformBuffersMemory[set][i], utils.GetDevice(), utils.GetPhyscicalDevice());
 
-                VkDescriptorPoolSize poolSize{};
-                poolSize.type = BindingData[index][bind].DescriptorType;
+                vkMapMemory(utils.GetDevice(), uniformBuffersMemory[set][i], 0, bufferSize, 0, &uniformBuffersMapped[set][i]);
+
+                poolSize.type = BindingData[set][bindingQueue[set][bind]].DescriptorType;
                 poolSize.descriptorCount = static_cast<uint32_t>(MAX_FRAMES_IN_FLIGHT);
 
-                this->poolSize[index].push_back(poolSize);
+                this->poolSize[set].push_back(poolSize);
+
+                i++;
+
             }
         }
     }
@@ -91,56 +94,36 @@ void UniformBuffer::createDescriptorPool() {
     }
 }
 
-void UniformBuffer::updateUniformBuffer(uint32_t currentImage, VkExtent2D swapChainExtent) {
-    static auto startTime = std::chrono::high_resolution_clock::now();
-
-    auto currentTime = std::chrono::high_resolution_clock::now();
-    float time = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - startTime).count();
-
-    UniformBufferObject ubo{};
-    //ubo.model = glm::rotate(glm::mat4(1.0f), time * glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-    ubo.model = glm::mat4(1.f);
-
-    ubo.view = glm::lookAt(glm::vec3(0.0f, 0.0f, 1.f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    //ubo.view = glm::mat4(1.f);
-
-    ubo.proj = glm::perspective(glm::radians(90.0f), (float)swapChainExtent.width / (float)swapChainExtent.height, 0.1f, 10.0f);
-    ubo.proj[1][1] *= -1;
-   // ubo.proj = glm::mat4(1.f);
-
-    memcpy(uniformBuffersMapped[0][currentImage], &ubo, sizeof(ubo));
-}
-
 void UniformBuffer::createDescriptorSets() {
 
-    for (size_t index = 0; index <2;index++)
+    for (size_t set = 0; set <2;set++)
     {
-        std::vector<VkDescriptorSetLayout> layouts(MAX_FRAMES_IN_FLIGHT, descriptorSetLayouts[index]);
+        std::vector<VkDescriptorSetLayout> layouts(MAX_FRAMES_IN_FLIGHT, descriptorSetLayouts[set]);
         VkDescriptorSetAllocateInfo allocInfo{};
         allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
-        allocInfo.descriptorPool = descriptorPool[index];
+        allocInfo.descriptorPool = descriptorPool[set];
         allocInfo.descriptorSetCount = static_cast<uint32_t>(MAX_FRAMES_IN_FLIGHT);
         allocInfo.pSetLayouts = layouts.data();
 
-        descriptorSets[index].resize(MAX_FRAMES_IN_FLIGHT);
-        if (vkAllocateDescriptorSets(utils.GetDevice(), &allocInfo, descriptorSets[index].data()) != VK_SUCCESS) {
+        descriptorSets[set].resize(MAX_FRAMES_IN_FLIGHT);
+        if (vkAllocateDescriptorSets(utils.GetDevice(), &allocInfo, descriptorSets[set].data()) != VK_SUCCESS) {
             throw std::runtime_error("failed to allocate descriptor sets!");
         }
 
-        for (size_t i = 1; i < MAX_FRAMES_IN_FLIGHT +1; i++) {//zrob jakis offset do tego max in flight bo jest 
-            std::vector< VkWriteDescriptorSet> m_descriptorWrite(UniformsCount[index]);
-            for (size_t bind = 0; bind < UniformsCount[index]; bind++) {
+        for (size_t i = 1; i < MAX_FRAMES_IN_FLIGHT +1; i++) {
+            std::vector< VkWriteDescriptorSet> m_descriptorWrite(UniformsCount[set]);
+            for (size_t bind = 0; bind < UniformsCount[set]; bind++) {
                 VkDescriptorBufferInfo bufferInfo{};
-                bufferInfo.buffer = uniformBuffers[index][bind + bind*i];
+                bufferInfo.buffer = uniformBuffers[set][bind + bind*i];
                 bufferInfo.offset = 0;
-                bufferInfo.range = BindingData[index][bindingQueue[index][bind]].offset;
+                bufferInfo.range = BindingData[set][bindingQueue[set][bind]].sizeofData;
 
                 VkWriteDescriptorSet descriptorWrite{};
                 descriptorWrite.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-                descriptorWrite.dstSet = descriptorSets[index][i-1];
-                descriptorWrite.dstBinding = bindingQueue[index][bind];
+                descriptorWrite.dstSet = descriptorSets[set][i-1];
+                descriptorWrite.dstBinding = bindingQueue[set][bind];
                 descriptorWrite.dstArrayElement = 0;
-                descriptorWrite.descriptorType = BindingData[index][bindingQueue[index][bind]].DescriptorType;
+                descriptorWrite.descriptorType = BindingData[set][bindingQueue[set][bind]].DescriptorType;
                 descriptorWrite.descriptorCount = 1;
                 descriptorWrite.pBufferInfo = &bufferInfo;
                 descriptorWrite.pImageInfo = nullptr; // Optional
@@ -151,23 +134,22 @@ void UniformBuffer::createDescriptorSets() {
 
             }
 
-            vkUpdateDescriptorSets(utils.GetDevice(), UniformsCount[index], m_descriptorWrite.data(), 0, nullptr);//tutaj mo¿esz daæ array tych descriptorów a pod countem iloœc bindów
+            vkUpdateDescriptorSets(utils.GetDevice(), UniformsCount[set], m_descriptorWrite.data(), 0, nullptr);
         }
     }
 
 }
 
 void UniformBuffer::cleanup() {
-    for (int index = 0; index < 2; index++) {
-        for (size_t i = 0; i < uniformBuffers[index].size(); i++) {
-            vkDestroyBuffer(utils.GetDevice(), uniformBuffers[index][i], nullptr);
-            vkFreeMemory(utils.GetDevice(), uniformBuffersMemory[index][i], nullptr);
-           // vkFreeMemory(utils.GetDevice(), uboLayoutBinding[index][i], nullptr);
+    for (int set = 0; set < 2; set++) {
+        for (size_t i = 0; i < uniformBuffers[set].size(); i++) {
+            vkDestroyBuffer(utils.GetDevice(), uniformBuffers[set][i], nullptr);
+            vkFreeMemory(utils.GetDevice(), uniformBuffersMemory[set][i], nullptr);
         }
 
-        vkDestroyDescriptorPool(utils.GetDevice(), descriptorPool[index], nullptr);
+        vkDestroyDescriptorPool(utils.GetDevice(), descriptorPool[set], nullptr);
 
-        vkDestroyDescriptorSetLayout(utils.GetDevice(), descriptorSetLayouts[index], nullptr);
+        vkDestroyDescriptorSetLayout(utils.GetDevice(), descriptorSetLayouts[set], nullptr);
     }
 
 }

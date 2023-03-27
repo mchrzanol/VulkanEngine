@@ -26,29 +26,10 @@ void TestPlatform::Init() {
 	initCommandPool = new CommandPool(initVulkan, initUniform, window, MAX_FRAMES_IN_FLIGHT);
 	initCommandPool->createCommandPool();
 
-	//std::unique_ptr<triangle> object1 = std::make_unique<triangle>();
 	glm::vec3 color[3] = { {1.0f, 0.0f, 0.0f} , {0.0f, 1.0f, 0.0f} ,{0.0f, 0.0f, 1.0f} };
 	glm::vec3 color2[4] = { {1.0f, 0.0f, 0.0f} , {0.0f, 1.0f, 0.0f} ,{0.0f, 0.0f, 1.0f}, {0,0,0} };
 	glm::vec3 testVertex[4] = { {-0.5f, -0.5f, 0.0f} , {0.5f, -0.5, 0.0f}, {0.5f, 0.5f, 0.0f}, {-0.5f, 0.5f, 0.f} };
 
-	//std::unique_ptr<rectangle> rect = std::make_unique<rectangle>();
-
-	//rect->create(testVertex, color2);
-	//objects.PushBack(rect);
-	//rect = std::make_unique<rectangle>();
-	//rect->create(glm::vec3(0.75, 0, 0), 1.f, 0.5f, color2);
-	//objects.PushBack(rect);
-
-
-	//object1->create(testVertex, color);
-	//object1->create(glm::vec3(0.0, 0.0, 10), 1.f, color);
-	//objects.PushTriangleBack(object1);
-
-	//object1 = std::make_unique<triangle>();
-	//object1->create(glm::vec3(0.0, -0.5, 0.0), 0.5f, color);
-	//objects.PushTriangleBack(object1);
-
-	//objects.PushBack<VertexBuffer>();
 
 	std::srand(time(NULL));
 	std::unique_ptr<triangle> tri;
@@ -117,6 +98,24 @@ void TestPlatform::mainLoop() {
 		//std::cout << window->m_Data.Height << " " << window->m_Data.Width << std::endl;
 		window->PoolEvents();
 		window->setWindowFPS();
+
+		static auto startTime = std::chrono::high_resolution_clock::now();
+
+		auto currentTime = std::chrono::high_resolution_clock::now();
+		float time = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - startTime).count();
+
+		UniformBufferObject ubo{};
+		//ubo.model = glm::rotate(glm::mat4(1.0f), time * glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+		ubo.model = glm::mat4(1.f);
+
+		ubo.view = glm::lookAt(glm::vec3(0.0f, 0.0f, 1.f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		//ubo.view = glm::mat4(1.f);
+
+		ubo.proj = glm::perspective(glm::radians(90.0f), (float)initVulkan->GetSwapChainExtent().width / (float)initVulkan->GetSwapChainExtent().height, 0.1f, 10.0f);
+		ubo.proj[1][1] *= -1;
+
+		initUniform->updateUniformBuffer(0, TypeOfUniform::GlobalUniform, ubo, initCommandPool->GetCurrentFrame());//maybe it doesn't work for arrays(ckeck it) read for dynamicUniforms
+
 		initCommandPool->drawFrame(objects);
 
 		if (initInput->keyState[KEY_ESCAPE].press == true) {
