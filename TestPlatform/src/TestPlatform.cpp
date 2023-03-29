@@ -16,9 +16,12 @@ void TestPlatform::Init() {
 	initInput = new Input(window->m_window);
 	window->addUserPointer(initInput);
 
+
 	initUniform = new UniformBuffer(MAX_FRAMES_IN_FLIGHT);
 
+
 	initUniform->createUniform(0, sizeof(UniformBufferObject), VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, TypeOfUniform::GlobalUniform);
+	//initUniform->createUniform(0, sizeof(glm::mat4), VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC, TypeOfUniform::LocalUniform);
 
 	initVulkan = new VulkanClass(window->m_window, initUniform);
 	initVulkan->init();
@@ -26,14 +29,15 @@ void TestPlatform::Init() {
 	initCommandPool = new CommandPool(initVulkan, initUniform, window, MAX_FRAMES_IN_FLIGHT);
 	initCommandPool->createCommandPool();
 
+
 	glm::vec3 color[3] = { {1.0f, 0.0f, 0.0f} , {0.0f, 1.0f, 0.0f} ,{0.0f, 0.0f, 1.0f} };
 	glm::vec3 color2[4] = { {1.0f, 0.0f, 0.0f} , {0.0f, 1.0f, 0.0f} ,{0.0f, 0.0f, 1.0f}, {0,0,0} };
 	glm::vec3 testVertex[4] = { {-0.5f, -0.5f, 0.0f} , {0.5f, -0.5, 0.0f}, {0.5f, 0.5f, 0.0f}, {-0.5f, 0.5f, 0.f} };
 
 
 	std::srand(time(NULL));
-	std::unique_ptr<triangle> tri;
-	std::unique_ptr<rectangle> rect;
+	triangle * tri;
+	rectangle* rect;
 	int minus[2] = { 1, 1 };
 	bool tak = true;
 	for (int i = 0; i < 5000000; i++)
@@ -56,7 +60,7 @@ void TestPlatform::Init() {
 				}
 			}
 			if (tak == true) {
-				tri = std::make_unique<triangle>();
+				tri = new triangle();
 				std::cout << "Object no: " << objects.GetTrianglesSize() + 1 << std::endl;
 				color[0] = { (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX) };
 				color[1] = { (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX) , (float)rand() / (RAND_MAX) };
@@ -66,9 +70,12 @@ void TestPlatform::Init() {
 				objects.PushBack(tri);
 
 				tak = false;
+
+				delete tri;
+				tri = nullptr;
 			}
 			else {
-				rect = std::make_unique<rectangle>();
+				rect = new rectangle();
 				std::cout << "Object no: " << objects.GetRectanglesSize() + 1 << std::endl;
 				color2[0] = { (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX) };
 				color2[1] = { (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX) , (float)rand() / (RAND_MAX) };
@@ -80,6 +87,9 @@ void TestPlatform::Init() {
 				objects.PushBack(rect);
 
 				tak = true;
+
+				delete rect;
+				rect = nullptr;
 			}
 		}
 
@@ -93,28 +103,32 @@ void TestPlatform::Init() {
 	initCommandPool->createSyncObjects();
 }
 
+void TestPlatform::OnUpdate() {
+	static auto startTime = std::chrono::high_resolution_clock::now();
+
+	auto currentTime = std::chrono::high_resolution_clock::now();
+	float time = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - startTime).count();
+
+	UniformBufferObject ubo{};
+	//ubo.model = glm::rotate(glm::mat4(1.0f), time * glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	ubo.model = glm::mat4(1.f);
+
+	ubo.view = glm::lookAt(glm::vec3(0.0f, 0.0f, 1.f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	//ubo.view = glm::mat4(1.f);
+
+	ubo.proj = glm::perspective(glm::radians(90.0f), (float)initVulkan->GetSwapChainExtent().width / (float)initVulkan->GetSwapChainExtent().height, 0.1f, 10.0f);
+	ubo.proj[1][1] *= -1;
+
+	initUniform->updateUniformBuffer(0, TypeOfUniform::GlobalUniform, ubo, initCommandPool->GetCurrentFrame());//maybe it doesn't work for arrays(ckeck it) read for dynamicUniforms
+}
+
 void TestPlatform::mainLoop() {
 	while (!window->isWindowClosed()) {
 		//std::cout << window->m_Data.Height << " " << window->m_Data.Width << std::endl;
 		window->PoolEvents();
 		window->setWindowFPS();
 
-		static auto startTime = std::chrono::high_resolution_clock::now();
-
-		auto currentTime = std::chrono::high_resolution_clock::now();
-		float time = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - startTime).count();
-
-		UniformBufferObject ubo{};
-		//ubo.model = glm::rotate(glm::mat4(1.0f), time * glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-		ubo.model = glm::mat4(1.f);
-
-		ubo.view = glm::lookAt(glm::vec3(0.0f, 0.0f, 1.f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		//ubo.view = glm::mat4(1.f);
-
-		ubo.proj = glm::perspective(glm::radians(90.0f), (float)initVulkan->GetSwapChainExtent().width / (float)initVulkan->GetSwapChainExtent().height, 0.1f, 10.0f);
-		ubo.proj[1][1] *= -1;
-
-		initUniform->updateUniformBuffer(0, TypeOfUniform::GlobalUniform, ubo, initCommandPool->GetCurrentFrame());//maybe it doesn't work for arrays(ckeck it) read for dynamicUniforms
+		TestPlatform::OnUpdate();
 
 		initCommandPool->drawFrame(objects);
 
@@ -135,10 +149,6 @@ void TestPlatform::CleanUp() {
 	initVulkan->cleanupSwapChain();
 
 	initUniform->cleanup();
-
-	//initIndices->cleanup();
-
-	//initVertices->cleanup();
 
 	initCommandPool->cleanup();
 

@@ -7,7 +7,9 @@ protected:
 	VkDevice device;
 	VkCommandPool commandPool;
 	VkQueue graphicsQueue;
-	VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;;
+	VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
+
+	uint32_t MaximumObjectsOnFrame;
 
 public:
 	void BindDevice(VkDevice  device) { this->device = device; };
@@ -21,5 +23,8 @@ public:
 
 	void BindPhysicalDevice(VkPhysicalDevice physicalDevice) { this->physicalDevice = physicalDevice; };
 	VkPhysicalDevice GetPhyscicalDevice() { return physicalDevice; };
+
+	void GiveMaximumObjectsOnFrame(uint32_t physicalDevice) { this->MaximumObjectsOnFrame = MaximumObjectsOnFrame; };
+	uint32_t GetMaximumObjectsOnFrame() { return MaximumObjectsOnFrame; };
 
 };

@@ -18,7 +18,7 @@ private:
 	CommandPool* initCommandPool;
 	Input* initInput;
 
-	Objects2D objects;
+	Objects objects;
 
 
 	void Init();
@@ -30,6 +30,4 @@ private:
 	void mainLoop();
 
 	void CleanUp();
-
-	void Print();//Test
 };

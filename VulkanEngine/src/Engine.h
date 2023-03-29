@@ -8,4 +8,4 @@
 #include "Renderer/UniformBuffer.h"
 #include "Renderer/VertexIndexBuffer.h"
 #include "GlobalVariables.h"
-#include "BasicObjects/2D/2DObjects.h"
+#include "BasicObjects/Objects.h"

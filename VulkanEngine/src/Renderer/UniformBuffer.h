@@ -6,8 +6,6 @@
 
 extern GlobalUtl utils;
 
-extern enum VkDescriptorType;
-
 struct UniformBufferObject {
     alignas(16) glm::mat4 model;//alignas(16) = przesuniecie bajtowe(co 16 bajtów)
     alignas(16) glm::mat4 view;

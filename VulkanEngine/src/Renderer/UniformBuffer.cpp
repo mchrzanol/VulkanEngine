@@ -27,7 +27,10 @@ void UniformBuffer::createUniform(unsigned int binding, size_t sizeofBindingValu
 
     UniformsCount[set]++;
 
-    BindingData[set][binding] = { sizeofBindingValue, DescriptorType };
+    if(UniformType == TypeOfUniform::GlobalUniform)
+        BindingData[set][binding] = { sizeofBindingValue, DescriptorType };
+    else
+        BindingData[set][binding] = { sizeofBindingValue* 200000, DescriptorType};
 
     uboLayoutBinding[set].resize(UniformsCount[set]);
     uboLayoutBinding[set][UniformsCount[set] -1].binding = binding;

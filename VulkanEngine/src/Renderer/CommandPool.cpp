@@ -30,7 +30,7 @@ void CommandPool::createCommandBuffers() {
 }
 
 void CommandPool::recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex, VkRenderPass& renderPass,
-    std::vector<VkFramebuffer>& swapChainFramebuffers, VkPipeline& graphicsPipeline, Objects2D & objects) {
+    std::vector<VkFramebuffer>& swapChainFramebuffers, VkPipeline& graphicsPipeline, Objects & objects) {
     VkCommandBufferBeginInfo beginInfo{};
     beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
     beginInfo.flags = VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT;//from comment(it works without it but idk i've just added it)
@@ -115,7 +115,7 @@ void CommandPool::createSyncObjects() {
     }
 }
 
-void CommandPool::drawFrame(Objects2D& objects) {
+void CommandPool::drawFrame(Objects& objects) {
     vkWaitForFences(initVulkan->GetDevice(), 1, &inFlightFences[currentFrame], VK_TRUE, UINT64_MAX);
 
     uint32_t imageIndex;

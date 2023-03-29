@@ -15,10 +15,6 @@ void rectangle::create(glm::vec3 origin, float size, glm::vec3 color[4]) {
 
 	verticesInfo[3] = { glm::vec3(origin.x - size * 0.5, origin.y + size * 0.5, origin.z), color[3] };//left-top
 	std::cout << "verticesInfo[3]: " << verticesInfo[3].pos.x << " " << verticesInfo[3].pos.y << " " << verticesInfo[3].pos.z << std::endl;
-
-	m_Vertices->createVertexBuffer(verticesInfo);
-
-	m_Indices->createIndexBuffer(Indices);
 }
 
 void rectangle::create(glm::vec3 origin, float sizeHorrizontal, float sizeVertical, glm::vec3 color[4]) {
@@ -36,10 +32,6 @@ void rectangle::create(glm::vec3 origin, float sizeHorrizontal, float sizeVertic
 
 	verticesInfo[3] = { glm::vec3(origin.x - sizeHorrizontal * 0.5, origin.y + sizeVertical * 0.5, origin.z), color[3] };//left-top
 	std::cout << "verticesInfo[3]: " << verticesInfo[3].pos.x << " " << verticesInfo[3].pos.y << " " << verticesInfo[3].pos.z << std::endl;
-
-	m_Vertices->createVertexBuffer(verticesInfo);
-
-	m_Indices->createIndexBuffer(Indices);
 }
 
 void rectangle::create(glm::vec3 vertices[4], glm::vec3 color[4]) {
@@ -56,8 +48,4 @@ void rectangle::create(glm::vec3 vertices[4], glm::vec3 color[4]) {
 
 	verticesInfo[3] = { vertices[3], color[3] };
 	std::cout << "verticesInfo[3]: " << verticesInfo[3].pos.x << " " << verticesInfo[3].pos.y << " " << verticesInfo[3].pos.z << std::endl;
-
-	m_Vertices->createVertexBuffer(verticesInfo);
-
-	m_Indices->createIndexBuffer(Indices);
 }

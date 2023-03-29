@@ -30,7 +30,7 @@
     <ClInclude Include="src\VulkanClass\VulkanClass.h" />
     <ClInclude Include="src\logging\logging.h" />
     <ClInclude Include="src\window\window.h" />
-    <ClInclude Include="src\BasicObjects\2D\2DObjects.h" />
+    <ClInclude Include="src\BasicObjects\Objects.h" />
     <ClInclude Include="src\BasicObjects\2D\Rectangle.h" />
     <ClInclude Include="src\Renderer\DescriptorSetLayout.h" />
   </ItemGroup>
