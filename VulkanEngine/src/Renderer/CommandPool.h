@@ -12,7 +12,6 @@ extern GlobalUtl utils;
 class ENGINE_API CommandPool {
 private:
     VulkanClass* initVulkan;
-    UniformBuffer* initUniform;
     windowClass* initWindow;
 
 
@@ -26,15 +25,13 @@ private:
 
     int MAX_FRAMES_IN_FLIGHT;
 public:
-    CommandPool(VulkanClass*& initVulkan, UniformBuffer*& initUniform, windowClass*& initWindow, int MAX_FRAMES_IN_FLIGHT)
-        :initVulkan(initVulkan), initUniform(initUniform),initWindow(initWindow),MAX_FRAMES_IN_FLIGHT(MAX_FRAMES_IN_FLIGHT){};
+    CommandPool(VulkanClass*& initVulkan, windowClass*& initWindow, int MAX_FRAMES_IN_FLIGHT)
+        :initVulkan(initVulkan),initWindow(initWindow),MAX_FRAMES_IN_FLIGHT(MAX_FRAMES_IN_FLIGHT){};
     void createCommandPool();
     void createCommandBuffers();
     void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex, VkRenderPass& renderPass,
         std::vector<VkFramebuffer>& swapChainFramebuffers, VkPipeline& graphicsPipeline, Objects& objects);
     void createSyncObjects();
-
-    void drawObject(VkCommandBuffer commandBuffer, VkBuffer vertexBuffer, VkBuffer indexBuffer, std::vector<uint16_t> indices);
 
     void drawFrame(Objects& objects);
 

@@ -6,15 +6,9 @@
 
 extern GlobalUtl utils;
 
-struct UniformBufferObject {
-    alignas(16) glm::mat4 model;//alignas(16) = przesuniecie bajtowe(co 16 bajtów)
-    alignas(16) glm::mat4 view;
-    alignas(16) glm::mat4 proj;
-};
-
 enum class TypeOfUniform {
     GlobalUniform = 0,
-    LocalUniform = 1
+    EntityUniform = 1
 };
 
 struct BindingData {
@@ -22,11 +16,18 @@ struct BindingData {
     VkDescriptorType DescriptorType;
 };
 
+struct UniformList {
+    unsigned int set;
+    unsigned int bind;
+};
+
 class ENGINE_API UniformBuffer {
 private:
 	//std::vector<VkDescriptorSetLayout> descriptorSetLayouts;
 
     int MAX_FRAMES_IN_FLIGHT;
+
+    uint32_t MaximumObjectsOnFrame;
 
     std::vector<std::vector< VkDescriptorSetLayoutBinding>> uboLayoutBinding;
     std::vector < std::vector<VkBuffer>> uniformBuffers;
@@ -38,6 +39,9 @@ private:
 
     std::vector < std::vector<VkDescriptorSet>> descriptorSets;
 
+    std::vector<UniformList> StaticUniformList;
+    std::vector<UniformList> DynamicUniformList;
+
     std::vector < std::map<unsigned int, BindingData>> BindingData;//binding, bindingdata
 
     std::vector<std::vector<unsigned int>> bindingQueue;
@@ -48,8 +52,8 @@ private:
 public:
     std::vector<VkDescriptorSetLayout> descriptorSetLayouts;
 
-    UniformBuffer(int MAX_FRAMES_IN_FLIGHT)
-        :MAX_FRAMES_IN_FLIGHT(MAX_FRAMES_IN_FLIGHT) {
+    UniformBuffer(int MAX_FRAMES_IN_FLIGHT, uint32_t MaximumObjectsOnFrame)
+        :MAX_FRAMES_IN_FLIGHT(MAX_FRAMES_IN_FLIGHT), MaximumObjectsOnFrame(MaximumObjectsOnFrame){
         uboLayoutBinding.resize(2);
         descriptorSetLayouts.resize(2);
         uniformBuffers.resize(2);
@@ -60,9 +64,10 @@ public:
         descriptorSets.resize(2);
         BindingData.resize(2);
         bindingQueue.resize(2);
+
     };
 
-    void createUniform(unsigned int binding, size_t sizeofBindingValue, VkDescriptorType DescriptorType, TypeOfUniform UniformType);
+    void createUniformBind(unsigned int binding, size_t sizeofBindingValue, VkDescriptorType DescriptorType, TypeOfUniform UniformType);
 
 	void createDecriptorSetsLayout();
 
@@ -70,16 +75,39 @@ public:
     void createDescriptorPool();
     void createDescriptorSets();
 
+    size_t GetAlignment(size_t sizeOfData) {
+        size_t minUboAlignment = utils.GetPhysicalDeviceProps().limits.minUniformBufferOffsetAlignment;
+        std::cout << utils.GetPhysicalDeviceProps().limits.minUniformBufferOffsetAlignment << std::endl;
+        size_t dynamicAlignment = sizeOfData;
+        if (minUboAlignment > 0) {
+            dynamicAlignment = (dynamicAlignment + minUboAlignment - 1) & ~(minUboAlignment - 1);
+        }
+        return dynamicAlignment;
+    };
+
     template<class T>
-    void updateUniformBuffer(unsigned int binding, TypeOfUniform UniformType, T& data, uint32_t currentImage) {
+    void updateStaticUniformBuffer(unsigned int binding, TypeOfUniform UniformType, T& data, uint32_t currentImage) {
 
         // memcpy(uniformBuffersMapped[0][currentImage], &data, sizeofObject);// BindingData[0][0].sizeofData);
 
         memcpy(uniformBuffersMapped[static_cast<int>(UniformType)][binding * (currentImage + 1)], &data, BindingData[static_cast<int>(UniformType)][binding].sizeofData);
-    }
+    };
+    template<class T>
+    void updateDynamicUniformBuffer(unsigned int binding, TypeOfUniform UniformType, T& data, uint32_t currentImage, uint32_t countOfData) {
+
+        // memcpy(uniformBuffersMapped[0][currentImage], &data, sizeofObject);// BindingData[0][0].sizeofData);
+
+        memcpy(uniformBuffersMapped[static_cast<int>(UniformType)][binding * (currentImage + 1)], &data, GetAlignment(BindingData[static_cast<int>(UniformType)][binding].sizeofData)*countOfData);
+
+        //VkMappedMemoryRange memoryRange{};
+        //memoryRange.memory = uniformBuffersMemory[static_cast<int>(UniformType)][binding * (currentImage + 1)];
+        //memoryRange.size = sizeof(uboDataDynamic);
+        //vkFlushMappedMemoryRanges(device, 1, &memoryRange);
+    };
+
 
     void cleanup();
 
-    std::vector<VkDescriptorSet> GetDescriptorSets() { return descriptorSets[0]; };
+    std::vector<std::vector<VkDescriptorSet>> GetDescriptorSets() { return descriptorSets; };
     std::vector<VkDescriptorSetLayout> GetDescriptorSetLayouts() { return descriptorSetLayouts; };
 };

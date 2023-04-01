@@ -14,11 +14,10 @@ public:
 private:
 	windowClass* window;
 	VulkanClass* initVulkan;
-	UniformBuffer* initUniform;
 	CommandPool* initCommandPool;
 	Input* initInput;
 
-	Objects objects;
+	Objects* objects;
 
 
 	void Init();

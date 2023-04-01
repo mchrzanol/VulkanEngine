@@ -13,24 +13,22 @@ void UniformBuffer::createDecriptorSetsLayout() {
 
     VkDescriptorSetLayoutCreateInfo LocallayoutInfo{};
     LocallayoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-   LocallayoutInfo.bindingCount = uboLayoutBinding[1].size();
+    LocallayoutInfo.bindingCount = uboLayoutBinding[1].size();
     LocallayoutInfo.pBindings = uboLayoutBinding[1].data();
 
     if (vkCreateDescriptorSetLayout(utils.GetDevice(), &LocallayoutInfo, nullptr, &descriptorSetLayouts[1]) != VK_SUCCESS) {
         throw std::runtime_error("failed to create Local descriptor set layout!");
     }
 }
-void UniformBuffer::createUniform(unsigned int binding, size_t sizeofBindingValue, VkDescriptorType DescriptorType, TypeOfUniform UniformType) {
+void UniformBuffer::createUniformBind(unsigned int binding, size_t sizeofBindingValue, VkDescriptorType DescriptorType, TypeOfUniform UniformType) {
+
     unsigned int set = static_cast<int>(UniformType);
 
     bindingQueue[set].push_back(binding);
 
     UniformsCount[set]++;
 
-    if(UniformType == TypeOfUniform::GlobalUniform)
-        BindingData[set][binding] = { sizeofBindingValue, DescriptorType };
-    else
-        BindingData[set][binding] = { sizeofBindingValue* 200000, DescriptorType};
+    BindingData[set][binding] = { sizeofBindingValue, DescriptorType };
 
     uboLayoutBinding[set].resize(UniformsCount[set]);
     uboLayoutBinding[set][UniformsCount[set] -1].binding = binding;
@@ -52,9 +50,19 @@ void UniformBuffer::createUniformBuffers() {
             for (int bind = 0; bind < bindingQueue[set].size();bind++) {
                 size_t i = (frame - 1) * UniformsCount[set];
 
-                bufferSize = BindingData[set][bindingQueue[set][bind]].sizeofData;
+                if (BindingData[set][bindingQueue[set][bind]].DescriptorType == VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER) {
+                    bufferSize = BindingData[set][bindingQueue[set][bind]].sizeofData;
 
-                createBuffer(bufferSize, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, uniformBuffers[set][i], uniformBuffersMemory[set][i], utils.GetDevice(), utils.GetPhyscicalDevice());
+                    createBuffer(bufferSize, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+                        uniformBuffers[set][i], uniformBuffersMemory[set][i], utils.GetDevice(), utils.GetPhyscicalDevice());
+                }
+                else {
+                    bufferSize = GetAlignment(BindingData[set][bindingQueue[set][bind]].sizeofData) * MaximumObjectsOnFrame;
+                    std::cout << bufferSize << std::endl;
+
+                    createBuffer(bufferSize, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+                        uniformBuffers[set][i], uniformBuffersMemory[set][i], utils.GetDevice(), utils.GetPhyscicalDevice());
+                }
 
                 vkMapMemory(utils.GetDevice(), uniformBuffersMemory[set][i], 0, bufferSize, 0, &uniformBuffersMapped[set][i]);
 
@@ -115,11 +123,18 @@ void UniformBuffer::createDescriptorSets() {
 
         for (size_t i = 1; i < MAX_FRAMES_IN_FLIGHT +1; i++) {
             std::vector< VkWriteDescriptorSet> m_descriptorWrite(UniformsCount[set]);
+
             for (size_t bind = 0; bind < UniformsCount[set]; bind++) {
                 VkDescriptorBufferInfo bufferInfo{};
-                bufferInfo.buffer = uniformBuffers[set][bind + bind*i];
+                bufferInfo.buffer = uniformBuffers[set][bind + bind*(i-1)];
                 bufferInfo.offset = 0;
-                bufferInfo.range = BindingData[set][bindingQueue[set][bind]].sizeofData;
+
+                if (BindingData[set][bindingQueue[set][bind]].DescriptorType == VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER) {
+                    bufferInfo.range =  BindingData[set][bindingQueue[set][bind]].sizeofData;
+                }
+                else {
+                    bufferInfo.range = GetAlignment(BindingData[set][bindingQueue[set][bind]].sizeofData);
+                }
 
                 VkWriteDescriptorSet descriptorWrite{};
                 descriptorWrite.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
@@ -133,8 +148,6 @@ void UniformBuffer::createDescriptorSets() {
                 descriptorWrite.pTexelBufferView = nullptr; // Optional
 
                 m_descriptorWrite[bind] = descriptorWrite;
-
-
             }
 
             vkUpdateDescriptorSets(utils.GetDevice(), UniformsCount[set], m_descriptorWrite.data(), 0, nullptr);
@@ -142,6 +155,7 @@ void UniformBuffer::createDescriptorSets() {
     }
 
 }
+
 
 void UniformBuffer::cleanup() {
     for (int set = 0; set < 2; set++) {

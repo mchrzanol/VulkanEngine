@@ -70,27 +70,13 @@ void CommandPool::recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t im
 
     vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, graphicsPipeline);
 
-    objects.draw2DObjects(commandBuffer, initVulkan->GetPipelineLayout(), initUniform->GetDescriptorSets()[currentFrame]);
+    objects.draw2DObjects(commandBuffer, initVulkan->GetPipelineLayout(), currentFrame);
 
     vkCmdEndRenderPass(commandBuffer);
 
     if (vkEndCommandBuffer(commandBuffer) != VK_SUCCESS) {
         throw std::runtime_error("failed to record command buffer!");
     }
-}
-
-void CommandPool::drawObject(VkCommandBuffer commandBuffer, VkBuffer vertexBuffer, VkBuffer indexBuffer, std::vector<uint16_t> indices) {
-    VkBuffer vertexBuffers[] = { vertexBuffer };
-    VkDeviceSize offsets[] = { 0 };
-    vkCmdBindVertexBuffers(commandBuffer, 0, 1, vertexBuffers, offsets);
-
-    vkCmdBindIndexBuffer(commandBuffer, indexBuffer, 0, VK_INDEX_TYPE_UINT16);//uint16 as type of variable
-
-    vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, initVulkan->GetPipelineLayout(), 0, 1, &initUniform->GetDescriptorSets()[currentFrame], 0, nullptr);
-
-    vkCmdDrawIndexed(commandBuffer, static_cast<uint32_t>(indices.size()), 1, 0, 0, 0);
-    //vkCmdDraw(commandBuffer, 3, 1, 0, 0);
-
 }
 
 void CommandPool::createSyncObjects() {

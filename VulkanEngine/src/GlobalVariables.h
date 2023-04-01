@@ -11,6 +11,8 @@ protected:
 
 	uint32_t MaximumObjectsOnFrame;
 
+	VkPhysicalDeviceProperties physicalDeviceProps;
+
 public:
 	void BindDevice(VkDevice  device) { this->device = device; };
 	VkDevice GetDevice() { return device; };
@@ -26,5 +28,8 @@ public:
 
 	void GiveMaximumObjectsOnFrame(uint32_t physicalDevice) { this->MaximumObjectsOnFrame = MaximumObjectsOnFrame; };
 	uint32_t GetMaximumObjectsOnFrame() { return MaximumObjectsOnFrame; };
+
+	void GivePhysicalDeviceProps(VkPhysicalDeviceProperties physicalDeviceProps) { this->physicalDeviceProps = physicalDeviceProps; };
+	VkPhysicalDeviceProperties GetPhysicalDeviceProps() { return physicalDeviceProps; };
 
 };

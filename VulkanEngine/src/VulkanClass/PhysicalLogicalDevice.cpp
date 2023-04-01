@@ -23,6 +23,9 @@ void VulkanClass::pickPhysicalDevice() {
     for (const auto& device : devices) {
         if (isDeviceSuitable(device)) {
             physicalDevice = device;
+            VkPhysicalDeviceProperties deviceProps;
+            vkGetPhysicalDeviceProperties(device, &deviceProps);
+            utils.GivePhysicalDeviceProps(deviceProps);
             break;
         }
     }

@@ -35,7 +35,7 @@ const std::vector<const char*> deviceExtensions = {
 
 class ENGINE_API VulkanClass {
 public:
-    VulkanClass(GLFWwindow*& window, UniformBuffer*& uniformBuffer)//including reference to window
+    VulkanClass(GLFWwindow*& window, UniformBuffer* uniformBuffer)//including reference to window
         :window(window), uniformBuffer(uniformBuffer) {};
 	void init() {
         createInstance();
@@ -48,12 +48,16 @@ public:
 
         createRenderPass();
         utils.BindDevice(device);
+        utils.BindPhysicalDevice(physicalDevice);
         uniformBuffer->createDecriptorSetsLayout();
         createGraphicsPipeline();
         createFramebuffers();
 
         utils.BindGraphicsQueue(graphicsQueue);
-        utils.BindPhysicalDevice(physicalDevice);
+
+        uniformBuffer->createUniformBuffers();
+        uniformBuffer->createDescriptorPool();
+        uniformBuffer->createDescriptorSets();
 	}
 
     void cleanup() {

@@ -11,8 +11,11 @@ layout(set = 0, binding = 0) uniform UniformBufferObject {
     mat4 proj;
 } ubo;
 
+layout(set = 1, binding = 0) uniform modelMatrix {
+    mat4 model;   
+}model;
 
 void main() {
-    gl_Position = ubo.proj * ubo.view * ubo.model *vec4(inPosition, 1.0);
+    gl_Position = ubo.proj * ubo.view * model.model *vec4(inPosition, 1.0);
     fragColor = inColor;
 }
