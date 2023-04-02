@@ -1,10 +1,9 @@
 #pragma once
 #include "2D/Triangle.h"
 #include "2D/Rectangle.h"
-
 struct stats
 {
-	uint32_t MaximumObjectsOnFrame = 20000;
+	const static uint32_t MaximumObjectsOnFrame = 20000;
 	uint32_t EntitiesCount = 0;
 
 	uint32_t triangleCount = 0;
@@ -19,7 +18,8 @@ struct Entity {
 	VertexBuffer vertices;
 	IndexBuffer indices;
 
-	glm::mat4 model = glm::mat4(1.f);
+
+	glm::vec3 origin;
 
 	void createVertexBuffer(std::vector<Vertex>& vertices) {
 		this->vertices.createVertexBuffer(vertices);
@@ -37,9 +37,12 @@ struct EntityData {
 };
 
 struct UniformBufferObject {
-	alignas(16) glm::mat4 model;//alignas(16) = przesuniecie bajtowe(co 16 bajtów)
 	alignas(16) glm::mat4 view;
 	alignas(16) glm::mat4 proj;
+};
+
+struct ubo_model {
+	glm::mat4* model = nullptr;
 };
 
 class Objects {
@@ -68,7 +71,8 @@ private:
 	//circle
 
 	//test
-	glm::mat4 * models = nullptr;
+	ubo_model models;
+
 	size_t alignment;
 
 	glm::mat4 viewMatrix;
@@ -84,9 +88,6 @@ public:
 		initUniform->createUniformBind(0, sizeof(UniformBufferObject), VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, TypeOfUniform::GlobalUniform);
 		initUniform->createUniformBind(0, sizeof(glm::mat4), VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC, TypeOfUniform::EntityUniform);
 
-		//for(int i = 0;i< MAX_FRAMES_IN_FLIGHT;i++)
-		//	initUniform->updateDynamicUniformBuffer(0, TypeOfUniform::LocalUniform, models, 0);
-		//initUniform->updateDynamicUniformBuffer(0, TypeOfUniform::LocalUniform, models, 1);
 	}
 
 	void Init() {
@@ -98,8 +99,7 @@ public:
 
 		alignment = initUniform->GetAlignment(sizeof(glm::mat4));
 		size_t bufferSize = m_stats.MaximumObjectsOnFrame * alignment;
-		models = (glm::mat4*)_aligned_malloc(bufferSize, alignment);
-
+		models.model = (glm::mat4*)_aligned_malloc(bufferSize, alignment);
 	}
 
 	template<typename T>
@@ -113,10 +113,12 @@ public:
 		m_objects.push_back(Entity());
 		m_objects[m_stats.EntitiesCount].createVertexBuffer(object->GetVertices());
 		m_objects[m_stats.EntitiesCount].createIndexBuffer(object->GetIndices());
+		m_objects[m_stats.EntitiesCount].origin = object->GetOrigin();
 
 		m_data[m_stats.EntitiesCount] = { EntityType::Triangle };
 
-		models[m_stats.EntitiesCount] = glm::mat4(1.f);
+		glm::mat4* modelMat = (glm::mat4*)(((uint64_t)models.model + (m_stats.EntitiesCount * alignment)));
+		*modelMat = glm::mat4(1.f);
 
 		m_stats.EntitiesCount++;
 		m_stats.triangleCount++;
@@ -128,10 +130,12 @@ public:
 		m_objects.push_back(Entity());
 		m_objects[m_stats.EntitiesCount].createVertexBuffer(object->GetVertices());
 		m_objects[m_stats.EntitiesCount].createIndexBuffer(object->GetIndices());
+		m_objects[m_stats.EntitiesCount].origin = object->GetOrigin();
 
 		m_data[m_stats.EntitiesCount] = { EntityType::Rectangle };
 
-		models[m_stats.EntitiesCount] = glm::mat4(1.f);
+		glm::mat4* modelMat = (glm::mat4*)(((uint64_t)models.model + (m_stats.EntitiesCount * alignment)));
+		*modelMat = glm::mat4(1.f);
 
 		m_stats.EntitiesCount++;
 		m_stats.rectangleCount++;
@@ -147,12 +151,13 @@ public:
 
 	void draw2DObjects(VkCommandBuffer & commandBuffer, VkPipelineLayout pipelineLayout, uint32_t currentFrame) {
 
-		UniformBufferObject ubo = { glm::mat4(1.f), viewMatrix, projMatrix };
+		UniformBufferObject ubo = { viewMatrix, projMatrix };
 		initUniform->updateStaticUniformBuffer(0, TypeOfUniform::GlobalUniform, ubo, currentFrame);
 
-		initUniform->updateDynamicUniformBuffer(0, TypeOfUniform::EntityUniform, models, currentFrame, m_stats.EntitiesCount);
+		initUniform->updateDynamicUniformBuffer(0, TypeOfUniform::EntityUniform, models.model, currentFrame, m_stats.EntitiesCount);
 
 		vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 0, 1, &initUniform->GetDescriptorSets()[0][currentFrame], 0, nullptr);
+
 		for (size_t index = 0; index < m_stats.EntitiesCount; index++) {
 			uint32_t dynamicOffset = index * static_cast<uint32_t>(alignment);
 
@@ -161,6 +166,14 @@ public:
 				m_objects[index].indices.GetIndicies(), pipelineLayout);
 		}
 
+	}
+
+	void rotate(uint32_t EntityIndex, glm::f32 radians, glm::vec3 axis) {
+		glm::mat4* modelMat = (glm::mat4*)(((uint64_t)models.model + (EntityIndex * alignment)));
+
+		*modelMat = glm::translate(*modelMat, m_objects[EntityIndex].origin);
+		*modelMat = glm::rotate(*modelMat, radians, axis);
+		*modelMat = glm::translate(*modelMat, glm::vec3(-1.f) * m_objects[EntityIndex].origin);
 	}
 
 	void destroy() {

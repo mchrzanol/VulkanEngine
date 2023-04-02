@@ -31,8 +31,8 @@ private:
 
     std::vector<std::vector< VkDescriptorSetLayoutBinding>> uboLayoutBinding;
     std::vector < std::vector<VkBuffer>> uniformBuffers;
-    std::vector < std::vector<VkDeviceMemory>> uniformBuffersMemory;
-    std::vector < std::vector<void*>> uniformBuffersMapped;
+    //std::vector < std::vector<VkDeviceMemory>> uniformBuffersMemory;
+    //std::vector < std::vector<void*>> uniformBuffersMapped;
 
     std::vector < std::vector<VkDescriptorPoolSize>> poolSize;
     std::vector < VkDescriptorPool> descriptorPool;
@@ -50,6 +50,8 @@ private:
 
 
 public:
+    std::vector < std::vector<void*>> uniformBuffersMapped;
+    std::vector < std::vector<VkDeviceMemory>> uniformBuffersMemory;
     std::vector<VkDescriptorSetLayout> descriptorSetLayouts;
 
     UniformBuffer(int MAX_FRAMES_IN_FLIGHT, uint32_t MaximumObjectsOnFrame)
@@ -77,7 +79,7 @@ public:
 
     size_t GetAlignment(size_t sizeOfData) {
         size_t minUboAlignment = utils.GetPhysicalDeviceProps().limits.minUniformBufferOffsetAlignment;
-        std::cout << utils.GetPhysicalDeviceProps().limits.minUniformBufferOffsetAlignment << std::endl;
+
         size_t dynamicAlignment = sizeOfData;
         if (minUboAlignment > 0) {
             dynamicAlignment = (dynamicAlignment + minUboAlignment - 1) & ~(minUboAlignment - 1);
@@ -88,21 +90,21 @@ public:
     template<class T>
     void updateStaticUniformBuffer(unsigned int binding, TypeOfUniform UniformType, T& data, uint32_t currentImage) {
 
-        // memcpy(uniformBuffersMapped[0][currentImage], &data, sizeofObject);// BindingData[0][0].sizeofData);
-
-        memcpy(uniformBuffersMapped[static_cast<int>(UniformType)][binding * (currentImage + 1)], &data, BindingData[static_cast<int>(UniformType)][binding].sizeofData);
+        memcpy(uniformBuffersMapped[static_cast<int>(UniformType)][(binding+currentImage) * currentImage], &data, BindingData[static_cast<int>(UniformType)][binding].sizeofData);
     };
     template<class T>
-    void updateDynamicUniformBuffer(unsigned int binding, TypeOfUniform UniformType, T& data, uint32_t currentImage, uint32_t countOfData) {
+    void updateDynamicUniformBuffer(unsigned int binding, TypeOfUniform UniformType, T& data, uint32_t currentImage, uint32_t countOfData , uint32_t offset = 0) {
+        size_t alignment = GetAlignment(BindingData[static_cast<int>(UniformType)][binding].sizeofData);
 
-        // memcpy(uniformBuffersMapped[0][currentImage], &data, sizeofObject);// BindingData[0][0].sizeofData);
+        memcpy(uniformBuffersMapped[static_cast<int>(UniformType)][(binding + currentImage) * currentImage], data + offset, countOfData*alignment);
 
-        memcpy(uniformBuffersMapped[static_cast<int>(UniformType)][binding * (currentImage + 1)], &data, GetAlignment(BindingData[static_cast<int>(UniformType)][binding].sizeofData)*countOfData);
-
-        //VkMappedMemoryRange memoryRange{};
-        //memoryRange.memory = uniformBuffersMemory[static_cast<int>(UniformType)][binding * (currentImage + 1)];
-        //memoryRange.size = sizeof(uboDataDynamic);
-        //vkFlushMappedMemoryRanges(device, 1, &memoryRange);
+        VkMappedMemoryRange memoryRange;
+        memoryRange.sType = VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
+        memoryRange.pNext = 0;
+        memoryRange.offset = offset * alignment;
+        memoryRange.memory = uniformBuffersMemory[static_cast<int>(UniformType)][(binding + currentImage) * currentImage];
+        memoryRange.size = alignment * countOfData;
+        vkFlushMappedMemoryRanges(utils.GetDevice(), 1, &memoryRange);
     };
 
 

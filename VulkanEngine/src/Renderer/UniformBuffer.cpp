@@ -60,7 +60,7 @@ void UniformBuffer::createUniformBuffers() {
                     bufferSize = GetAlignment(BindingData[set][bindingQueue[set][bind]].sizeofData) * MaximumObjectsOnFrame;
                     std::cout << bufferSize << std::endl;
 
-                    createBuffer(bufferSize, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+                    createBuffer(bufferSize, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT,
                         uniformBuffers[set][i], uniformBuffersMemory[set][i], utils.GetDevice(), utils.GetPhyscicalDevice());
                 }
 
@@ -133,7 +133,7 @@ void UniformBuffer::createDescriptorSets() {
                     bufferInfo.range =  BindingData[set][bindingQueue[set][bind]].sizeofData;
                 }
                 else {
-                    bufferInfo.range = GetAlignment(BindingData[set][bindingQueue[set][bind]].sizeofData);
+                    bufferInfo.range =  GetAlignment(BindingData[set][bindingQueue[set][bind]].sizeofData);
                 }
 
                 VkWriteDescriptorSet descriptorWrite{};

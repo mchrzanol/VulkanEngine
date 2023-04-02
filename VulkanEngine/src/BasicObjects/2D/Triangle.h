@@ -30,4 +30,6 @@ public:
 	inline std::vector<Vertex>& GetVertices() { return verticesInfo; };
 	inline std::vector<uint16_t>& GetIndices() { return Indices; };
 
+	inline glm::vec3 GetOrigin() { return origin; }
+
 };

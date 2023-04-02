@@ -36,9 +36,10 @@ void TestPlatform::Init() {
 	std::srand(time(NULL));
 	triangle * tri;
 	rectangle* rect;
+
 	int minus[2] = { 1, 1 };
 	bool tak = true;
-	for (int i = 0; i < 5000000; i++)
+	for (int i = 0; i < 2000000; i++)
 	{
 		if (i % 100000 == 0) {
 			for (int& a : minus)
@@ -106,6 +107,15 @@ void TestPlatform::OnUpdate() {
 
 	objects->UpdateView(view);
 	objects->UpdateProjection(proj);
+
+	static auto startTime = std::chrono::high_resolution_clock::now();
+
+	auto currentTime = std::chrono::high_resolution_clock::now();
+	float time = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - startTime).count();
+
+	for (int i = 0; i < 20; i++) {
+		objects->rotate(i, glm::radians(0.5f), glm::vec3(0.0f, 1.0f, 0.0f));
+	}
 }
 
 void TestPlatform::mainLoop() {
