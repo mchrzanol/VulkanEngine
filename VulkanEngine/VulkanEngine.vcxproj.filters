@@ -32,5 +32,6 @@
     <ClInclude Include="src\window\window.h" />
     <ClInclude Include="src\BasicObjects\Objects.h" />
     <ClInclude Include="src\BasicObjects\2D\Rectangle.h" />
+    <ClInclude Include="src\BasicObjects\2D\Entity.h" />
   </ItemGroup>
 </Project>

@@ -58,7 +58,6 @@ void UniformBuffer::createUniformBuffers() {
                 }
                 else {
                     bufferSize = GetAlignment(BindingData[set][bindingQueue[set][bind]].sizeofData) * MaximumObjectsOnFrame;
-                    std::cout << bufferSize << std::endl;
 
                     createBuffer(bufferSize, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT,
                         uniformBuffers[set][i], uniformBuffersMemory[set][i], utils.GetDevice(), utils.GetPhyscicalDevice());

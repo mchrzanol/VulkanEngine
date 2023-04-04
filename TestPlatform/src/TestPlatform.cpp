@@ -34,12 +34,10 @@ void TestPlatform::Init() {
 
 
 	std::srand(time(NULL));
-	triangle * tri;
-	rectangle* rect;
 
 	int minus[2] = { 1, 1 };
 	bool tak = true;
-	for (int i = 0; i < 2000000; i++)
+	for (int i = 0; i < 20000000; i++)
 	{
 		if (i % 100000 == 0) {
 			for (int& a : minus)
@@ -59,36 +57,25 @@ void TestPlatform::Init() {
 				}
 			}
 			if (tak == true) {
-				tri = new triangle();
-				std::cout << "Object no: " << objects->GetTrianglesSize() + 1 << std::endl;
+				std::cout << "Object no: " << objects->GetEntitiesCount() + 1 << std::endl;
 				color[0] = { (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX) };
 				color[1] = { (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX) , (float)rand() / (RAND_MAX) };
 				color[2] = { (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX) , (float)rand() / (RAND_MAX) };
 
-				tri->create(glm::vec3(((float)rand() / (RAND_MAX)) * minus[0], ((float)rand() / (RAND_MAX)) * minus[1], 0.0), 0.5f, color);
-				objects->PushBack(tri);
+				objects->PushBack(Entity::triangle::create(glm::vec3(((float)rand() / (RAND_MAX)) * minus[0], ((float)rand() / (RAND_MAX)) * minus[1], 0.0), 0.5f, color));
 
 				tak = false;
-
-				delete tri;
-				tri = nullptr;
 			}
 			else {
-				rect = new rectangle();
-				std::cout << "Object no: " << objects->GetRectanglesSize() + 1 << std::endl;
+				std::cout << "Object no: " << objects->GetEntitiesCount() + 1 << std::endl;
 				color2[0] = { (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX) };
 				color2[1] = { (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX) , (float)rand() / (RAND_MAX) };
 				color2[2] = { (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX) , (float)rand() / (RAND_MAX) };
 				color2[3] = { (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX) , (float)rand() / (RAND_MAX) };
 
-				rect->create(glm::vec3(((float)rand() / (RAND_MAX)) * minus[0], ((float)rand() / (RAND_MAX)) * minus[1], 0.0), 
-					(float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX), color2);
-				objects->PushBack(rect);
-
+				objects->PushBack(Entity::rectangle::create(glm::vec3(((float)rand() / (RAND_MAX)) * minus[0], ((float)rand() / (RAND_MAX)) * minus[1], 0.0),
+						(float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX), color2));
 				tak = true;
-
-				delete rect;
-				rect = nullptr;
 			}
 		}
 
@@ -113,7 +100,7 @@ void TestPlatform::OnUpdate() {
 	auto currentTime = std::chrono::high_resolution_clock::now();
 	float time = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - startTime).count();
 
-	for (int i = 0; i < 20; i++) {
+	for (int i = 0; i < objects->GetEntitiesCount(); i++) {
 		objects->rotate(i, glm::radians(0.5f), glm::vec3(0.0f, 1.0f, 0.0f));
 	}
 }

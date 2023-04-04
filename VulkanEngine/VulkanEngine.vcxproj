@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\BasicObjects\2D\Entity.h" />
     <ClInclude Include="src\BasicObjects\Objects.h" />
     <ClInclude Include="src\BasicObjects\2D\Rectangle.h" />
     <ClInclude Include="src\BasicObjects\2D\Triangle.h" />

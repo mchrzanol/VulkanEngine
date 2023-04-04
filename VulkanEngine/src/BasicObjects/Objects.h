@@ -10,32 +10,6 @@ struct stats
 	uint32_t rectangleCount = 0;
 };
 
-enum class EntityType {
-	Triangle, Rectangle, Circle, Line
-};
-
-struct Entity {
-	VertexBuffer vertices;
-	IndexBuffer indices;
-
-
-	glm::vec3 origin;
-
-	void createVertexBuffer(std::vector<Vertex>& vertices) {
-		this->vertices.createVertexBuffer(vertices);
-	}
-
-	void createIndexBuffer(std::vector<uint16_t>& indices) {
-		this->indices.createIndexBuffer(indices);
-	}
-
-	//texid
-};
-
-struct EntityData {
-	EntityType type;
-};
-
 struct UniformBufferObject {
 	alignas(16) glm::mat4 view;
 	alignas(16) glm::mat4 proj;
@@ -47,25 +21,13 @@ struct ubo_model {
 
 class Objects {
 private:
-	void drawObject(VkCommandBuffer & commandBuffer, VkBuffer vertexBuffer, VkBuffer indexBuffer, std::vector<uint16_t> indices,
-		VkPipelineLayout pipelineLayout) {
-		VkBuffer vertexBuffers[] = { vertexBuffer };
-		VkDeviceSize offsets[] = { 0 };
-		vkCmdBindVertexBuffers(commandBuffer, 0, 1, vertexBuffers, offsets);
-
-		vkCmdBindIndexBuffer(commandBuffer, indexBuffer, 0, VK_INDEX_TYPE_UINT16);//uint16 as type of variable
-
-		vkCmdDrawIndexed(commandBuffer, static_cast<uint32_t>(indices.size()), 1, 0, 0, 0);
-
-	}
 
 	UniformBuffer* initUniform;
 
 	//Data m_data;
 	stats m_stats;
 
-	std::vector<Entity> m_objects;
-	std::map<uint32_t, EntityData> m_data;
+	std::vector<EntityInfo> m_objects;
 
 	//line
 	//circle
@@ -104,41 +66,17 @@ public:
 
 	template<typename T>
 	void PushBack(T * object) {
-		throw std::runtime_error("Undefined Object!");
+		throw std::runtime_error("Undefined Object/Valid Arguments");
 	}
 
 	template<>
-	void PushBack<triangle>(triangle * object) {
-
-		m_objects.push_back(Entity());
-		m_objects[m_stats.EntitiesCount].createVertexBuffer(object->GetVertices());
-		m_objects[m_stats.EntitiesCount].createIndexBuffer(object->GetIndices());
-		m_objects[m_stats.EntitiesCount].origin = object->GetOrigin();
-
-		m_data[m_stats.EntitiesCount] = { EntityType::Triangle };
+	void PushBack<EntityInfo>(EntityInfo * object) {
+		m_objects.push_back(*object);
 
 		glm::mat4* modelMat = (glm::mat4*)(((uint64_t)models.model + (m_stats.EntitiesCount * alignment)));
 		*modelMat = glm::mat4(1.f);
 
 		m_stats.EntitiesCount++;
-		m_stats.triangleCount++;
-
-	}
-
-	template<>
-	void PushBack<rectangle>(rectangle * object) {
-		m_objects.push_back(Entity());
-		m_objects[m_stats.EntitiesCount].createVertexBuffer(object->GetVertices());
-		m_objects[m_stats.EntitiesCount].createIndexBuffer(object->GetIndices());
-		m_objects[m_stats.EntitiesCount].origin = object->GetOrigin();
-
-		m_data[m_stats.EntitiesCount] = { EntityType::Rectangle };
-
-		glm::mat4* modelMat = (glm::mat4*)(((uint64_t)models.model + (m_stats.EntitiesCount * alignment)));
-		*modelMat = glm::mat4(1.f);
-
-		m_stats.EntitiesCount++;
-		m_stats.rectangleCount++;
 	}
 
 	void UpdateView(glm::mat4 viewMatrix) {
@@ -149,7 +87,44 @@ public:
 		this->projMatrix = projMatrix;
 	}
 
-	void draw2DObjects(VkCommandBuffer & commandBuffer, VkPipelineLayout pipelineLayout, uint32_t currentFrame) {
+	void rotate(uint32_t EntityIndex, glm::f32 radians, glm::vec3 axis) {
+		glm::mat4* modelMat = (glm::mat4*)(((uint64_t)models.model + (EntityIndex * alignment)));
+
+		*modelMat = glm::translate(*modelMat, m_objects[EntityIndex].origin);
+		*modelMat = glm::rotate(*modelMat, radians, axis);
+		*modelMat = glm::translate(*modelMat, glm::vec3(-1.f) * m_objects[EntityIndex].origin);
+	}
+
+	void destroy() {
+		_aligned_free(models.model);
+
+		m_objects.clear();
+		initUniform->cleanup();
+	}
+
+	inline int GetTrianglesSize() { return m_stats.triangleCount; };
+	inline int GetRectanglesSize() { return m_stats.rectangleCount; };
+	inline int GetEntitiesCount() { return m_stats.EntitiesCount; };
+
+	inline UniformBuffer* GetUniformBuffer() { return initUniform; };
+
+		//cos takiego jak przy registerclass
+
+private:
+	void drawObject(VkCommandBuffer& commandBuffer, VkBuffer vertexBuffer, VkBuffer indexBuffer, std::vector<uint16_t> indices,
+		VkPipelineLayout pipelineLayout) {
+		VkBuffer vertexBuffers[] = { vertexBuffer };
+		VkDeviceSize offsets[] = { 0 };
+		vkCmdBindVertexBuffers(commandBuffer, 0, 1, vertexBuffers, offsets);
+
+		vkCmdBindIndexBuffer(commandBuffer, indexBuffer, 0, VK_INDEX_TYPE_UINT16);//uint16 as type of variable
+
+		vkCmdDrawIndexed(commandBuffer, static_cast<uint32_t>(indices.size()), 1, 0, 0, 0);
+
+	}
+
+	friend class CommandPool;
+	void draw2DObjects(VkCommandBuffer& commandBuffer, VkPipelineLayout pipelineLayout, uint32_t currentFrame) {
 
 		UniformBufferObject ubo = { viewMatrix, projMatrix };
 		initUniform->updateStaticUniformBuffer(0, TypeOfUniform::GlobalUniform, ubo, currentFrame);
@@ -167,25 +142,5 @@ public:
 		}
 
 	}
-
-	void rotate(uint32_t EntityIndex, glm::f32 radians, glm::vec3 axis) {
-		glm::mat4* modelMat = (glm::mat4*)(((uint64_t)models.model + (EntityIndex * alignment)));
-
-		*modelMat = glm::translate(*modelMat, m_objects[EntityIndex].origin);
-		*modelMat = glm::rotate(*modelMat, radians, axis);
-		*modelMat = glm::translate(*modelMat, glm::vec3(-1.f) * m_objects[EntityIndex].origin);
-	}
-
-	void destroy() {
-		m_objects.clear();
-		initUniform->cleanup();
-	}
-
-	inline int GetTrianglesSize() { return m_stats.triangleCount; };
-	inline int GetRectanglesSize() { return m_stats.rectangleCount; };
-
-	inline UniformBuffer* GetUniformBuffer() { return initUniform; };
-
-		//cos takiego jak przy registerclass
 
 };
