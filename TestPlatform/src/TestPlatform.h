@@ -24,6 +24,8 @@ private:
 
 	void OnUpdate();
 
+	void AddEtities();
+
 	void OnRender();
 
 	void mainLoop();

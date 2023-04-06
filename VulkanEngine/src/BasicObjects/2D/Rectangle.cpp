@@ -58,7 +58,8 @@ namespace Entity {
 		EntityInfo* create(glm::vec3 vertices[4], glm::vec3 color[4]) {
 			EntityInfo* data = new EntityInfo();
 
-			data->origin = { (vertices[0].x + vertices[1].x + vertices[2].x) / 3, (vertices[0].y + vertices[1].y + vertices[2].y) / 3, (vertices[0].z + vertices[1].z + vertices[2].z) / 2 };
+			data->origin = { (vertices[0].x + vertices[1].x + vertices[2].x + vertices[2].z) / 4, (vertices[0].y + vertices[1].y + vertices[2].y + vertices[3].z) / 4,
+				(vertices[0].z + vertices[1].z + vertices[2].z+ vertices[3].z) / 4 };
 
 			std::vector<Vertex> verticesInfo(4);
 

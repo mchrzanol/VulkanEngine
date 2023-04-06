@@ -51,6 +51,7 @@ public:
         utils.BindPhysicalDevice(physicalDevice);
         uniformBuffer->createDecriptorSetsLayout();
         createGraphicsPipeline();
+        createDepthBuffer();
         createFramebuffers();
 
         utils.BindGraphicsQueue(graphicsQueue);
@@ -107,7 +108,9 @@ private:
     VkRenderPass renderPass;
     VkPipelineLayout pipelineLayout;
 
-    uint32_t currentFrame = 0;
+    VkImage depthImage;
+    VkDeviceMemory depthImageMemory;
+    VkImageView depthImageView;
     #pragma endregion
 
     //Instance
@@ -143,7 +146,15 @@ private:
 
     //FrameBuffer
     void createFramebuffers();
-    
+
+    //DepthBuffer
+    VkFormat findSupportedFormat(const std::vector<VkFormat>& candidates, VkImageTiling tiling, VkFormatFeatureFlags features);
+    VkFormat findDepthFormat();
+    bool hasStencilComponent(VkFormat format);
+    void createDepthBuffer();
+    void createImage(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties, VkImage& image, VkDeviceMemory& imageMemory);
+    VkImageView createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectFlags);
+
     bool checkValidationLayerSupport();
 
 public:

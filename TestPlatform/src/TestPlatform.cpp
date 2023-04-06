@@ -26,8 +26,20 @@ void TestPlatform::Init() {
 	initCommandPool = new CommandPool(initVulkan, window, MAX_FRAMES_IN_FLIGHT);
 	initCommandPool->createCommandPool();
 
+	glm::vec3 color2[4] = { {1.0f, 0.0f, 0.0f} , {0.0f, 1.0f, 0.0f} ,{0.0f, 0.0f, 1.0f}, {0,0,0} };
+	glm::vec3 color3[4] = { {1.0f, 1.0f, 1.0f} , {1.0f, 1.0f, 1.0f} ,{1.0f, 1.0f, 1.0f}, {1,1,1} };
 
+	//objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0, 0), 1, color2));
+	//objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0, -1.5f), 1, color2));
+	//objects->PushBack(Entity::rectangle::create(glm::vec3(0.5, 0, 0.f), 1, color3));
 
+	TestPlatform::AddEtities();
+
+	initCommandPool->createCommandBuffers();
+	initCommandPool->createSyncObjects();
+}
+
+void TestPlatform::AddEtities() {
 	glm::vec3 color[3] = { {1.0f, 0.0f, 0.0f} , {0.0f, 1.0f, 0.0f} ,{0.0f, 0.0f, 1.0f} };
 	glm::vec3 color2[4] = { {1.0f, 0.0f, 0.0f} , {0.0f, 1.0f, 0.0f} ,{0.0f, 0.0f, 1.0f}, {0,0,0} };
 	glm::vec3 testVertex[4] = { {-0.5f, -0.5f, 0.0f} , {0.5f, -0.5, 0.0f}, {0.5f, 0.5f, 0.0f}, {-0.5f, 0.5f, 0.f} };
@@ -37,23 +49,23 @@ void TestPlatform::Init() {
 
 	int minus[2] = { 1, 1 };
 	bool tak = true;
-	for (int i = 0; i < 20000000; i++)
+	for (int i = 0; i < 5000000; i++)
 	{
 		if (i % 100000 == 0) {
 			for (int& a : minus)
 			{
-				switch (rand() % 2+1)
+				switch (rand() % 2 + 1)
 				{
-					case 1:
-					{
-						a = 1;
-						break;
-					}
-					case 2:
-					{
-						a = -1;
-						break;
-					}
+				case 1:
+				{
+					a = 1;
+					break;
+				}
+				case 2:
+				{
+					a = -1;
+					break;
+				}
 				}
 			}
 			if (tak == true) {
@@ -62,7 +74,7 @@ void TestPlatform::Init() {
 				color[1] = { (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX) , (float)rand() / (RAND_MAX) };
 				color[2] = { (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX) , (float)rand() / (RAND_MAX) };
 
-				objects->PushBack(Entity::triangle::create(glm::vec3(((float)rand() / (RAND_MAX)) * minus[0], ((float)rand() / (RAND_MAX)) * minus[1], 0.0), 0.5f, color));
+				objects->PushBack(Entity::triangle::create(glm::vec3(((float)rand() / (RAND_MAX)) * minus[0], ((float)rand() / (RAND_MAX)) * minus[1], ((float)rand() / (RAND_MAX)) * minus[1]), 0.5f, color));
 
 				tak = false;
 			}
@@ -73,16 +85,13 @@ void TestPlatform::Init() {
 				color2[2] = { (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX) , (float)rand() / (RAND_MAX) };
 				color2[3] = { (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX) , (float)rand() / (RAND_MAX) };
 
-				objects->PushBack(Entity::rectangle::create(glm::vec3(((float)rand() / (RAND_MAX)) * minus[0], ((float)rand() / (RAND_MAX)) * minus[1], 0.0),
-						(float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX), color2));
+				objects->PushBack(Entity::rectangle::create(glm::vec3(((float)rand() / (RAND_MAX)) * minus[0], ((float)rand() / (RAND_MAX)) * minus[1], ((float)rand() / (RAND_MAX)) * minus[1]),
+					(float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX), color2));
 				tak = true;
 			}
 		}
 
 	}
-
-	initCommandPool->createCommandBuffers();
-	initCommandPool->createSyncObjects();
 }
 
 void TestPlatform::OnUpdate() {

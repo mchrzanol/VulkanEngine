@@ -15,6 +15,7 @@
     <ClCompile Include="src\logging\logging.cpp" />
     <ClCompile Include="src\window\window.cpp" />
     <ClCompile Include="src\BasicObjects\2D\Rectangle.cpp" />
+    <ClCompile Include="src\VulkanClass\DepthBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BasicObjects\2D\Triangle.h" />
