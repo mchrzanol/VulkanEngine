@@ -102,8 +102,8 @@ VkShaderModule ENGINE_API createShaderModule(const std::vector<char>& code, VkDe
 
 void VulkanClass::createGraphicsPipeline()
 {
-    auto vertShaderCode = readFile("../shaders/vert.spv");
-    auto fragShaderCode = readFile("../shaders/frag.spv");
+    auto vertShaderCode = readFile("../shaders/BasicVert.spv");
+    auto fragShaderCode = readFile("../shaders/BasicFrag.spv");
 
     VkShaderModule vertShaderModule = createShaderModule(vertShaderCode, device);
     VkShaderModule fragShaderModule = createShaderModule(fragShaderCode, device);
@@ -149,8 +149,12 @@ void VulkanClass::createGraphicsPipeline()
     rasterizer.rasterizerDiscardEnable = VK_FALSE;
     rasterizer.polygonMode = VK_POLYGON_MODE_FILL;
     rasterizer.lineWidth = 1.0f;
-    rasterizer.cullMode = VK_CULL_MODE_BACK_BIT;// VK_CULL_MODE_BACK_BIT;
+
+    //#NOTE: that is order that Entites are drown if you want to not drawing the back front you must pay attention of this :)
+    rasterizer.cullMode = VK_CULL_MODE_NONE;// VK_CULL_MODE_BACK_BIT;
     //rasterizer.frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE;
+
+
     rasterizer.depthBiasEnable = VK_FALSE;
 
     VkPipelineMultisampleStateCreateInfo multisampling{};
@@ -221,7 +225,9 @@ void VulkanClass::createGraphicsPipeline()
     pipelineInfo.subpass = 0;
     pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
 
-    if (vkCreateGraphicsPipelines(device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &graphicsPipeline) != VK_SUCCESS) {
+    graphicsPipeline.resize(graphicsPipeline.size() + 1);
+
+    if (vkCreateGraphicsPipelines(device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &graphicsPipeline[graphicsPipeline.size()-1]) != VK_SUCCESS) {
         throw std::runtime_error("failed to create graphics pipeline!");
     }
 

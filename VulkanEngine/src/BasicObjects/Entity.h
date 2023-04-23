@@ -6,6 +6,10 @@ enum class EntityType {
 	Triangle, Rectangle, Circle, Line
 };
 
+enum class Orientation {
+	X, Y, Z
+};
+
 struct EntityData {
 	EntityType type;
 };

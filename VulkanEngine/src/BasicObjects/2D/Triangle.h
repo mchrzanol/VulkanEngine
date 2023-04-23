@@ -1,7 +1,7 @@
 #pragma once
 #include "Libraries.h"
 #include "Renderer/VertexIndexBuffer.h"
-#include "Entity.h"
+#include "BasicObjects/Entity.h"
 
 extern GlobalUtl utils;
 

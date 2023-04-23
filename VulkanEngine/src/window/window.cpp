@@ -61,7 +61,7 @@ void windowClass::setWindowFPS()
         glfwSetWindowTitle(m_window, title.c_str());
 
         Frames = 0;
-        lastTime += 1.0;
+        lastTime = currentTime;
     }
 }
 

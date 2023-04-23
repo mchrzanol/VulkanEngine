@@ -96,7 +96,11 @@ public:
     void updateDynamicUniformBuffer(unsigned int binding, TypeOfUniform UniformType, T& data, uint32_t currentImage, uint32_t countOfData , uint32_t offset = 0) {
         size_t alignment = GetAlignment(BindingData[static_cast<int>(UniformType)][binding].sizeofData);
 
-        memcpy(uniformBuffersMapped[static_cast<int>(UniformType)][(binding + currentImage) * currentImage], data + offset, countOfData*alignment);
+        int calculateOffset = offset * alignment;
+
+        void* buffer = uniformBuffersMapped[static_cast<int>(UniformType)][(binding + currentImage) * currentImage];
+
+        memcpy(buffer, data + calculateOffset, countOfData*alignment);
 
         VkMappedMemoryRange memoryRange;
         memoryRange.sType = VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;

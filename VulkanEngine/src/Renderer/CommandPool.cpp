@@ -44,7 +44,8 @@ void CommandPool::recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t im
     renderPassInfo.renderPass = renderPass;
     renderPassInfo.framebuffer = swapChainFramebuffers[imageIndex];
     renderPassInfo.renderArea.offset = { 0, 0 };
-    renderPassInfo.renderArea.extent = initVulkan->GetSwapChainExtent();
+    renderPassInfo.renderArea.extent.width = initVulkan->GetSwapChainExtent().width;
+    renderPassInfo.renderArea.extent.height = initVulkan->GetSwapChainExtent().height;
 
     std::array<VkClearValue, 2> clearValues{};
     clearValues[0].color = { {0.0f, 0.0f, 0.0f, 1.0f} };
@@ -68,7 +69,8 @@ void CommandPool::recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t im
 
     VkRect2D scissor{};
     scissor.offset = { 0, 0 };
-    scissor.extent = initVulkan->GetSwapChainExtent();
+    scissor.extent.width = initVulkan->GetSwapChainExtent().width;
+    scissor.extent.height = initVulkan->GetSwapChainExtent().height;
     vkCmdSetScissor(commandBuffer, 0, 1, &scissor);
 
     vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, graphicsPipeline);
@@ -112,7 +114,7 @@ void CommandPool::drawFrame(Objects& objects) {
 
     if (result == VK_ERROR_OUT_OF_DATE_KHR) {
         initWindow->UpdateWindowSize();
-        initVulkan->recreateSwapChain(initWindow->m_Data);
+        initVulkan->recreateSwapChain();
         return;
     }
     else if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
@@ -164,7 +166,7 @@ void CommandPool::drawFrame(Objects& objects) {
 
     if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || initWindow->m_Data.framebufferResized) {
         initWindow->UpdateWindowSize();
-        initVulkan->recreateSwapChain(initWindow->m_Data);
+        initVulkan->recreateSwapChain();
     }
     else if (result != VK_SUCCESS) {
         throw std::runtime_error("failed to present swap chain image!");

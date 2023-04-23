@@ -1,24 +1,64 @@
 #include "Rectangle.h"
 namespace Entity {
 	namespace rectangle {
-		EntityInfo* create(glm::vec3 origin, float size, glm::vec3 color[4]) {
+		EntityInfo* create(glm::vec3 origin, float size, glm::vec3 color[4], Orientation orientation) {
 			EntityInfo* data = new EntityInfo();
 
 			data->origin = origin;
 
 			std::vector<Vertex> verticesInfo(4);
 
-			verticesInfo[0] = { glm::vec3(origin.x - size * 0.5, origin.y - size * 0.5, origin.z), color[0] };//left-bottom
-			std::cout << "verticesInfo[0]: " << verticesInfo[0].pos.x << " " << verticesInfo[0].pos.y << " " << verticesInfo[0].pos.z << std::endl;
+			//glm::vec3 BonusOriention(0, 0, 0);
+			//if (orientation == Orientation::Z || orientation == Orientation::Y)
+			//	BonusOriention.x = 1.f;
 
-			verticesInfo[1] = { glm::vec3(origin.x + size * 0.5, origin.y - size * 0.5, origin.z), color[1] };//right-bottom
-			std::cout << "verticesInfo[1]: " << verticesInfo[1].pos.x << " " << verticesInfo[1].pos.y << " " << verticesInfo[1].pos.z << std::endl;
+			//if (orientation == Orientation::X || orientation == Orientation::Z)
+			//	BonusOriention.y = 1.f;
 
-			verticesInfo[2] = { glm::vec3(origin.x + size * 0.5, origin.y + size * 0.5, origin.z), color[2] };//right-top
-			std::cout << "verticesInfo[2]: " << verticesInfo[2].pos.x << " " << verticesInfo[2].pos.y << " " << verticesInfo[2].pos.z << std::endl;
+			//if (orientation == Orientation::X || orientation == Orientation::Y)
+			//	BonusOriention.z = 1.f;
 
-			verticesInfo[3] = { glm::vec3(origin.x - size * 0.5, origin.y + size * 0.5, origin.z), color[3] };//left-top
-			std::cout << "verticesInfo[3]: " << verticesInfo[3].pos.x << " " << verticesInfo[3].pos.y << " " << verticesInfo[3].pos.z << std::endl;
+
+			if (orientation == Orientation::Z) {
+				verticesInfo[0] = { glm::vec3(origin.x - size * 0.5, origin.y - size * 0.5, origin.z), color[0] };
+				std::cout << "verticesInfo[0]: " << verticesInfo[0].pos.x << " " << verticesInfo[0].pos.y << " " << verticesInfo[0].pos.z << std::endl;
+
+				verticesInfo[1] = { glm::vec3(origin.x + size * 0.5, origin.y - size * 0.5, origin.z), color[1] };
+				std::cout << "verticesInfo[1]: " << verticesInfo[1].pos.x << " " << verticesInfo[1].pos.y << " " << verticesInfo[1].pos.z << std::endl;
+
+				verticesInfo[2] = { glm::vec3(origin.x + size * 0.5, origin.y + size * 0.5, origin.z), color[2] };
+				std::cout << "verticesInfo[2]: " << verticesInfo[2].pos.x << " " << verticesInfo[2].pos.y << " " << verticesInfo[2].pos.z << std::endl;
+
+				verticesInfo[3] = { glm::vec3(origin.x - size * 0.5, origin.y + size * 0.5, origin.z), color[3] };
+				std::cout << "verticesInfo[3]: " << verticesInfo[3].pos.x << " " << verticesInfo[3].pos.y << " " << verticesInfo[3].pos.z << std::endl;
+			}
+			if (orientation == Orientation::X) {
+				verticesInfo[0] = { glm::vec3(origin.x, origin.y - size * 0.5, origin.z - size * 0.5), color[0] };//left-bottom
+				std::cout << "verticesInfo[0]: " << verticesInfo[0].pos.x << " " << verticesInfo[0].pos.y << " " << verticesInfo[0].pos.z << std::endl;
+
+				verticesInfo[1] = { glm::vec3(origin.x, origin.y - size * 0.5, origin.z + size * 0.5), color[1] };//right-bottom
+				std::cout << "verticesInfo[1]: " << verticesInfo[1].pos.x << " " << verticesInfo[1].pos.y << " " << verticesInfo[1].pos.z << std::endl;
+
+				verticesInfo[2] = { glm::vec3(origin.x, origin.y + size * 0.5, origin.z + size * 0.5), color[2] };//right-top
+				std::cout << "verticesInfo[2]: " << verticesInfo[2].pos.x << " " << verticesInfo[2].pos.y << " " << verticesInfo[2].pos.z << std::endl;
+
+				verticesInfo[3] = { glm::vec3(origin.x, origin.y + size * 0.5, origin.z - size * 0.5), color[3] };//left-top
+				std::cout << "verticesInfo[3]: " << verticesInfo[3].pos.x << " " << verticesInfo[3].pos.y << " " << verticesInfo[3].pos.z << std::endl;
+			}
+			if (orientation == Orientation::Y) {
+				verticesInfo[0] = { glm::vec3(origin.x - size * 0.5, origin.y, origin.z - size * 0.5), color[0] };//left-bottom
+				std::cout << "verticesInfo[0]: " << verticesInfo[0].pos.x << " " << verticesInfo[0].pos.y << " " << verticesInfo[0].pos.z << std::endl;
+
+				verticesInfo[1] = { glm::vec3(origin.x + size * 0.5, origin.y, origin.z - size * 0.5), color[1] };//right-bottom
+				std::cout << "verticesInfo[1]: " << verticesInfo[1].pos.x << " " << verticesInfo[1].pos.y << " " << verticesInfo[1].pos.z << std::endl;
+
+				verticesInfo[2] = { glm::vec3(origin.x + size * 0.5, origin.y, origin.z + size * 0.5), color[2] };//right-top
+				std::cout << "verticesInfo[2]: " << verticesInfo[2].pos.x << " " << verticesInfo[2].pos.y << " " << verticesInfo[2].pos.z << std::endl;
+
+				verticesInfo[3] = { glm::vec3(origin.x - size * 0.5, origin.y, origin.z + size * 0.5), color[3] };//left-top
+				std::cout << "verticesInfo[3]: " << verticesInfo[3].pos.x << " " << verticesInfo[3].pos.y << " " << verticesInfo[3].pos.z << std::endl;
+			}
+
 
 			data->createVertexBuffer(verticesInfo);
 			data->createIndexBuffer({ 0,1,2, 2, 3, 0 });
@@ -28,24 +68,54 @@ namespace Entity {
 			return data;
 		}
 
-		EntityInfo* create(glm::vec3 origin, float sizeHorrizontal, float sizeVertical, glm::vec3 color[4]) {
+		EntityInfo* create(glm::vec3 origin, float sizeHorrizontal, float sizeVertical, glm::vec3 color[4], Orientation orientation) {
 			EntityInfo* data = new EntityInfo();
 
 			data->origin = origin;
 
 			std::vector<Vertex> verticesInfo(4);
 
-			verticesInfo[0] = { glm::vec3(origin.x - sizeHorrizontal * 0.5, origin.y - sizeVertical * 0.5, origin.z), color[0] };//left-bottom
-			std::cout << "verticesInfo[0]: " << verticesInfo[0].pos.x << " " << verticesInfo[0].pos.y << " " << verticesInfo[0].pos.z << std::endl;
+			if (orientation == Orientation::Z) {
+				verticesInfo[0] = { glm::vec3(origin.x - sizeHorrizontal * 0.5, origin.y - sizeVertical * 0.5, origin.z), color[0] };//left-bottom
+				std::cout << "verticesInfo[0]: " << verticesInfo[0].pos.x << " " << verticesInfo[0].pos.y << " " << verticesInfo[0].pos.z << std::endl;
 
-			verticesInfo[1] = { glm::vec3(origin.x + sizeHorrizontal * 0.5, origin.y - sizeVertical * 0.5, origin.z), color[1] };//right-bottom
-			std::cout << "verticesInfo[1]: " << verticesInfo[1].pos.x << " " << verticesInfo[1].pos.y << " " << verticesInfo[1].pos.z << std::endl;
+				verticesInfo[1] = { glm::vec3(origin.x + sizeHorrizontal * 0.5, origin.y - sizeVertical * 0.5, origin.z), color[1] };//right-bottom
+				std::cout << "verticesInfo[1]: " << verticesInfo[1].pos.x << " " << verticesInfo[1].pos.y << " " << verticesInfo[1].pos.z << std::endl;
 
-			verticesInfo[2] = { glm::vec3(origin.x + sizeHorrizontal * 0.5, origin.y + sizeVertical * 0.5, origin.z), color[2] };//right-top
-			std::cout << "verticesInfo[2]: " << verticesInfo[2].pos.x << " " << verticesInfo[2].pos.y << " " << verticesInfo[2].pos.z << std::endl;
+				verticesInfo[2] = { glm::vec3(origin.x + sizeHorrizontal * 0.5, origin.y + sizeVertical * 0.5, origin.z), color[2] };//right-top
+				std::cout << "verticesInfo[2]: " << verticesInfo[2].pos.x << " " << verticesInfo[2].pos.y << " " << verticesInfo[2].pos.z << std::endl;
 
-			verticesInfo[3] = { glm::vec3(origin.x - sizeHorrizontal * 0.5, origin.y + sizeVertical * 0.5, origin.z), color[3] };//left-top
-			std::cout << "verticesInfo[3]: " << verticesInfo[3].pos.x << " " << verticesInfo[3].pos.y << " " << verticesInfo[3].pos.z << std::endl;
+				verticesInfo[3] = { glm::vec3(origin.x - sizeHorrizontal * 0.5, origin.y + sizeVertical * 0.5, origin.z), color[3] };//left-top
+				std::cout << "verticesInfo[3]: " << verticesInfo[3].pos.x << " " << verticesInfo[3].pos.y << " " << verticesInfo[3].pos.z << std::endl;
+			}
+
+			if (orientation == Orientation::X) {
+				verticesInfo[0] = { glm::vec3(origin.x, origin.y - sizeVertical * 0.5, origin.z - sizeHorrizontal * 0.5), color[0] };//left-bottom
+				std::cout << "verticesInfo[0]: " << verticesInfo[0].pos.x << " " << verticesInfo[0].pos.y << " " << verticesInfo[0].pos.z << std::endl;
+
+				verticesInfo[1] = { glm::vec3(origin.x, origin.y - sizeVertical * 0.5, origin.z + sizeHorrizontal * 0.5), color[1] };//right-bottom
+				std::cout << "verticesInfo[1]: " << verticesInfo[1].pos.x << " " << verticesInfo[1].pos.y << " " << verticesInfo[1].pos.z << std::endl;
+
+				verticesInfo[2] = { glm::vec3(origin.x, origin.y + sizeVertical * 0.5, origin.z + sizeHorrizontal * 0.5), color[2] };//right-top
+				std::cout << "verticesInfo[2]: " << verticesInfo[2].pos.x << " " << verticesInfo[2].pos.y << " " << verticesInfo[2].pos.z << std::endl;
+
+				verticesInfo[3] = { glm::vec3(origin.x, origin.y + sizeVertical * 0.5, origin.z - sizeHorrizontal * 0.5), color[3] };//left-top
+				std::cout << "verticesInfo[3]: " << verticesInfo[3].pos.x << " " << verticesInfo[3].pos.y << " " << verticesInfo[3].pos.z << std::endl;
+			}
+
+			if (orientation == Orientation::Y) {
+				verticesInfo[0] = { glm::vec3(origin.x - sizeHorrizontal * 0.5, origin.y, origin.z - sizeVertical * 0.5), color[0] };//left-bottom
+				std::cout << "verticesInfo[0]: " << verticesInfo[0].pos.x << " " << verticesInfo[0].pos.y << " " << verticesInfo[0].pos.z << std::endl;
+
+				verticesInfo[1] = { glm::vec3(origin.x + sizeHorrizontal * 0.5, origin.y, origin.z - sizeVertical * 0.5), color[1] };//right-bottom
+				std::cout << "verticesInfo[1]: " << verticesInfo[1].pos.x << " " << verticesInfo[1].pos.y << " " << verticesInfo[1].pos.z << std::endl;
+
+				verticesInfo[2] = { glm::vec3(origin.x + sizeHorrizontal * 0.5, origin.y, origin.z + sizeVertical * 0.5), color[2] };//right-top
+				std::cout << "verticesInfo[2]: " << verticesInfo[2].pos.x << " " << verticesInfo[2].pos.y << " " << verticesInfo[2].pos.z << std::endl;
+
+				verticesInfo[3] = { glm::vec3(origin.x - sizeHorrizontal * 0.5, origin.y, origin.z + sizeVertical * 0.5), color[3] };//left-top
+				std::cout << "verticesInfo[3]: " << verticesInfo[3].pos.x << " " << verticesInfo[3].pos.y << " " << verticesInfo[3].pos.z << std::endl;
+			}
 
 			data->createVertexBuffer(verticesInfo);
 			data->createIndexBuffer({ 0,1,2, 2, 3, 0 });

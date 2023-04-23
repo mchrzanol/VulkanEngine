@@ -63,7 +63,8 @@ public:
 
     void cleanup() {
 
-        vkDestroyPipeline(device, graphicsPipeline, nullptr);
+        for(auto & pipeline : graphicsPipeline)
+            vkDestroyPipeline(device, pipeline, nullptr);
         vkDestroyPipelineLayout(device, pipelineLayout, nullptr);
         vkDestroyRenderPass(device, renderPass, nullptr);
 
@@ -100,11 +101,11 @@ private:
     VkSwapchainKHR swapChain;
     std::vector<VkImage> swapChainImages;
     VkFormat swapChainImageFormat;
-    VkExtent2D swapChainExtent;
+    VkExtent3D swapChainExtent;
     std::vector<VkImageView> swapChainImageViews;
     std::vector<VkFramebuffer> swapChainFramebuffers;
 
-    VkPipeline graphicsPipeline;
+    std::vector<VkPipeline> graphicsPipeline;
     VkRenderPass renderPass;
     VkPipelineLayout pipelineLayout;
 
@@ -136,7 +137,7 @@ private:
     SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device);
     VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
     VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
-    VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
+    VkExtent3D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
     void createSwapChain();
     void createImageViews();
 
@@ -152,7 +153,7 @@ private:
     VkFormat findDepthFormat();
     bool hasStencilComponent(VkFormat format);
     void createDepthBuffer();
-    void createImage(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties, VkImage& image, VkDeviceMemory& imageMemory);
+    void createImage(VkExtent3D extent, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties, VkImage& image, VkDeviceMemory& imageMemory);
     VkImageView createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectFlags);
 
     bool checkValidationLayerSupport();
@@ -160,14 +161,16 @@ private:
 public:
     //Physical / Logical Device
     QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
-    void recreateSwapChain(WindowData data);
+
+    void recreateSwapChain();
+    void recreateDepthBuffer();
 
     inline VkPhysicalDevice GetPhyscicalDevice() { return physicalDevice; };
     inline VkDevice& GetDevice() { return device; };
-    inline VkExtent2D GetSwapChainExtent() { return swapChainExtent; };
+    inline VkExtent3D GetSwapChainExtent() { return swapChainExtent; };
     inline VkPipelineLayout GetPipelineLayout() { return pipelineLayout; };
     inline VkQueue GetGraphicsQueue() { return graphicsQueue; };
-    inline VkPipeline& GetGraphicsPipeline() { return graphicsPipeline; };
+    inline VkPipeline& GetGraphicsPipeline() { return graphicsPipeline[0]; };
     inline VkSwapchainKHR GetSwapChain() { return swapChain;};
     inline VkRenderPass& GetRenderPass() { return renderPass; };
     inline std::vector<VkFramebuffer> GetSwapChainFrameBuffers() {return swapChainFramebuffers; };

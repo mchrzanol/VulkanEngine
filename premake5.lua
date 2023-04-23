@@ -16,6 +16,7 @@ IncludeDir["GLFW"] = "VulkanEngine/external/GLFW/include"
 IncludeDir["Vulkan"] = "VulkanEngine/external/Vulkan/Include"
 IncludeDir["imgui"] = "VulkanEngine/external/imgui"
 IncludeDir["glm"] = "VulkanEngine/external/glm"
+IncludeDir["optick"] = "VulkanEngine/external/optick"
 
 vulkanPath ="VulkanEngine/external/Vulkan"
 
@@ -46,7 +47,8 @@ project "VulkanEngine"
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Vulkan}",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.imgui}"
+		"%{IncludeDir.imgui}",
+		"%{IncludeDir.optick}"
 	}
 
 	libdirs { "VulkanEngine/external/Vulkan/Lib" }
@@ -82,10 +84,10 @@ project "VulkanEngine"
 		optimize	"On"
 
 		
-	project "TestPlatform"
-		location "TestPlatform"
-		kind "ConsoleApp"
-		language "C++"
+project "TestPlatform"
+	location "TestPlatform"
+	kind "ConsoleApp"
+	language "C++"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin/" .. outputdir.. "/%{prj.name}/obj")
@@ -103,7 +105,8 @@ project "VulkanEngine"
 			"%{IncludeDir.Vulkan}",
 			"%{IncludeDir.GLFW}",
 			"%{IncludeDir.glm}",
-			"%{IncludeDir.imgui}"
+			"%{IncludeDir.imgui}",
+			"%{IncludeDir.optick}"
 		}
 
 		libdirs { "bin/" .. outputdir .. "/VulkanEngine" }

@@ -1,9 +1,23 @@
 #pragma once
 #include "2D/Triangle.h"
 #include "2D/Rectangle.h"
+struct data {
+	const static uint32_t MaximumObjectsOnFrame = 20000;
+
+	std::string BasicShaders[2] = {
+		"../shaders/BasicVert.spv",
+		"../shaders/BasicFrag.spv"
+	};
+
+	std::string CircleShaders[2] = {
+		"",
+		""
+	};
+};
+
+
 struct stats
 {
-	const static uint32_t MaximumObjectsOnFrame = 20000;
 	uint32_t EntitiesCount = 0;
 
 	uint32_t triangleCount = 0;
@@ -24,15 +38,11 @@ private:
 
 	UniformBuffer* initUniform;
 
-	//Data m_data;
+	data m_data;
 	stats m_stats;
 
 	std::vector<EntityInfo> m_objects;
 
-	//line
-	//circle
-
-	//test
 	ubo_model models;
 
 	size_t alignment;
@@ -45,7 +55,7 @@ private:
 public:
 	Objects(int MAX_FRAMES_IN_FLIGHT)
 	{
-		initUniform = new UniformBuffer(MAX_FRAMES_IN_FLIGHT, m_stats.MaximumObjectsOnFrame);
+		initUniform = new UniformBuffer(MAX_FRAMES_IN_FLIGHT, m_data.MaximumObjectsOnFrame);
 
 		initUniform->createUniformBind(0, sizeof(UniformBufferObject), VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, TypeOfUniform::GlobalUniform);
 		initUniform->createUniformBind(0, sizeof(glm::mat4), VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC, TypeOfUniform::EntityUniform);
@@ -53,14 +63,14 @@ public:
 	}
 
 	void Init() {
-		m_objects.reserve(m_stats.MaximumObjectsOnFrame);
+		m_objects.reserve(m_data.MaximumObjectsOnFrame);
 		m_stats.EntitiesCount = 0;
 
 		viewMatrix = glm::mat4(1.f);
 		projMatrix = glm::mat4(1.f);
 
 		alignment = initUniform->GetAlignment(sizeof(glm::mat4));
-		size_t bufferSize = m_stats.MaximumObjectsOnFrame * alignment;
+		size_t bufferSize = m_data.MaximumObjectsOnFrame * alignment;
 		models.model = (glm::mat4*)_aligned_malloc(bufferSize, alignment);
 	}
 
@@ -93,6 +103,7 @@ public:
 		*modelMat = glm::translate(*modelMat, m_objects[EntityIndex].origin);
 		*modelMat = glm::rotate(*modelMat, radians, axis);
 		*modelMat = glm::translate(*modelMat, glm::vec3(-1.f) * m_objects[EntityIndex].origin);
+
 	}
 
 	void destroy() {
@@ -129,9 +140,9 @@ private:
 		UniformBufferObject ubo = { viewMatrix, projMatrix };
 		initUniform->updateStaticUniformBuffer(0, TypeOfUniform::GlobalUniform, ubo, currentFrame);
 
-		initUniform->updateDynamicUniformBuffer(0, TypeOfUniform::EntityUniform, models.model, currentFrame, m_stats.EntitiesCount);
-
 		vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 0, 1, &initUniform->GetDescriptorSets()[0][currentFrame], 0, nullptr);
+
+		initUniform->updateDynamicUniformBuffer(0, TypeOfUniform::EntityUniform, models.model, currentFrame,m_stats.EntitiesCount);
 
 		for (size_t index = 0; index < m_stats.EntitiesCount; index++) {
 			uint32_t dynamicOffset = index * static_cast<uint32_t>(alignment);

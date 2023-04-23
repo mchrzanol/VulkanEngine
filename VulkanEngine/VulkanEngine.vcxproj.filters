@@ -1,38 +1,118 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="src\BasicObjects\2D\Triangle.cpp" />
-    <ClCompile Include="src\GlobalVariables.cpp" />
-    <ClCompile Include="src\Renderer\Buffers.cpp" />
-    <ClCompile Include="src\Renderer\CommandPool.cpp" />
-    <ClCompile Include="src\Renderer\UniformBuffer.cpp" />
-    <ClCompile Include="src\Renderer\VertexIndexBuffer.cpp" />
-    <ClCompile Include="src\VulkanClass\FrameBuffer.cpp" />
-    <ClCompile Include="src\VulkanClass\General.cpp" />
-    <ClCompile Include="src\VulkanClass\PhysicalLogicalDevice.cpp" />
-    <ClCompile Include="src\VulkanClass\Pipeline.cpp" />
-    <ClCompile Include="src\VulkanClass\SwapChain.cpp" />
-    <ClCompile Include="src\logging\logging.cpp" />
-    <ClCompile Include="src\window\window.cpp" />
-    <ClCompile Include="src\BasicObjects\2D\Rectangle.cpp" />
-    <ClCompile Include="src\VulkanClass\DepthBuffer.cpp" />
+    <Filter Include="BasicObjects">
+      <UniqueIdentifier>{D1EC4922-BD4F-D9C6-66D5-117D5217A549}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BasicObjects\2D">
+      <UniqueIdentifier>{D6D5856B-4261-F32F-4B72-7624B77C4F30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{953A660D-014F-8EBE-CAD0-311E36A48AEF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer">
+      <UniqueIdentifier>{7CCE658F-689B-C09A-91B4-AE427DE0F528}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="VulkanClass">
+      <UniqueIdentifier>{2C6FC8A5-9824-419B-2119-3B728DCD379F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="logging">
+      <UniqueIdentifier>{CC00C087-38E0-3E23-41F8-C9F9AD56A584}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="window">
+      <UniqueIdentifier>{5DFE1E25-49A0-49FB-325B-5D4F1E9CD04B}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\BasicObjects\2D\Triangle.h" />
+    <ClInclude Include="src\BasicObjects\Entity.h">
+      <Filter>BasicObjects\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BasicObjects\2D\Rectangle.h">
+      <Filter>BasicObjects\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BasicObjects\2D\Triangle.h">
+      <Filter>BasicObjects\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BasicObjects\Objects.h">
+      <Filter>BasicObjects</Filter>
+    </ClInclude>
     <ClInclude Include="src\Core.h" />
     <ClInclude Include="src\Engine.h" />
-    <ClInclude Include="src\Input\Input.h" />
     <ClInclude Include="src\GlobalVariables.h" />
+    <ClInclude Include="src\Input\Input.h">
+      <Filter>Input</Filter>
+    </ClInclude>
     <ClInclude Include="src\Libraries.h" />
-    <ClInclude Include="src\Renderer\Buffers.h" />
-    <ClInclude Include="src\Renderer\CommandPool.h" />
-    <ClInclude Include="src\Renderer\UniformBuffer.h" />
-    <ClInclude Include="src\Renderer\VertexIndexBuffer.h" />
-    <ClInclude Include="src\VulkanClass\VulkanClass.h" />
-    <ClInclude Include="src\logging\logging.h" />
-    <ClInclude Include="src\window\window.h" />
-    <ClInclude Include="src\BasicObjects\Objects.h" />
-    <ClInclude Include="src\BasicObjects\2D\Rectangle.h" />
-    <ClInclude Include="src\BasicObjects\2D\Entity.h" />
+    <ClInclude Include="src\Renderer\Buffers.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\CommandPool.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\UniformBuffer.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer\VertexIndexBuffer.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\VulkanClass\VulkanClass.h">
+      <Filter>VulkanClass</Filter>
+    </ClInclude>
+    <ClInclude Include="src\logging\logging.h">
+      <Filter>logging</Filter>
+    </ClInclude>
+    <ClInclude Include="src\window\window.h">
+      <Filter>window</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BasicObjects\2D\Circle.h" />
+    <ClInclude Include="src\WorldMatricies\ViewMatricies.h" />
+    <ClInclude Include="src\BasicObjects\3D\Square.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\BasicObjects\2D\Rectangle.cpp">
+      <Filter>BasicObjects\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BasicObjects\2D\Triangle.cpp">
+      <Filter>BasicObjects\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GlobalVariables.cpp" />
+    <ClCompile Include="src\Renderer\Buffers.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer\CommandPool.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer\UniformBuffer.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Renderer\VertexIndexBuffer.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VulkanClass\DepthBuffer.cpp">
+      <Filter>VulkanClass</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VulkanClass\FrameBuffer.cpp">
+      <Filter>VulkanClass</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VulkanClass\General.cpp">
+      <Filter>VulkanClass</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VulkanClass\PhysicalLogicalDevice.cpp">
+      <Filter>VulkanClass</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VulkanClass\Pipeline.cpp">
+      <Filter>VulkanClass</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VulkanClass\SwapChain.cpp">
+      <Filter>VulkanClass</Filter>
+    </ClCompile>
+    <ClCompile Include="src\logging\logging.cpp">
+      <Filter>logging</Filter>
+    </ClCompile>
+    <ClCompile Include="src\window\window.cpp">
+      <Filter>window</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BasicObjects\2D\Circle.cpp" />
+    <ClCompile Include="src\BasicObjects\3D\Square.cpp" />
   </ItemGroup>
 </Project>

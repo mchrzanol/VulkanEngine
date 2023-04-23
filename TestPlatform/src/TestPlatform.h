@@ -19,6 +19,10 @@ private:
 
 	Objects* objects;
 
+	std::chrono::steady_clock::time_point startTime;
+
+	ViewMatricies view;
+
 
 	void Init();
 

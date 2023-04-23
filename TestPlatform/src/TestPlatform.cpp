@@ -13,7 +13,7 @@ void TestPlatform::Init() {
 	window = new windowClass;
 
 	window->initWindow("TestPlatform");
-	initInput = new Input(window->m_window);
+	initInput = new Input(window->m_window, &window->m_Data.Width, &window->m_Data.Height);
 	window->addUserPointer(initInput);
 
 	objects = new Objects(MAX_FRAMES_IN_FLIGHT);
@@ -29,14 +29,16 @@ void TestPlatform::Init() {
 	glm::vec3 color2[4] = { {1.0f, 0.0f, 0.0f} , {0.0f, 1.0f, 0.0f} ,{0.0f, 0.0f, 1.0f}, {0,0,0} };
 	glm::vec3 color3[4] = { {1.0f, 1.0f, 1.0f} , {1.0f, 1.0f, 1.0f} ,{1.0f, 1.0f, 1.0f}, {1,1,1} };
 
-	//objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0, 0), 1, color2));
-	//objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0, -1.5f), 1, color2));
-	//objects->PushBack(Entity::rectangle::create(glm::vec3(0.5, 0, 0.f), 1, color3));
+	objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0, -1.5f), 1, color2, Orientation::Z));
+	objects->PushBack(Entity::rectangle::create(glm::vec3(0.5, 0, 0.f), 1, color3, Orientation::X));
+	objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0.5, 0.f), 1, 1, color3, Orientation::Y));
 
-	TestPlatform::AddEtities();
+	//TestPlatform::AddEtities();
 
 	initCommandPool->createCommandBuffers();
 	initCommandPool->createSyncObjects();
+
+	startTime = std::chrono::high_resolution_clock::now();
 }
 
 void TestPlatform::AddEtities() {
@@ -49,7 +51,7 @@ void TestPlatform::AddEtities() {
 
 	int minus[2] = { 1, 1 };
 	bool tak = true;
-	for (int i = 0; i < 5000000; i++)
+	for (int i = 0; i < 10000000; i++)
 	{
 		if (i % 100000 == 0) {
 			for (int& a : minus)
@@ -86,7 +88,7 @@ void TestPlatform::AddEtities() {
 				color2[3] = { (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX) , (float)rand() / (RAND_MAX) };
 
 				objects->PushBack(Entity::rectangle::create(glm::vec3(((float)rand() / (RAND_MAX)) * minus[0], ((float)rand() / (RAND_MAX)) * minus[1], ((float)rand() / (RAND_MAX)) * minus[1]),
-					(float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX), color2));
+					(float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX), color2, Orientation::Z));
 				tak = true;
 			}
 		}
@@ -96,21 +98,22 @@ void TestPlatform::AddEtities() {
 
 void TestPlatform::OnUpdate() {
 
-	glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, 1.f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	//glm::mat4 view2 = glm::lookAt(glm::vec3(0.0f, 0.0f, 1.f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 	glm::mat4 proj = glm::perspective(glm::radians(90.0f), (float)initVulkan->GetSwapChainExtent().width / (float)initVulkan->GetSwapChainExtent().height, 0.1f, 10.0f);
 	proj[1][1] *= -1;
 
-	objects->UpdateView(view);
+	objects->UpdateView(view.GetView());
 	objects->UpdateProjection(proj);
-
-	static auto startTime = std::chrono::high_resolution_clock::now();
 
 	auto currentTime = std::chrono::high_resolution_clock::now();
 	float time = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - startTime).count();
 
-	for (int i = 0; i < objects->GetEntitiesCount(); i++) {
-		objects->rotate(i, glm::radians(0.5f), glm::vec3(0.0f, 1.0f, 0.0f));
+	if (time >= 0.02) {
+		startTime = currentTime;
+		for (int i = 0; i < objects->GetEntitiesCount(); i++) {
+		//	objects->rotate(i, glm::radians(5.f), glm::vec3(0.0f, 1.0f, 0.0f));
+		}
 	}
 }
 
@@ -120,14 +123,40 @@ void TestPlatform::mainLoop() {
 		window->PoolEvents();
 		window->setWindowFPS();
 
-		TestPlatform::OnUpdate();
+		initInput->MouseEvents();
 
-		initCommandPool->drawFrame(*objects);
+
+		TestPlatform::OnUpdate();
 
 		if (initInput->keyState[KEY_ESCAPE].press == true) {
 			break;
 		}
-		
+		if (initInput->keyState[KEY_W].press == true) {
+			view.ChangePosz(0.05f);
+		}
+
+		if (initInput->keyState[KEY_S].press == true) {
+			view.ChangePosz(-0.05f);
+		}
+
+		if (initInput->keyState[KEY_A].press == true) {
+			view.ChangePosx(-0.05f);
+		}
+
+		if (initInput->keyState[KEY_D].press == true) {
+			view.ChangePosx(0.05f);
+		}
+
+		if (initInput->keyState[KEY_P].release == true) {
+			initInput->CursorLock = !initInput->CursorLock;
+		}
+
+		view.UpdateFront({ initInput->deltaCursorPos.x, initInput->deltaCursorPos.y });
+
+
+		view.update();
+
+		initCommandPool->drawFrame(*objects);
 		initInput->ClearKeyState();
 	}
 
