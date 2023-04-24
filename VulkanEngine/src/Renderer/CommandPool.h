@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Libraries.h"
-#include "VulkanClass/VulkanClass.h"
+#include "VulkanStructure/VulkanStructure.h"
 #include "UniformBuffer.h"
 #include "VertexIndexBuffer.h"
 #include "window/window.h"
@@ -11,8 +11,8 @@ extern GlobalUtl utils;
 
 class ENGINE_API CommandPool {
 private:
-    VulkanClass* initVulkan;
-    windowClass* initWindow;
+    VulkanStruct* VulkanCore;
+    windowClass* Window;
 
 
     VkCommandPool commandPool;
@@ -25,12 +25,12 @@ private:
 
     int MAX_FRAMES_IN_FLIGHT;
 public:
-    CommandPool(VulkanClass*& initVulkan, windowClass*& initWindow, int MAX_FRAMES_IN_FLIGHT)
-        :initVulkan(initVulkan),initWindow(initWindow),MAX_FRAMES_IN_FLIGHT(MAX_FRAMES_IN_FLIGHT){};
+    CommandPool(VulkanStruct*& Vulkan, windowClass*& Window, int MAX_FRAMES_IN_FLIGHT)
+        :VulkanCore(Vulkan),Window(Window),MAX_FRAMES_IN_FLIGHT(MAX_FRAMES_IN_FLIGHT){};
     void createCommandPool();
     void createCommandBuffers();
-    void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex, VkRenderPass& renderPass,
-        std::vector<VkFramebuffer>& swapChainFramebuffers, VkPipeline& graphicsPipeline, Objects& objects);
+    void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex,
+        std::vector<VkFramebuffer>& swapChainFramebuffers, Objects& objects);
     void createSyncObjects();
 
     void drawFrame(Objects& objects);

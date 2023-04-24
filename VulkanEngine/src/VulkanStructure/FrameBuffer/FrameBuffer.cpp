@@ -1,8 +1,8 @@
-#include "VulkanClass.h"
+#include "FrameBuffer.h"
 
 //FrameBuffer
 
-void VulkanClass::createFramebuffers() {
+void frameBuffer::createFramebuffer(VkDevice device, std::vector<VkImageView> swapChainImageViews, VkImageView depthImageView, VkExtent3D swapChainExtent, VkRenderPass renderPass) {
     swapChainFramebuffers.resize(swapChainImageViews.size());
 
     for (size_t i = 0; i < swapChainImageViews.size(); i++) {
@@ -23,5 +23,11 @@ void VulkanClass::createFramebuffers() {
         if (vkCreateFramebuffer(device, &framebufferInfo, nullptr, &swapChainFramebuffers[i]) != VK_SUCCESS) {
             throw std::runtime_error("failed to create framebuffer!");
         }
+    }
+}
+
+void frameBuffer::cleanup(VkDevice device) {
+    for (size_t i = 0; i < swapChainFramebuffers.size(); i++) {
+        vkDestroyFramebuffer(device, swapChainFramebuffers[i], nullptr);
     }
 }

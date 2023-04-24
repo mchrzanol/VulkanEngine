@@ -143,6 +143,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\VulkanStructure\DepthBuffer\DepthBuffer.h" />
+    <ClInclude Include="src\VulkanStructure\FrameBuffer\FrameBuffer.h" />
+    <ClInclude Include="src\VulkanStructure\PhysicalLogicalDevice\PhysicalLogicalDevice.h" />
+    <ClInclude Include="src\VulkanStructure\Structures.h" />
+    <ClInclude Include="src\VulkanStructure\SwapChain\SwapChain.h" />
+    <ClInclude Include="src\VulkanStructure\VulkanStructure.h" />
+    <ClInclude Include="src\VulkanStructure\Pipeline\Pipeline.h" />
     <ClInclude Include="src\BasicObjects\2D\Circle.h" />
     <ClInclude Include="src\BasicObjects\Entity.h" />
     <ClInclude Include="src\BasicObjects\2D\Rectangle.h" />
@@ -158,7 +165,6 @@
     <ClInclude Include="src\Renderer\CommandPool.h" />
     <ClInclude Include="src\Renderer\UniformBuffer.h" />
     <ClInclude Include="src\Renderer\VertexIndexBuffer.h" />
-    <ClInclude Include="src\VulkanClass\VulkanClass.h" />
     <ClInclude Include="src\logging\logging.h" />
     <ClInclude Include="src\window\window.h" />
     <ClInclude Include="src\WorldMatricies\ViewMatricies.h" />
@@ -173,12 +179,12 @@
     <ClCompile Include="src\Renderer\CommandPool.cpp" />
     <ClCompile Include="src\Renderer\UniformBuffer.cpp" />
     <ClCompile Include="src\Renderer\VertexIndexBuffer.cpp" />
-    <ClCompile Include="src\VulkanClass\DepthBuffer.cpp" />
-    <ClCompile Include="src\VulkanClass\FrameBuffer.cpp" />
-    <ClCompile Include="src\VulkanClass\General.cpp" />
-    <ClCompile Include="src\VulkanClass\PhysicalLogicalDevice.cpp" />
-    <ClCompile Include="src\VulkanClass\Pipeline.cpp" />
-    <ClCompile Include="src\VulkanClass\SwapChain.cpp" />
+    <ClCompile Include="src\VulkanStructure\DepthBuffer\DepthBuffer.cpp" />
+    <ClCompile Include="src\VulkanStructure\FrameBuffer\FrameBuffer.cpp" />
+    <ClCompile Include="src\VulkanStructure\General.cpp" />
+    <ClCompile Include="src\VulkanStructure\PhysicalLogicalDevice\PhysicalLogicalDevice.cpp" />
+    <ClCompile Include="src\VulkanStructure\Pipeline\Pipeline.cpp" />
+    <ClCompile Include="src\VulkanStructure\SwapChain\SwapChain.cpp" />
     <ClCompile Include="src\logging\logging.cpp" />
     <ClCompile Include="src\window\window.cpp" />
   </ItemGroup>

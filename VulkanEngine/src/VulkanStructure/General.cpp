@@ -1,6 +1,6 @@
-#include "VulkanClass.h"
+#include "VulkanStructure.h"
 
-void VulkanClass::checkExtensions() {
+void VulkanStruct::checkExtensions() {
     uint32_t extensionCount = 0;
     vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
 
@@ -14,7 +14,7 @@ void VulkanClass::checkExtensions() {
     }
 }
 
-std::vector<const char*> VulkanClass::getRequiredExtensions() {
+std::vector<const char*> VulkanStruct::getRequiredExtensions() {
     uint32_t glfwExtensionCount = 0;
     const char** glfwExtensions;
     glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
@@ -28,7 +28,7 @@ std::vector<const char*> VulkanClass::getRequiredExtensions() {
     return extensions;
 }
 
-void VulkanClass::createInstance() {
+void VulkanStruct::createInstance() {
     if (enableValidationLayers && !checkValidationLayerSupport()) {
         throw std::runtime_error("validation layers requested, but not available!");
     }
@@ -76,7 +76,7 @@ void VulkanClass::createInstance() {
 }
 
 //ValidationLayer
-void VulkanClass::setupDebugMessenger() {
+void VulkanStruct::setupDebugMessenger() {
     if (!enableValidationLayers) 
         return;
 
@@ -89,13 +89,13 @@ void VulkanClass::setupDebugMessenger() {
 }
 
 //surface
-void VulkanClass::createSurface() {
-    if (glfwCreateWindowSurface(instance, window, nullptr, &surface) != VK_SUCCESS) {
+void VulkanStruct::createSurface() {
+    if (glfwCreateWindowSurface(instance, window->m_window, nullptr, &surface) != VK_SUCCESS) {
         throw std::runtime_error("failed to create window surface!");
     }
 }
 
-bool VulkanClass::checkValidationLayerSupport() {
+bool VulkanStruct::checkValidationLayerSupport() {
     //Checks if all requested validation layers are available
 
     uint32_t layerCount;
@@ -119,4 +119,25 @@ bool VulkanClass::checkValidationLayerSupport() {
         }
     }
     return true;
+}
+
+void VulkanStruct::recreateSwapChain() {
+    int width = 0, height = 0;
+    glfwGetFramebufferSize(window->m_window, &width, &height);
+    while (width == 0 || height == 0) {
+        glfwGetFramebufferSize(window->m_window, &width, &height);
+        glfwWaitEvents();
+    }
+
+    vkDeviceWaitIdle(device);
+
+    m_DepthBuffer.cleanup(device);
+    m_FrameBuffer.cleanup(device);
+    m_SwapChain.cleanupSwapChain(device);
+
+    m_SwapChain.createSwapChain(m_Hardwaredevice.physicalDevice, surface, device, window->m_window,
+        m_Hardwaredevice.findQueueFamilies(m_Hardwaredevice.physicalDevice, surface));
+    m_SwapChain.createImageViews(device);
+    m_DepthBuffer.createDepthBuffer(device, m_Hardwaredevice.physicalDevice, m_SwapChain.swapChainExtent);
+    m_FrameBuffer.createFramebuffer(device, m_SwapChain.swapChainImageViews, m_DepthBuffer.depthImageView, m_SwapChain.swapChainExtent, m_Pipeline.renderPass);
 }

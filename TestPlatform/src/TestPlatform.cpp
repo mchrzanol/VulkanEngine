@@ -16,14 +16,14 @@ void TestPlatform::Init() {
 	initInput = new Input(window->m_window, &window->m_Data.Width, &window->m_Data.Height);
 	window->addUserPointer(initInput);
 
-	objects = new Objects(MAX_FRAMES_IN_FLIGHT);
+	objects = new Objects(MAX_FRAMES_IN_FLIGHT, VulkanCore);
 
-	initVulkan = new VulkanClass(window->m_window, objects->GetUniformBuffer());
-	initVulkan->init();
+	VulkanCore = new VulkanStruct(window);
+	VulkanCore->Init(objects->GetUniformBuffer());
 
 	objects->Init();
 
-	initCommandPool = new CommandPool(initVulkan, window, MAX_FRAMES_IN_FLIGHT);
+	initCommandPool = new CommandPool(VulkanCore, window, MAX_FRAMES_IN_FLIGHT);
 	initCommandPool->createCommandPool();
 
 	glm::vec3 color2[4] = { {1.0f, 0.0f, 0.0f} , {0.0f, 1.0f, 0.0f} ,{0.0f, 0.0f, 1.0f}, {0,0,0} };
@@ -100,7 +100,7 @@ void TestPlatform::OnUpdate() {
 
 	//glm::mat4 view2 = glm::lookAt(glm::vec3(0.0f, 0.0f, 1.f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-	glm::mat4 proj = glm::perspective(glm::radians(90.0f), (float)initVulkan->GetSwapChainExtent().width / (float)initVulkan->GetSwapChainExtent().height, 0.1f, 10.0f);
+	glm::mat4 proj = glm::perspective(glm::radians(90.0f), (float)VulkanCore->GetSwapChainExtent().width / (float)VulkanCore->GetSwapChainExtent().height, 0.1f, 10.0f);
 	proj[1][1] *= -1;
 
 	objects->UpdateView(view.GetView());
@@ -160,19 +160,16 @@ void TestPlatform::mainLoop() {
 		initInput->ClearKeyState();
 	}
 
-	initVulkan->WaitIdle();
+	VulkanCore->WaitIdle();
 }
 
 void TestPlatform::CleanUp() {
 
 	objects->destroy();
 
-	initVulkan->cleanupSwapChain();
-
-
 	initCommandPool->cleanup();
 
-	initVulkan->cleanup();
+	VulkanCore->cleanup();
 
 	window->destroyWindow();
 }

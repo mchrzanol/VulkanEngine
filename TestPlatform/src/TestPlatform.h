@@ -13,7 +13,7 @@ public:
 
 private:
 	windowClass* window;
-	VulkanClass* initVulkan;
+	VulkanStruct* VulkanCore;
 	CommandPool* initCommandPool;
 	Input* initInput;
 

@@ -12,6 +12,7 @@ protected:
 	uint32_t MaximumObjectsOnFrame;
 
 	VkPhysicalDeviceProperties physicalDeviceProps;
+	VkFormat swapChainImageFormat;
 
 public:
 	void BindDevice(VkDevice  device) { this->device = device; };
@@ -31,5 +32,8 @@ public:
 
 	void GivePhysicalDeviceProps(VkPhysicalDeviceProperties physicalDeviceProps) { this->physicalDeviceProps = physicalDeviceProps; };
 	VkPhysicalDeviceProperties GetPhysicalDeviceProps() { return physicalDeviceProps; };
+
+	void BindSwapChainImageFormat(VkFormat swapChainImageFormat) { this->swapChainImageFormat = swapChainImageFormat; };
+	VkFormat GetSwapChainImageFormat() { return swapChainImageFormat; };
 
 };

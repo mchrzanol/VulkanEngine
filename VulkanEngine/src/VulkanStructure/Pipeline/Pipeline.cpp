@@ -1,9 +1,9 @@
-#include "VulkanClass.h"
+#include "Pipeline.h"
 #include "Renderer/VertexIndexBuffer.h"
 
 //Pipeline
 
-void VulkanClass::createRenderPass()
+void pipeline::createRenderPass(VkDevice device, VkFormat format, VkFormat swapChainImageFormat)
 {
 	VkAttachmentDescription colorAttachment{};
 	colorAttachment.format = swapChainImageFormat;
@@ -18,7 +18,7 @@ void VulkanClass::createRenderPass()
 	colorAttachment.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
 
     VkAttachmentDescription depthAttachment{};
-    depthAttachment.format = findDepthFormat();
+    depthAttachment.format = format;
     depthAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
     depthAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
     depthAttachment.storeOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
@@ -100,10 +100,8 @@ VkShaderModule ENGINE_API createShaderModule(const std::vector<char>& code, VkDe
 
 }
 
-void VulkanClass::createGraphicsPipeline()
+void pipeline::createGraphicsPipeline(VkDevice device, std::vector<char> vertShaderCode, std::vector<char> fragShaderCode, std::string name, std::vector<VkDescriptorSetLayout> descriptorSetLayouts)
 {
-    auto vertShaderCode = readFile("../shaders/BasicVert.spv");
-    auto fragShaderCode = readFile("../shaders/BasicFrag.spv");
 
     VkShaderModule vertShaderModule = createShaderModule(vertShaderCode, device);
     VkShaderModule fragShaderModule = createShaderModule(fragShaderCode, device);
@@ -200,8 +198,8 @@ void VulkanClass::createGraphicsPipeline()
 
     VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
     pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-    pipelineLayoutInfo.setLayoutCount = 2;
-    pipelineLayoutInfo.pSetLayouts = uniformBuffer->descriptorSetLayouts.data();
+    pipelineLayoutInfo.setLayoutCount = descriptorSetLayouts.size();
+    pipelineLayoutInfo.pSetLayouts = descriptorSetLayouts.data();
     pipelineLayoutInfo.pushConstantRangeCount = 0;
 
     if (vkCreatePipelineLayout(device, &pipelineLayoutInfo, nullptr, &pipelineLayout) != VK_SUCCESS) {
@@ -225,12 +223,25 @@ void VulkanClass::createGraphicsPipeline()
     pipelineInfo.subpass = 0;
     pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
 
-    graphicsPipeline.resize(graphicsPipeline.size() + 1);
-
-    if (vkCreateGraphicsPipelines(device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &graphicsPipeline[graphicsPipeline.size()-1]) != VK_SUCCESS) {
+    if (vkCreateGraphicsPipelines(device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &graphicsPipeline[name]) != VK_SUCCESS) {
         throw std::runtime_error("failed to create graphics pipeline!");
     }
 
     vkDestroyShaderModule(device, fragShaderModule, nullptr);
     vkDestroyShaderModule(device, vertShaderModule, nullptr);
+}
+
+void pipeline::createGraphicsPipeline(VkDevice device, std::string name, std::string vertShaderPath, std::string fragShaderPath, std::vector<VkDescriptorSetLayout> descriptorSetLayouts) {
+    auto vertShaderCode = readFile("../shaders/BasicVert.spv");
+    auto fragShaderCode = readFile("../shaders/BasicFrag.spv");
+
+    createGraphicsPipeline(device, vertShaderCode, fragShaderCode, name, descriptorSetLayouts);
+
+}
+
+void pipeline::cleanup(VkDevice device) {
+    for (auto& pipeline : graphicsPipeline)
+        vkDestroyPipeline(device, pipeline.second, nullptr);
+    vkDestroyPipelineLayout(device, pipelineLayout, nullptr);
+    vkDestroyRenderPass(device, renderPass, nullptr);
 }

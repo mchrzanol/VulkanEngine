@@ -23,7 +23,6 @@ struct UniformList {
 
 class ENGINE_API UniformBuffer {
 private:
-	//std::vector<VkDescriptorSetLayout> descriptorSetLayouts;
 
     int MAX_FRAMES_IN_FLIGHT;
 
@@ -31,8 +30,6 @@ private:
 
     std::vector<std::vector< VkDescriptorSetLayoutBinding>> uboLayoutBinding;
     std::vector < std::vector<VkBuffer>> uniformBuffers;
-    //std::vector < std::vector<VkDeviceMemory>> uniformBuffersMemory;
-    //std::vector < std::vector<void*>> uniformBuffersMapped;
 
     std::vector < std::vector<VkDescriptorPoolSize>> poolSize;
     std::vector < VkDescriptorPool> descriptorPool;
@@ -71,11 +68,11 @@ public:
 
     void createUniformBind(unsigned int binding, size_t sizeofBindingValue, VkDescriptorType DescriptorType, TypeOfUniform UniformType);
 
-	void createDecriptorSetsLayout();
+	void createDecriptorSetsLayout(VkDevice device);
 
-    void createUniformBuffers();
-    void createDescriptorPool();
-    void createDescriptorSets();
+    void createUniformBuffers(VkDevice device, VkPhysicalDevice physicalDevice);
+    void createDescriptorPool(VkDevice device);
+    void createDescriptorSets(VkDevice device);
 
     size_t GetAlignment(size_t sizeOfData) {
         size_t minUboAlignment = utils.GetPhysicalDeviceProps().limits.minUniformBufferOffsetAlignment;
@@ -112,7 +109,7 @@ public:
     };
 
 
-    void cleanup();
+    void cleanup(VkDevice device);
 
     std::vector<std::vector<VkDescriptorSet>> GetDescriptorSets() { return descriptorSets; };
     std::vector<VkDescriptorSetLayout> GetDescriptorSetLayouts() { return descriptorSetLayouts; };

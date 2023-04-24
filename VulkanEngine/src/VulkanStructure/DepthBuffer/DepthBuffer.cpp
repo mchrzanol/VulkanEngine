@@ -1,8 +1,8 @@
-#include "VulkanClass.h"
+#include "DepthBuffer.h"
 
 //DepthBuffer
 
-VkFormat VulkanClass::findSupportedFormat(const std::vector<VkFormat>& candidates, VkImageTiling tiling, VkFormatFeatureFlags features) {
+VkFormat depthBuffer::findSupportedFormat(VkPhysicalDevice physicalDevice, const std::vector<VkFormat>& candidates, VkImageTiling tiling, VkFormatFeatureFlags features) {
     for (VkFormat format : candidates) {
         VkFormatProperties props;
         vkGetPhysicalDeviceFormatProperties(physicalDevice, format, &props);
@@ -20,19 +20,19 @@ VkFormat VulkanClass::findSupportedFormat(const std::vector<VkFormat>& candidate
 }
 
 
-VkFormat VulkanClass::findDepthFormat() {
-    return findSupportedFormat(
+VkFormat depthBuffer::findDepthFormat(VkPhysicalDevice physicalDevice) {
+    return findSupportedFormat(physicalDevice,
         { VK_FORMAT_D32_SFLOAT, VK_FORMAT_D32_SFLOAT_S8_UINT, VK_FORMAT_D24_UNORM_S8_UINT },
         VK_IMAGE_TILING_OPTIMAL,
         VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT
     );
 }
 
-bool VulkanClass::hasStencilComponent(VkFormat format) {
+bool depthBuffer::hasStencilComponent(VkFormat format) {
     return format == VK_FORMAT_D32_SFLOAT_S8_UINT || format == VK_FORMAT_D24_UNORM_S8_UINT;
 }
 
-void VulkanClass::createImage(VkExtent3D extent, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties, VkImage& image, VkDeviceMemory& imageMemory) {
+void depthBuffer::createImage(VkDevice device,VkPhysicalDevice physicalDevice, VkExtent3D extent, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties, VkImage& image, VkDeviceMemory& imageMemory) {
     VkImageCreateInfo imageInfo{};
     imageInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
     imageInfo.pNext = nullptr;
@@ -66,7 +66,7 @@ void VulkanClass::createImage(VkExtent3D extent, VkFormat format, VkImageTiling 
     vkBindImageMemory(device, image, imageMemory, 0);
 }
 
-VkImageView VulkanClass::createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectFlags) {
+VkImageView depthBuffer::createImageView(VkDevice device, VkImage image, VkFormat format, VkImageAspectFlags aspectFlags) {
     VkImageViewCreateInfo viewInfo{};
     viewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
     viewInfo.pNext = nullptr;
@@ -87,23 +87,15 @@ VkImageView VulkanClass::createImageView(VkImage image, VkFormat format, VkImage
     return imageView;
 }
 
-void VulkanClass::createDepthBuffer() {
-    VkFormat depthFormat = findDepthFormat();
+void depthBuffer::createDepthBuffer(VkDevice device, VkPhysicalDevice physicalDevice, VkExtent3D swapChainExtent) {
+    depthFormat = findDepthFormat(physicalDevice);
 
-    createImage(swapChainExtent, depthFormat, VK_IMAGE_TILING_OPTIMAL, VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, depthImage, depthImageMemory);
-    depthImageView = createImageView(depthImage, depthFormat, VK_IMAGE_ASPECT_DEPTH_BIT);
+    createImage(device,physicalDevice, swapChainExtent, depthFormat, VK_IMAGE_TILING_OPTIMAL, VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, depthImage, depthImageMemory);
+    depthImageView = createImageView(device, depthImage, depthFormat, VK_IMAGE_ASPECT_DEPTH_BIT);
 }
 
-void VulkanClass::recreateDepthBuffer() {
+void depthBuffer::cleanup(VkDevice device) {
     vkDestroyImageView(device, depthImageView, nullptr);
     vkDestroyImage(device, depthImage, nullptr);
     vkFreeMemory(device, depthImageMemory, nullptr);
-
-    for (size_t i = 0; i < swapChainFramebuffers.size(); i++) {
-        vkDestroyFramebuffer(device, swapChainFramebuffers[i], nullptr);
-    }
-
-
-    createDepthBuffer();
-    createFramebuffers();
 }

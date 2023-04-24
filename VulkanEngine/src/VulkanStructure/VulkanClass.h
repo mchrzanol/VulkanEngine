@@ -43,14 +43,14 @@ public:
         createSurface();
         pickPhysicalDevice();
         createLogicalDevice();
+
         createSwapChain();
+        utils.BindSwapChainImageFormat(swapChainImageFormat);
         createImageViews();
 
-        createRenderPass();
         utils.BindDevice(device);
         utils.BindPhysicalDevice(physicalDevice);
         uniformBuffer->createDecriptorSetsLayout();
-        createGraphicsPipeline();
         createDepthBuffer();
         createFramebuffers();
 
@@ -62,12 +62,6 @@ public:
 	}
 
     void cleanup() {
-
-        for(auto & pipeline : graphicsPipeline)
-            vkDestroyPipeline(device, pipeline, nullptr);
-        vkDestroyPipelineLayout(device, pipelineLayout, nullptr);
-        vkDestroyRenderPass(device, renderPass, nullptr);
-
 
         if (enableValidationLayers) {
             DestroyDebugUtilsMessengerEXT(instance, debugMessenger, nullptr);
@@ -105,10 +99,6 @@ private:
     std::vector<VkImageView> swapChainImageViews;
     std::vector<VkFramebuffer> swapChainFramebuffers;
 
-    std::vector<VkPipeline> graphicsPipeline;
-    VkRenderPass renderPass;
-    VkPipelineLayout pipelineLayout;
-
     VkImage depthImage;
     VkDeviceMemory depthImageMemory;
     VkImageView depthImageView;
@@ -141,16 +131,13 @@ private:
     void createSwapChain();
     void createImageViews();
 
-    //Pipeline
-    void createRenderPass();
-    void createGraphicsPipeline();
-
     //FrameBuffer
     void createFramebuffers();
 
     //DepthBuffer
     VkFormat findSupportedFormat(const std::vector<VkFormat>& candidates, VkImageTiling tiling, VkFormatFeatureFlags features);
-    VkFormat findDepthFormat();
+    friend class pipeline;
+    static VkFormat findDepthFormat();
     bool hasStencilComponent(VkFormat format);
     void createDepthBuffer();
     void createImage(VkExtent3D extent, VkFormat format, VkImageTiling tiling, VkImageUsageFlags usage, VkMemoryPropertyFlags properties, VkImage& image, VkDeviceMemory& imageMemory);
@@ -168,11 +155,8 @@ public:
     inline VkPhysicalDevice GetPhyscicalDevice() { return physicalDevice; };
     inline VkDevice& GetDevice() { return device; };
     inline VkExtent3D GetSwapChainExtent() { return swapChainExtent; };
-    inline VkPipelineLayout GetPipelineLayout() { return pipelineLayout; };
     inline VkQueue GetGraphicsQueue() { return graphicsQueue; };
-    inline VkPipeline& GetGraphicsPipeline() { return graphicsPipeline[0]; };
     inline VkSwapchainKHR GetSwapChain() { return swapChain;};
-    inline VkRenderPass& GetRenderPass() { return renderPass; };
     inline std::vector<VkFramebuffer> GetSwapChainFrameBuffers() {return swapChainFramebuffers; };
     inline VkQueue GetPresentQueue() { return presentQueue; };
 

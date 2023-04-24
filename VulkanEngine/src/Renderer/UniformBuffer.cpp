@@ -1,13 +1,13 @@
 #include "UniformBuffer.h"
 
-void UniformBuffer::createDecriptorSetsLayout() {
+void UniformBuffer::createDecriptorSetsLayout(VkDevice device) {
 
     VkDescriptorSetLayoutCreateInfo GloballayoutInfo{};
     GloballayoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
     GloballayoutInfo.bindingCount = uboLayoutBinding[0].size();
     GloballayoutInfo.pBindings =  uboLayoutBinding[0].data();
 
-    if (vkCreateDescriptorSetLayout(utils.GetDevice(), &GloballayoutInfo, nullptr, &descriptorSetLayouts[0]) != VK_SUCCESS) {
+    if (vkCreateDescriptorSetLayout(device, &GloballayoutInfo, nullptr, &descriptorSetLayouts[0]) != VK_SUCCESS) {
         throw std::runtime_error("failed to create Global descriptor set layout!");
     }
 
@@ -16,7 +16,7 @@ void UniformBuffer::createDecriptorSetsLayout() {
     LocallayoutInfo.bindingCount = uboLayoutBinding[1].size();
     LocallayoutInfo.pBindings = uboLayoutBinding[1].data();
 
-    if (vkCreateDescriptorSetLayout(utils.GetDevice(), &LocallayoutInfo, nullptr, &descriptorSetLayouts[1]) != VK_SUCCESS) {
+    if (vkCreateDescriptorSetLayout(device, &LocallayoutInfo, nullptr, &descriptorSetLayouts[1]) != VK_SUCCESS) {
         throw std::runtime_error("failed to create Local descriptor set layout!");
     }
 }
@@ -38,7 +38,7 @@ void UniformBuffer::createUniformBind(unsigned int binding, size_t sizeofBinding
     uboLayoutBinding[set][UniformsCount[set] - 1].stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
 }
 
-void UniformBuffer::createUniformBuffers() {
+void UniformBuffer::createUniformBuffers(VkDevice device, VkPhysicalDevice physicalDevice) {
     for (size_t frame = 1; frame < MAX_FRAMES_IN_FLIGHT + 1; frame++) {
         for (size_t set = 0; set < 2; set++) {
             uniformBuffers[set].resize(UniformsCount[set] * frame);
@@ -54,16 +54,16 @@ void UniformBuffer::createUniformBuffers() {
                     bufferSize = BindingData[set][bindingQueue[set][bind]].sizeofData;
 
                     createBuffer(bufferSize, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
-                        uniformBuffers[set][i], uniformBuffersMemory[set][i], utils.GetDevice(), utils.GetPhyscicalDevice());
+                        uniformBuffers[set][i], uniformBuffersMemory[set][i], device, physicalDevice);
                 }
                 else {
                     bufferSize = GetAlignment(BindingData[set][bindingQueue[set][bind]].sizeofData) * MaximumObjectsOnFrame;
 
                     createBuffer(bufferSize, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT,
-                        uniformBuffers[set][i], uniformBuffersMemory[set][i], utils.GetDevice(), utils.GetPhyscicalDevice());
+                        uniformBuffers[set][i], uniformBuffersMemory[set][i], device, physicalDevice);
                 }
 
-                vkMapMemory(utils.GetDevice(), uniformBuffersMemory[set][i], 0, bufferSize, 0, &uniformBuffersMapped[set][i]);
+                vkMapMemory(device, uniformBuffersMemory[set][i], 0, bufferSize, 0, &uniformBuffersMapped[set][i]);
 
                 poolSize.type = BindingData[set][bindingQueue[set][bind]].DescriptorType;
                 poolSize.descriptorCount = static_cast<uint32_t>(MAX_FRAMES_IN_FLIGHT);
@@ -77,7 +77,7 @@ void UniformBuffer::createUniformBuffers() {
     }
 }
 
-void UniformBuffer::createDescriptorPool() {
+void UniformBuffer::createDescriptorPool(VkDevice device) {
 
     VkDescriptorPoolCreateInfo global_poolInfo{};
     global_poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
@@ -87,7 +87,7 @@ void UniformBuffer::createDescriptorPool() {
     global_poolInfo.maxSets = static_cast<uint32_t>(MAX_FRAMES_IN_FLIGHT);
 
 
-    if (vkCreateDescriptorPool(utils.GetDevice(), &global_poolInfo, nullptr, &descriptorPool[0]) != VK_SUCCESS) {
+    if (vkCreateDescriptorPool(device, &global_poolInfo, nullptr, &descriptorPool[0]) != VK_SUCCESS) {
         throw std::runtime_error("failed to create Global descriptor pool!");
     }
 
@@ -99,12 +99,12 @@ void UniformBuffer::createDescriptorPool() {
     local_poolInfo.maxSets = static_cast<uint32_t>(MAX_FRAMES_IN_FLIGHT);
 
 
-    if (vkCreateDescriptorPool(utils.GetDevice(), &local_poolInfo, nullptr, &descriptorPool[1]) != VK_SUCCESS) {
+    if (vkCreateDescriptorPool(device, &local_poolInfo, nullptr, &descriptorPool[1]) != VK_SUCCESS) {
         throw std::runtime_error("failed to create Local descriptor pool!");
     }
 }
 
-void UniformBuffer::createDescriptorSets() {
+void UniformBuffer::createDescriptorSets(VkDevice device) {
 
     for (size_t set = 0; set <2;set++)
     {
@@ -116,7 +116,7 @@ void UniformBuffer::createDescriptorSets() {
         allocInfo.pSetLayouts = layouts.data();
 
         descriptorSets[set].resize(MAX_FRAMES_IN_FLIGHT);
-        if (vkAllocateDescriptorSets(utils.GetDevice(), &allocInfo, descriptorSets[set].data()) != VK_SUCCESS) {
+        if (vkAllocateDescriptorSets(device, &allocInfo, descriptorSets[set].data()) != VK_SUCCESS) {
             throw std::runtime_error("failed to allocate descriptor sets!");
         }
 
@@ -149,23 +149,23 @@ void UniformBuffer::createDescriptorSets() {
                 m_descriptorWrite[bind] = descriptorWrite;
             }
 
-            vkUpdateDescriptorSets(utils.GetDevice(), UniformsCount[set], m_descriptorWrite.data(), 0, nullptr);
+            vkUpdateDescriptorSets(device, UniformsCount[set], m_descriptorWrite.data(), 0, nullptr);
         }
     }
 
 }
 
 
-void UniformBuffer::cleanup() {
+void UniformBuffer::cleanup(VkDevice device) {
     for (int set = 0; set < 2; set++) {
         for (size_t i = 0; i < uniformBuffers[set].size(); i++) {
-            vkDestroyBuffer(utils.GetDevice(), uniformBuffers[set][i], nullptr);
-            vkFreeMemory(utils.GetDevice(), uniformBuffersMemory[set][i], nullptr);
+            vkDestroyBuffer(device, uniformBuffers[set][i], nullptr);
+            vkFreeMemory(device, uniformBuffersMemory[set][i], nullptr);
         }
 
-        vkDestroyDescriptorPool(utils.GetDevice(), descriptorPool[set], nullptr);
+        vkDestroyDescriptorPool(device, descriptorPool[set], nullptr);
 
-        vkDestroyDescriptorSetLayout(utils.GetDevice(), descriptorSetLayouts[set], nullptr);
+        vkDestroyDescriptorSetLayout(device, descriptorSetLayouts[set], nullptr);
     }
 
 }

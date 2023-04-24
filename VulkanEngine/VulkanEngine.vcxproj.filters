@@ -55,9 +55,6 @@
     <ClInclude Include="src\Renderer\VertexIndexBuffer.h">
       <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="src\VulkanClass\VulkanClass.h">
-      <Filter>VulkanClass</Filter>
-    </ClInclude>
     <ClInclude Include="src\logging\logging.h">
       <Filter>logging</Filter>
     </ClInclude>
@@ -67,6 +64,13 @@
     <ClInclude Include="src\BasicObjects\2D\Circle.h" />
     <ClInclude Include="src\WorldMatricies\ViewMatricies.h" />
     <ClInclude Include="src\BasicObjects\3D\Square.h" />
+    <ClInclude Include="src\VulkanStructure\Pipeline\Pipeline.h" />
+    <ClInclude Include="src\VulkanStructure\VulkanStructure.h" />
+    <ClInclude Include="src\VulkanStructure\PhysicalLogicalDevice\PhysicalLogicalDevice.h" />
+    <ClInclude Include="src\VulkanStructure\SwapChain\SwapChain.h" />
+    <ClInclude Include="src\VulkanStructure\DepthBuffer\DepthBuffer.h" />
+    <ClInclude Include="src\VulkanStructure\FrameBuffer\FrameBuffer.h" />
+    <ClInclude Include="src\VulkanStructure\Structures.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BasicObjects\2D\Rectangle.cpp">
@@ -88,22 +92,22 @@
     <ClCompile Include="src\Renderer\VertexIndexBuffer.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="src\VulkanClass\DepthBuffer.cpp">
+    <ClCompile Include="src\VulkanStructure\DepthBuffer\DepthBuffer.cpp">
       <Filter>VulkanClass</Filter>
     </ClCompile>
-    <ClCompile Include="src\VulkanClass\FrameBuffer.cpp">
+    <ClCompile Include="src\VulkanStructure\FrameBuffer\FrameBuffer.cpp">
       <Filter>VulkanClass</Filter>
     </ClCompile>
-    <ClCompile Include="src\VulkanClass\General.cpp">
+    <ClCompile Include="src\VulkanStructure\General.cpp">
       <Filter>VulkanClass</Filter>
     </ClCompile>
-    <ClCompile Include="src\VulkanClass\PhysicalLogicalDevice.cpp">
+    <ClCompile Include="src\VulkanStructure\PhysicalLogicalDevice\PhysicalLogicalDevice.cpp">
       <Filter>VulkanClass</Filter>
     </ClCompile>
-    <ClCompile Include="src\VulkanClass\Pipeline.cpp">
+    <ClCompile Include="src\VulkanStructure\Pipeline\Pipeline.cpp">
       <Filter>VulkanClass</Filter>
     </ClCompile>
-    <ClCompile Include="src\VulkanClass\SwapChain.cpp">
+    <ClCompile Include="src\VulkanStructure\SwapChain\SwapChain.cpp">
       <Filter>VulkanClass</Filter>
     </ClCompile>
     <ClCompile Include="src\logging\logging.cpp">
