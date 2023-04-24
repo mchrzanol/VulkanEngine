@@ -55,8 +55,7 @@ private:
 	VulkanStruct* VulkanCore;
 
 public:
-	Objects(int MAX_FRAMES_IN_FLIGHT, VulkanStruct *& Vulkan) 
-		:VulkanCore(Vulkan)
+	Objects(int MAX_FRAMES_IN_FLIGHT) 
 	{
 		initUniform = new UniformBuffer(MAX_FRAMES_IN_FLIGHT, m_data.MaximumObjectsOnFrame);
 
@@ -65,7 +64,9 @@ public:
 
 	}
 
-	void Init() {
+	void Init(VulkanStruct* Vulkan) {
+		VulkanCore = Vulkan;
+
 		m_objects.reserve(m_data.MaximumObjectsOnFrame);
 		m_stats.EntitiesCount = 0;
 
@@ -76,7 +77,7 @@ public:
 		size_t bufferSize = m_data.MaximumObjectsOnFrame * alignment;
 		models.model = (glm::mat4*)_aligned_malloc(bufferSize, alignment);
 
-		VulkanCore->m_Pipeline.createGraphicsPipeline(VulkanCore->device, "BasicShader", m_data.BasicShaders[0], m_data.BasicShaders[1], initUniform->descriptorSetLayouts);
+		VulkanCore->m_Pipeline.createGraphicsPipeline(this->VulkanCore->device, "BasicShader", m_data.BasicShaders[0], m_data.BasicShaders[1], initUniform->descriptorSetLayouts);
 
 	}
 

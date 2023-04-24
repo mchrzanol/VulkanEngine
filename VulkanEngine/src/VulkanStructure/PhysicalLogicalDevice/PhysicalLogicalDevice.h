@@ -13,7 +13,7 @@ private:
 public:
 	void pickPhysicalDevice(VkInstance instance, VkSurfaceKHR surface);
 
-	void createLogicalDevice(std::vector<const char*> validationLayers, VkSurfaceKHR surface);
+	void createLogicalDevice(std::vector<const char*> validationLayers, VkSurfaceKHR surface, VkDevice& device);
 
 	QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device, VkSurfaceKHR surface);
 private:
@@ -23,7 +23,6 @@ private:
 	bool checkDeviceExtensionSupport(VkPhysicalDevice device);
 public:
 	VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
-	VkDevice device;
 
 	VkQueue graphicsQueue;
 	VkQueue presentQueue;

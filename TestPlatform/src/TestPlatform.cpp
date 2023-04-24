@@ -16,12 +16,12 @@ void TestPlatform::Init() {
 	initInput = new Input(window->m_window, &window->m_Data.Width, &window->m_Data.Height);
 	window->addUserPointer(initInput);
 
-	objects = new Objects(MAX_FRAMES_IN_FLIGHT, VulkanCore);
+	objects = new Objects(MAX_FRAMES_IN_FLIGHT);
 
 	VulkanCore = new VulkanStruct(window);
 	VulkanCore->Init(objects->GetUniformBuffer());
 
-	objects->Init();
+	objects->Init(VulkanCore);
 
 	initCommandPool = new CommandPool(VulkanCore, window, MAX_FRAMES_IN_FLIGHT);
 	initCommandPool->createCommandPool();
@@ -33,7 +33,7 @@ void TestPlatform::Init() {
 	objects->PushBack(Entity::rectangle::create(glm::vec3(0.5, 0, 0.f), 1, color3, Orientation::X));
 	objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0.5, 0.f), 1, 1, color3, Orientation::Y));
 
-	//TestPlatform::AddEtities();
+	TestPlatform::AddEtities();
 
 	initCommandPool->createCommandBuffers();
 	initCommandPool->createSyncObjects();

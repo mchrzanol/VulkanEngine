@@ -73,7 +73,7 @@ SwapChainSupportDetails PickingDevice::querySwapChainSupport(VkPhysicalDevice de
     return details;
 }
 
-void PickingDevice::createLogicalDevice(std::vector<const char*> validationLayers, VkSurfaceKHR surface) {
+void PickingDevice::createLogicalDevice(std::vector<const char*> validationLayers, VkSurfaceKHR surface, VkDevice & device) {
     QueueFamilyIndices indices = findQueueFamilies(physicalDevice, surface);
 
     //queueCreateInfo
