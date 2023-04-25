@@ -7,8 +7,6 @@
 #include "window/window.h"
 #include "BasicObjects/Objects.h"
 
-extern GlobalUtl utils;
-
 class ENGINE_API CommandPool {
 private:
     VulkanStruct* VulkanCore;
@@ -37,7 +35,7 @@ public:
 
     void cleanup();
 
-    inline VkCommandPool GetCommandPool() { return commandPool; };
+    inline VkCommandPool* GetCommandPool() { return &commandPool; };
 
     inline uint32_t GetCurrentFrame() { return currentFrame; };
 

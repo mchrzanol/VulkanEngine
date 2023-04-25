@@ -2,9 +2,7 @@
 
 #include "Libraries.h"
 
-extern GlobalUtl utils;
-
-class ENGINE_API ViewMatricies
+class ViewMatricies
 {
 private:
 	glm::vec3 camFront;

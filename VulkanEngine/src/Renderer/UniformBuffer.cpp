@@ -57,7 +57,7 @@ void UniformBuffer::createUniformBuffers(VkDevice device, VkPhysicalDevice physi
                         uniformBuffers[set][i], uniformBuffersMemory[set][i], device, physicalDevice);
                 }
                 else {
-                    bufferSize = GetAlignment(BindingData[set][bindingQueue[set][bind]].sizeofData) * MaximumObjectsOnFrame;
+                    bufferSize = GetAlignment(BindingData[set][bindingQueue[set][bind]].sizeofData, physicalDevice) * MaximumObjectsOnFrame;
 
                     createBuffer(bufferSize, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT,
                         uniformBuffers[set][i], uniformBuffersMemory[set][i], device, physicalDevice);
@@ -104,7 +104,7 @@ void UniformBuffer::createDescriptorPool(VkDevice device) {
     }
 }
 
-void UniformBuffer::createDescriptorSets(VkDevice device) {
+void UniformBuffer::createDescriptorSets(VkDevice device, VkPhysicalDevice physicalDevice) {
 
     for (size_t set = 0; set <2;set++)
     {
@@ -132,7 +132,7 @@ void UniformBuffer::createDescriptorSets(VkDevice device) {
                     bufferInfo.range =  BindingData[set][bindingQueue[set][bind]].sizeofData;
                 }
                 else {
-                    bufferInfo.range =  GetAlignment(BindingData[set][bindingQueue[set][bind]].sizeofData);
+                    bufferInfo.range =  GetAlignment(BindingData[set][bindingQueue[set][bind]].sizeofData, physicalDevice);
                 }
 
                 VkWriteDescriptorSet descriptorWrite{};

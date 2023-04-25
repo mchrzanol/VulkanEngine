@@ -2,9 +2,6 @@
 
 #include "Libraries.h"
 #include "Buffers.h"
-#include "GlobalVariables.h"
-
-extern GlobalUtl utils;
 
 enum class TypeOfUniform {
     GlobalUniform = 0,
@@ -72,10 +69,13 @@ public:
 
     void createUniformBuffers(VkDevice device, VkPhysicalDevice physicalDevice);
     void createDescriptorPool(VkDevice device);
-    void createDescriptorSets(VkDevice device);
+    void createDescriptorSets(VkDevice device, VkPhysicalDevice physicalDevice);
 
-    size_t GetAlignment(size_t sizeOfData) {
-        size_t minUboAlignment = utils.GetPhysicalDeviceProps().limits.minUniformBufferOffsetAlignment;
+    size_t GetAlignment(size_t sizeOfData, VkPhysicalDevice physicalDevice) {
+        VkPhysicalDeviceProperties deviceProps;
+
+        vkGetPhysicalDeviceProperties(physicalDevice, &deviceProps);
+        size_t minUboAlignment = deviceProps.limits.minUniformBufferOffsetAlignment;
 
         size_t dynamicAlignment = sizeOfData;
         if (minUboAlignment > 0) {
@@ -90,8 +90,8 @@ public:
         memcpy(uniformBuffersMapped[static_cast<int>(UniformType)][(binding+currentImage) * currentImage], &data, BindingData[static_cast<int>(UniformType)][binding].sizeofData);
     };
     template<class T>
-    void updateDynamicUniformBuffer(unsigned int binding, TypeOfUniform UniformType, T& data, uint32_t currentImage, uint32_t countOfData , uint32_t offset = 0) {
-        size_t alignment = GetAlignment(BindingData[static_cast<int>(UniformType)][binding].sizeofData);
+    void updateDynamicUniformBuffer(VkDevice device, VkPhysicalDevice physicalDevice, unsigned int binding, TypeOfUniform UniformType, T& data, uint32_t currentImage, uint32_t countOfData , uint32_t offset = 0) {
+        size_t alignment = GetAlignment(BindingData[static_cast<int>(UniformType)][binding].sizeofData, physicalDevice);
 
         int calculateOffset = offset * alignment;
 
@@ -105,7 +105,7 @@ public:
         memoryRange.offset = offset * alignment;
         memoryRange.memory = uniformBuffersMemory[static_cast<int>(UniformType)][(binding + currentImage) * currentImage];
         memoryRange.size = alignment * countOfData;
-        vkFlushMappedMemoryRanges(utils.GetDevice(), 1, &memoryRange);
+        vkFlushMappedMemoryRanges(device, 1, &memoryRange);
     };
 
 

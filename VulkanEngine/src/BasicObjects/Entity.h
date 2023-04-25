@@ -14,21 +14,29 @@ struct EntityData {
 	EntityType type;
 };
 
+struct EntityVitalInfo {
+	std::vector<Vertex> verticesInfo;
+	std::vector<uint16_t> indices;
+
+	glm::vec3 origin;
+
+	EntityData data;
+};
+
 struct EntityInfo {
 	VertexBuffer vertices;
 	IndexBuffer indices;
 
-	glm::vec3 origin;
+	EntityVitalInfo data;
 
-	void createVertexBuffer(std::vector<Vertex>& vertices) {
-		this->vertices.createVertexBuffer(vertices);
+	void createVertexBuffer(std::vector<Vertex>& vertices, VkDevice device, VkPhysicalDevice physicalDevice, VkQueue graphicsQueue, VkCommandPool CommandPool) {
+		this->vertices.createVertexBuffer(vertices, device, physicalDevice, graphicsQueue, CommandPool);
 	}
 
-	void createIndexBuffer(std::vector<uint16_t> indices) {
-		this->indices.createIndexBuffer(indices);
+	void createIndexBuffer(std::vector<uint16_t> indices, VkDevice device, VkPhysicalDevice physicalDevice, VkQueue graphicsQueue, VkCommandPool CommandPool) {
+		this->indices.createIndexBuffer(indices, device, physicalDevice, graphicsQueue,CommandPool);
 	}
 
-	EntityData data;
 
 	//texid
 };

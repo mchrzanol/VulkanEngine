@@ -21,10 +21,10 @@ void TestPlatform::Init() {
 	VulkanCore = new VulkanStruct(window);
 	VulkanCore->Init(objects->GetUniformBuffer());
 
-	objects->Init(VulkanCore);
-
 	initCommandPool = new CommandPool(VulkanCore, window, MAX_FRAMES_IN_FLIGHT);
 	initCommandPool->createCommandPool();
+
+	objects->Init(VulkanCore, initCommandPool->GetCommandPool());
 
 	glm::vec3 color2[4] = { {1.0f, 0.0f, 0.0f} , {0.0f, 1.0f, 0.0f} ,{0.0f, 0.0f, 1.0f}, {0,0,0} };
 	glm::vec3 color3[4] = { {1.0f, 1.0f, 1.0f} , {1.0f, 1.0f, 1.0f} ,{1.0f, 1.0f, 1.0f}, {1,1,1} };
@@ -33,7 +33,7 @@ void TestPlatform::Init() {
 	objects->PushBack(Entity::rectangle::create(glm::vec3(0.5, 0, 0.f), 1, color3, Orientation::X));
 	objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0.5, 0.f), 1, 1, color3, Orientation::Y));
 
-	TestPlatform::AddEtities();
+	//TestPlatform::AddEtities();
 
 	initCommandPool->createCommandBuffers();
 	initCommandPool->createSyncObjects();
@@ -112,7 +112,7 @@ void TestPlatform::OnUpdate() {
 	if (time >= 0.02) {
 		startTime = currentTime;
 		for (int i = 0; i < objects->GetEntitiesCount(); i++) {
-		//	objects->rotate(i, glm::radians(5.f), glm::vec3(0.0f, 1.0f, 0.0f));
+			objects->rotate(i, glm::radians(5.f), glm::vec3(0.0f, 1.0f, 0.0f));
 		}
 	}
 }

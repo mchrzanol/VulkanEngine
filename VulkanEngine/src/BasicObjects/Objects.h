@@ -54,6 +54,8 @@ private:
 
 	VulkanStruct* VulkanCore;
 
+	VkCommandPool* CommandPool;
+
 public:
 	Objects(int MAX_FRAMES_IN_FLIGHT) 
 	{
@@ -64,8 +66,10 @@ public:
 
 	}
 
-	void Init(VulkanStruct* Vulkan) {
+	void Init(VulkanStruct* Vulkan, VkCommandPool* CommandPool) {
 		VulkanCore = Vulkan;
+
+		this->CommandPool = CommandPool;
 
 		m_objects.reserve(m_data.MaximumObjectsOnFrame);
 		m_stats.EntitiesCount = 0;
@@ -73,7 +77,7 @@ public:
 		viewMatrix = glm::mat4(1.f);
 		projMatrix = glm::mat4(1.f);
 
-		alignment = initUniform->GetAlignment(sizeof(glm::mat4));
+		alignment = initUniform->GetAlignment(sizeof(glm::mat4), VulkanCore->m_Hardwaredevice.physicalDevice);
 		size_t bufferSize = m_data.MaximumObjectsOnFrame * alignment;
 		models.model = (glm::mat4*)_aligned_malloc(bufferSize, alignment);
 
@@ -87,8 +91,16 @@ public:
 	}
 
 	template<>
-	void PushBack<EntityInfo>(EntityInfo * object) {
-		m_objects.push_back(*object);
+	void PushBack<EntityVitalInfo>(EntityVitalInfo * object) {
+
+		EntityInfo objectData;
+
+		objectData.data = *object;
+
+		objectData.createVertexBuffer(objectData.data.verticesInfo, VulkanCore->device, VulkanCore->m_Hardwaredevice.physicalDevice, VulkanCore->m_Hardwaredevice.graphicsQueue, *CommandPool);
+		objectData.createIndexBuffer(objectData.data.indices, VulkanCore->device, VulkanCore->m_Hardwaredevice.physicalDevice, VulkanCore->m_Hardwaredevice.graphicsQueue, *CommandPool);
+
+		m_objects.push_back(objectData);
 
 		glm::mat4* modelMat = (glm::mat4*)(((uint64_t)models.model + (m_stats.EntitiesCount * alignment)));
 		*modelMat = glm::mat4(1.f);
@@ -107,15 +119,19 @@ public:
 	void rotate(uint32_t EntityIndex, glm::f32 radians, glm::vec3 axis) {
 		glm::mat4* modelMat = (glm::mat4*)(((uint64_t)models.model + (EntityIndex * alignment)));
 
-		*modelMat = glm::translate(*modelMat, m_objects[EntityIndex].origin);
+		*modelMat = glm::translate(*modelMat, m_objects[EntityIndex].data.origin);
 		*modelMat = glm::rotate(*modelMat, radians, axis);
-		*modelMat = glm::translate(*modelMat, glm::vec3(-1.f) * m_objects[EntityIndex].origin);
+		*modelMat = glm::translate(*modelMat, glm::vec3(-1.f) * m_objects[EntityIndex].data.origin);
 
 	}
 
 	void destroy() {
 		_aligned_free(models.model);
 
+		for (auto& object : m_objects) {
+			object.vertices.cleanup(VulkanCore->device);
+			object.indices.cleanup(VulkanCore->device);
+		}
 		m_objects.clear();
 		initUniform->cleanup(VulkanCore->device);
 	}
@@ -148,7 +164,7 @@ private:
 
 		vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, VulkanCore->m_Pipeline.pipelineLayout, 0, 1, &initUniform->GetDescriptorSets()[0][currentFrame], 0, nullptr);
 
-		initUniform->updateDynamicUniformBuffer(0, TypeOfUniform::EntityUniform, models.model, currentFrame,m_stats.EntitiesCount);
+		initUniform->updateDynamicUniformBuffer(VulkanCore->device, VulkanCore->m_Hardwaredevice.physicalDevice, 0, TypeOfUniform::EntityUniform, models.model, currentFrame,m_stats.EntitiesCount);
 
 		vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, VulkanCore->m_Pipeline.graphicsPipeline["BasicShader"]);
 

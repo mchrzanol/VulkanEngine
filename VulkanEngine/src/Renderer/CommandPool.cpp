@@ -11,8 +11,6 @@ void CommandPool::createCommandPool() {
     if (vkCreateCommandPool(VulkanCore->device, &poolInfo, nullptr, &commandPool) != VK_SUCCESS) {
         throw std::runtime_error("failed to create command pool!");
     }
-
-    utils.BindCommandPool(commandPool);
 }
 
 void CommandPool::createCommandBuffers() {

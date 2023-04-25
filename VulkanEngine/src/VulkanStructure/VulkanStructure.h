@@ -11,7 +11,6 @@
 #include "FrameBuffer/FrameBuffer.h"
 #include "Pipeline/Pipeline.h"
 
-extern GlobalUtl utils;
 
 class ENGINE_API VulkanStruct {
 private:
@@ -35,6 +34,7 @@ public:
 
         m_SwapChain.createSwapChain(m_Hardwaredevice.physicalDevice, surface, device, window->m_window,
             m_Hardwaredevice.findQueueFamilies(m_Hardwaredevice.physicalDevice, surface));
+
         m_SwapChain.createImageViews(device);
 
         m_Pipeline.createRenderPass(device, m_DepthBuffer.findDepthFormat(m_Hardwaredevice.physicalDevice), m_SwapChain.swapChainImageFormat);
@@ -46,11 +46,7 @@ public:
 
         uniformBuffer->createUniformBuffers(device, m_Hardwaredevice.physicalDevice);
         uniformBuffer->createDescriptorPool(device);
-        uniformBuffer->createDescriptorSets(device);
-
-        utils.BindDevice(device);
-        utils.BindGraphicsQueue(m_Hardwaredevice.graphicsQueue);
-        utils.BindPhysicalDevice(m_Hardwaredevice.physicalDevice);
+        uniformBuffer->createDescriptorSets(device, m_Hardwaredevice.physicalDevice);
     }
 
     void cleanup() {

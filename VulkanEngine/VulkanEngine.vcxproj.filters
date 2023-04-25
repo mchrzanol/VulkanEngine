@@ -38,7 +38,6 @@
     </ClInclude>
     <ClInclude Include="src\Core.h" />
     <ClInclude Include="src\Engine.h" />
-    <ClInclude Include="src\GlobalVariables.h" />
     <ClInclude Include="src\Input\Input.h">
       <Filter>Input</Filter>
     </ClInclude>
@@ -79,7 +78,6 @@
     <ClCompile Include="src\BasicObjects\2D\Triangle.cpp">
       <Filter>BasicObjects\2D</Filter>
     </ClCompile>
-    <ClCompile Include="src\GlobalVariables.cpp" />
     <ClCompile Include="src\Renderer\Buffers.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>

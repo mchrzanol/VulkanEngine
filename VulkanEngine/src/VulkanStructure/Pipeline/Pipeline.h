@@ -2,8 +2,6 @@
 
 #include "Libraries.h"
 
-extern GlobalUtl utils;
-
 class pipeline {
 private:
     void createGraphicsPipeline(VkDevice device, std::vector<char> vertShaderCode, std::vector<char> fragShaderCode, std::string name, std::vector<VkDescriptorSetLayout> descriptorSetLayouts);

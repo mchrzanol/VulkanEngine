@@ -25,7 +25,6 @@ void PickingDevice::pickPhysicalDevice(VkInstance instance, VkSurfaceKHR surface
             physicalDevice = device;
             VkPhysicalDeviceProperties deviceProps;
             vkGetPhysicalDeviceProperties(device, &deviceProps);
-            utils.GivePhysicalDeviceProps(deviceProps);
             break;
         }
     }

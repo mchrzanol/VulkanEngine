@@ -1,8 +1,8 @@
 #include "Rectangle.h"
 namespace Entity {
 	namespace rectangle {
-		EntityInfo* create(glm::vec3 origin, float size, glm::vec3 color[4], Orientation orientation) {
-			EntityInfo* data = new EntityInfo();
+		EntityVitalInfo* create(glm::vec3 origin, float size, glm::vec3 color[4], Orientation orientation) {
+			EntityVitalInfo* data = new EntityVitalInfo();
 
 			data->origin = origin;
 
@@ -60,16 +60,16 @@ namespace Entity {
 			}
 
 
-			data->createVertexBuffer(verticesInfo);
-			data->createIndexBuffer({ 0,1,2, 2, 3, 0 });
+			data->verticesInfo = verticesInfo;
+			data->indices = std::vector<uint16_t>{ 0,1,2, 2, 3, 0 };
 
 			data->data.type = EntityType::Rectangle;
 
 			return data;
 		}
 
-		EntityInfo* create(glm::vec3 origin, float sizeHorrizontal, float sizeVertical, glm::vec3 color[4], Orientation orientation) {
-			EntityInfo* data = new EntityInfo();
+		EntityVitalInfo* create(glm::vec3 origin, float sizeHorrizontal, float sizeVertical, glm::vec3 color[4], Orientation orientation) {
+			EntityVitalInfo* data = new EntityVitalInfo();
 
 			data->origin = origin;
 
@@ -117,16 +117,16 @@ namespace Entity {
 				std::cout << "verticesInfo[3]: " << verticesInfo[3].pos.x << " " << verticesInfo[3].pos.y << " " << verticesInfo[3].pos.z << std::endl;
 			}
 
-			data->createVertexBuffer(verticesInfo);
-			data->createIndexBuffer({ 0,1,2, 2, 3, 0 });
+			data->verticesInfo = verticesInfo;
+			data->indices = std::vector<uint16_t>{ 0,1,2, 2, 3, 0 };
 
 			data->data.type = EntityType::Rectangle;
 
 			return data;
 		}
 
-		EntityInfo* create(glm::vec3 vertices[4], glm::vec3 color[4]) {
-			EntityInfo* data = new EntityInfo();
+		EntityVitalInfo* create(glm::vec3 vertices[4], glm::vec3 color[4]) {
+			EntityVitalInfo* data = new EntityVitalInfo();
 
 			data->origin = { (vertices[0].x + vertices[1].x + vertices[2].x + vertices[2].z) / 4, (vertices[0].y + vertices[1].y + vertices[2].y + vertices[3].z) / 4,
 				(vertices[0].z + vertices[1].z + vertices[2].z+ vertices[3].z) / 4 };
@@ -145,8 +145,8 @@ namespace Entity {
 			verticesInfo[3] = { vertices[3], color[3] };
 			std::cout << "verticesInfo[3]: " << verticesInfo[3].pos.x << " " << verticesInfo[3].pos.y << " " << verticesInfo[3].pos.z << std::endl;
 
-			data->createVertexBuffer(verticesInfo);
-			data->createIndexBuffer({ 0,1,2, 2, 3, 0 });
+			data->verticesInfo = verticesInfo;
+			data->indices = std::vector<uint16_t>{ 0,1,2, 2, 3, 0 };
 
 			data->data.type = EntityType::Rectangle;
 

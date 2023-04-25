@@ -3,7 +3,6 @@
 #include "Libraries.h"
 #include "VulkanStructure/Structures.h"
 
-extern GlobalUtl utils;
 
 class ENGINE_API PickingDevice {
 private:

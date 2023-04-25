@@ -2,8 +2,8 @@
 
 namespace Entity {
 	namespace triangle {
-		EntityInfo* create(glm::vec3 origin, float size, glm::vec3 color[3]){
-			EntityInfo* data = new EntityInfo();
+		EntityVitalInfo* create(glm::vec3 origin, float size, glm::vec3 color[3]){
+			EntityVitalInfo* data = new EntityVitalInfo();
 
 			float h = (size * std::sqrt(3) / 2);
 
@@ -20,16 +20,16 @@ namespace Entity {
 			verticesInfo[2] = { glm::vec3(origin.x + size * 0.5, origin.y - h * 1 / 3, origin.z), color[2] };//right
 			std::cout << "verticesInfo[2]: " << verticesInfo[2].pos.x << " " << verticesInfo[2].pos.y << " " << verticesInfo[2].pos.z << std::endl;
 
-			data->createVertexBuffer(verticesInfo);
-			data->createIndexBuffer({ 0, 1, 2 });
+			data->verticesInfo = verticesInfo;
+			data->indices = std::vector<uint16_t>{ 0, 1, 2 };
 
 			data->data.type = EntityType::Triangle;
 
 			return data;
 		}
 
-		EntityInfo* create(glm::vec3 vertices[3], glm::vec3 color[3])	{
-			EntityInfo* data = new EntityInfo();
+		EntityVitalInfo* create(glm::vec3 vertices[3], glm::vec3 color[3])	{
+			EntityVitalInfo* data = new EntityVitalInfo();
 
 			data->origin = { (vertices[0].x + vertices[1].x + vertices[2].x) / 3, (vertices[0].y + vertices[1].y + vertices[2].y) / 3, (vertices[0].z + vertices[1].z + vertices[2].z) / 2 };
 
@@ -42,8 +42,8 @@ namespace Entity {
 			verticesInfo[2] = { vertices[2], color[2] };
 			std::cout << "verticesInfo[2]: " << verticesInfo[2].pos.x << " " << verticesInfo[2].pos.y << " " << verticesInfo[2].pos.z << std::endl;
 
-			data->createVertexBuffer(verticesInfo);
-			data->createIndexBuffer({ 0, 1, 2 });
+			data->verticesInfo = verticesInfo;
+			data->indices = std::vector<uint16_t>{ 0, 1, 2 };
 
 			data->data.type = EntityType::Triangle;
 
