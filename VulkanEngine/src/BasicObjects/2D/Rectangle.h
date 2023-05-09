@@ -5,8 +5,8 @@
 
 namespace Entity {
 	namespace rectangle {
-		ENGINE_API EntityVitalInfo* create(glm::vec3 origin, float size);
+		ENGINE_API EntityVitalInfo* create(glm::vec3 origin, float size, Orientation orientation);
 
-		ENGINE_API EntityVitalInfo* create(glm::vec3 origin, float sizeHorrizontal, float sizeVertical);
+		ENGINE_API EntityVitalInfo* create(glm::vec3 origin, float sizeHorrizontal, float sizeVertical, Orientation orientation);
 	}
 }

@@ -18,7 +18,7 @@ private:
 
 	bool firstSet = true;
 public:
-	ViewMatricies() : camSpeed(0.005f), sensitivity(0.5f), camFront(0.0f, 0.0f, -1.0f),
+	ViewMatricies() : camSpeed(0.2f), sensitivity(0.5f), camFront(0.0f, 0.0f, -1.0f),
 		camPosition(0.f, 0.f, 1.f), camUp(0.f, 1.f, 0.f), ViewMatrix(1.0f)
 	{};
 	void update()
@@ -46,8 +46,8 @@ public:
 		camFront = glm::normalize(camFront);
 
 	}
-	inline void ChangePosz(float var) { camPosition += glm::vec3(var) * camFront; };
-	inline void ChangePosx(float var) { camPosition += glm::normalize(glm::cross(camFront, camUp)) * glm::vec3(var); };
+	inline void ChangePosz(float var) { camPosition += glm::vec3(var) * camFront * camSpeed; };
+	inline void ChangePosx(float var) { camPosition += glm::normalize(glm::cross(camFront, camUp)) * glm::vec3(var) * camSpeed; };
 	inline void ChangeSen(float f) { sensitivity = f;  };
 	inline const glm::mat4 GetView() { return ViewMatrix; };
 	inline glm::vec3 GetCamPos() { return camPosition; };

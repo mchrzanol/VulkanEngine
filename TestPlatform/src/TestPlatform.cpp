@@ -29,15 +29,15 @@ void TestPlatform::Init() {
 	glm::vec3 color2[4] = { {1.0f, 0.0f, 0.0f} , {0.0f, 1.0f, 0.0f} ,{0.0f, 0.0f, 1.0f}, {0,0,0} };
 	glm::vec3 color3[4] = { {1.0f, 1.0f, 1.0f} , {1.0f, 1.0f, 1.0f} ,{1.0f, 1.0f, 1.0f}, {1,1,1} };
 
-	objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0, -0.5), 1));
-	objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0.5,0), 2));
-	//objects->PushBack(Entity::rectangle::createTest(glm::vec3(0, 0, -1.5f), 1));
-	//objects->PushBack(Entity::rectangle::create(glm::vec3(0.5, 0, 0.f), 1, color3, Orientation::X));
-	//objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0.5, 0.f), 1, 1, color3, Orientation::Y));
+	//objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0, -0.5), 1, Orientation::Y));
+	//objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0, -0.5), 1, Orientation::Z));
+	//objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0, -0.5), 1, Orientation::X));
+	//objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0.5,0), 2));
+	//objects->PushBack(Entity::triangle::create(glm::vec3(0, -1, 0), 1));
+	//objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0.5, 0), 2, Orientation::Y));
 
-	//objects->PushBack(Entity::triangle::create(glm::vec3(0, 0, 0), 1, color2, Orientation::X));
 
-	//TestPlatform::AddEtities();
+	TestPlatform::AddEtities();
 
 	initCommandPool->createCommandBuffers();
 	initCommandPool->createSyncObjects();
@@ -55,7 +55,7 @@ void TestPlatform::AddEtities() {
 
 	int minus[2] = { 1, 1 };
 	bool tak = true;
-	for (int i = 0; i < 10000000; i++)
+	for (int i = 0; i < 15000000; i++)
 	{
 		if (i % 100000 == 0) {
 			for (int& a : minus)
@@ -80,7 +80,7 @@ void TestPlatform::AddEtities() {
 				color[1] = { (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX) , (float)rand() / (RAND_MAX) };
 				color[2] = { (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX) , (float)rand() / (RAND_MAX) };
 
-				//objects->PushBack(Entity::triangle::create(glm::vec3(((float)rand() / (RAND_MAX)) * minus[0], ((float)rand() / (RAND_MAX)) * minus[1], ((float)rand() / (RAND_MAX)) * minus[1]), 0.5f, color, Orientation::Z));
+				objects->PushBack(Entity::triangle::create(glm::vec3(((float)rand() / (RAND_MAX)) * minus[0], ((float)rand() / (RAND_MAX)) * minus[1], ((float)rand() / (RAND_MAX)) * minus[1]), 0.5f, Orientation::Z));
 
 				tak = false;
 			}
@@ -91,8 +91,7 @@ void TestPlatform::AddEtities() {
 				color2[2] = { (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX) , (float)rand() / (RAND_MAX) };
 				color2[3] = { (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX) , (float)rand() / (RAND_MAX) };
 
-				//objects->PushBack(Entity::rectangle::create(glm::vec3(((float)rand() / (RAND_MAX)) * minus[0], ((float)rand() / (RAND_MAX)) * minus[1], ((float)rand() / (RAND_MAX)) * minus[1]),
-				//	(float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX), color2, Orientation::Z));
+				objects->PushBack(Entity::rectangle::create(glm::vec3(((float)rand() / (RAND_MAX)) * minus[0], ((float)rand() / (RAND_MAX)) * minus[1], ((float)rand() / (RAND_MAX)) * minus[1]),(float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX), Orientation::Z));
 				tak = true;
 			}
 		}

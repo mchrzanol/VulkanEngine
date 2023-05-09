@@ -1,27 +1,38 @@
 #include "Rectangle.h"
 namespace Entity {
 	namespace rectangle {
-		ENGINE_API EntityVitalInfo* create(glm::vec3 origin, float size) {
+		ENGINE_API EntityVitalInfo* create(glm::vec3 origin, float size, Orientation orientation) {
 			EntityVitalInfo* data = new EntityVitalInfo();
-
-			data->indexCount = 6;
 
 			data->origin = origin;
 
 			data->model = glm::translate(data->model, origin);
 
 			data->model = glm::scale(data->model, glm::vec3(size));
+
+			switch (static_cast<int>(orientation)) {
+			case 0:
+			{
+				data->model = glm::rotate(data->model, glm::radians(90.f), glm::vec3(0, 1, 0));
+				break;
+			}
+			case 1:
+			{
+				//data->model = glm::translate(data->model, origin);
+				data->model = glm::rotate(data->model, glm::radians(90.f), glm::vec3(1, 0, 0));
+				//data->model = glm::translate(data->model, origin * glm::vec3(-1.f));
+				break;
+			}
+			}
 		
-			data->data.type = EntityType::Rectangle;
+			data->type = EntityType::Rectangle;
 
 			return data;
 		}
 
 
-		EntityVitalInfo* create(glm::vec3 origin, float sizeHorrizontal, float sizeVertical) {
+		EntityVitalInfo* create(glm::vec3 origin, float sizeHorrizontal, float sizeVertical, Orientation orientation) {
 			EntityVitalInfo* data = new EntityVitalInfo();
-
-			data->indexCount = 6;
 
 			data->origin = origin;
 
@@ -29,7 +40,22 @@ namespace Entity {
 
 			data->model = glm::scale(data->model, glm::vec3(sizeHorrizontal,sizeVertical, 0));
 
-			data->data.type = EntityType::Rectangle;
+			switch (static_cast<int>(orientation)) {
+			case 0:
+			{
+				data->model = glm::rotate(data->model, glm::radians(90.f), glm::vec3(0, 1, 0));
+				break;
+			}
+			case 1:
+			{
+				//data->model = glm::translate(data->model, origin);
+				data->model = glm::rotate(data->model, glm::radians(90.f), glm::vec3(1, 0, 0));
+				//data->model = glm::translate(data->model, origin * glm::vec3(-1.f));
+				break;
+			}
+			}
+
+			data->type = EntityType::Rectangle;
 			return data;
 		}
 	}

@@ -3,26 +3,19 @@
 #include "Renderer/VertexIndexBuffer.h"
 
 enum class EntityType {
-	Triangle, Rectangle, Circle, Line
+	Triangle = 3, Rectangle = 4, Circle = 1, Line = 2//by vertexcount
 };
 
 enum class Orientation {
 	X, Y, Z
 };
 
-struct EntityData {
-	EntityType type;
-};
-
 struct EntityVitalInfo {
-
-	uint32_t indexCount;
-
 	glm::vec3 origin;
 
 	glm::mat4 model = glm::mat4(1.f);
 
-	EntityData data;
+	EntityType type;
 };
 
 struct EntityInfo {

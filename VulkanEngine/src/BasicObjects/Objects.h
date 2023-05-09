@@ -52,15 +52,24 @@ private:
 	VkCommandPool* CommandPool;
 
 	//drawIndirect
-	VertexBuffer RectangleVertexBuffer;
-	IndexBuffer RectangleIndexBuffer;
+	struct IndirectBatch {
+		EntityType type;
 
-	VertexBuffer TriangleVertexBuffer;
-	IndexBuffer TriangleIndexBuffer;
+		uint32_t first;//count of previous batch
+		uint32_t count;
+
+		std::vector<glm::mat4> model;
+	};
+
+	std::vector<IndirectBatch> batchDraw;
+
+	std::map< EntityType, VertexBuffer> EntitiesVertexBuffer;
 
 	VkBuffer DrawCommandBuffer;
 	VkDeviceMemory DrawCommandBufferMemory;
 	void* DrawCommandData;
+
+	VkDrawIndirectCommand* drawCommands = nullptr;
 
 public:
 	Objects(int MAX_FRAMES_IN_FLIGHT) 
@@ -103,8 +112,12 @@ public:
 
 		m_objects.push_back(*object);
 
-
 		m_stats.EntitiesCount++;
+
+		batchDraw = compact_draw();
+
+		delete[] drawCommands;
+		drawCommands = updateDrawCommand();
 	}
 
 	void UpdateView(glm::mat4 viewMatrix) {
@@ -126,11 +139,10 @@ public:
 	}
 
 	void destroy() {
-		RectangleVertexBuffer.cleanup(VulkanCore->device);
-		RectangleIndexBuffer.cleanup(VulkanCore->device);
 
-		TriangleVertexBuffer.cleanup(VulkanCore->device);
-		TriangleIndexBuffer.cleanup(VulkanCore->device);
+		for (auto& VertexBuffer : EntitiesVertexBuffer) {
+			VertexBuffer.second.cleanup(VulkanCore->device);
+		}
 
 		m_objects.clear();
 		initUniform->cleanup(VulkanCore->device);
@@ -163,7 +175,8 @@ private:
 	void addToBuffer(std::vector<Vertex> verticesInfo, std::vector<uint16_t> indices, VkCommandPool CommandPool);
 
 	void createIndirectBuffer();
-	void updateDrawCommand(VkDrawIndexedIndirectCommand*& drawCommand);
+	std::vector<IndirectBatch> compact_draw();
+	VkDrawIndirectCommand* updateDrawCommand();
 	void updateUniforms(VkCommandBuffer& commandBuffer, uint32_t currentFrame);
 	void drawIndirect(VkCommandBuffer& commandBuffer, uint32_t currentFrame);
 

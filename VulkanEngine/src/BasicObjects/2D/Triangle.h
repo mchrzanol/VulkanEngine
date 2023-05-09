@@ -5,6 +5,6 @@
 
 namespace Entity {
 	namespace triangle {
-		ENGINE_API EntityVitalInfo* create(glm::vec3 origin, float size);
+		ENGINE_API EntityVitalInfo* create(glm::vec3 origin, float size, Orientation orientation);
 	}
 }
