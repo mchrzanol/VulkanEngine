@@ -2,25 +2,25 @@
 #include "2D/Triangle.h"
 #include "2D/Rectangle.h"
 #include "VulkanStructure/VulkanStructure.h"
+const static struct data {
+	const static uint32_t MaximumObjectsOnFrame = 200;
 
-struct data {
-	const static uint32_t MaximumObjectsOnFrame = 20000;
-
-	std::string BasicShaders[2] = {
+	const std::string BasicShaders[2] = {
 		"../shaders/BasicVert.spv",
 		"../shaders/BasicFrag.spv"
 	};
 
-	std::string CircleShaders[2] = {
+	const std::string CircleShaders[2] = {
 		"",
 		""
 	};
-};
-
+}m_data;
 
 struct stats
 {
 	uint32_t EntitiesCount = 0;
+	uint32_t VerticesCount = 0;
+	uint32_t IndicesCount = 0;
 
 	uint32_t triangleCount = 0;
 	uint32_t rectangleCount = 0;
@@ -31,23 +31,18 @@ struct UniformBufferObject {
 	alignas(16) glm::mat4 proj;
 };
 
-struct ubo_model {
-	glm::mat4* model = nullptr;
-};
-
 class ENGINE_API Objects {
 private:
 
 	UniformBuffer* initUniform;
 
-	data m_data;
 	stats m_stats;
 
-	std::vector<EntityInfo> m_objects;
+	std::vector<EntityVitalInfo> m_objects;
 
-	ubo_model models;
+	glm::mat4 model[m_data.MaximumObjectsOnFrame];
 
-	size_t alignment;
+	bool DynamicUniformsUpdate = true;
 
 	glm::mat4 viewMatrix;
 	glm::mat4 projMatrix;
@@ -56,13 +51,27 @@ private:
 
 	VkCommandPool* CommandPool;
 
+	//drawIndirect
+	VertexBuffer RectangleVertexBuffer;
+	IndexBuffer RectangleIndexBuffer;
+
+	VertexBuffer TriangleVertexBuffer;
+	IndexBuffer TriangleIndexBuffer;
+
+	VkBuffer DrawCommandBuffer;
+	VkDeviceMemory DrawCommandBufferMemory;
+	void* DrawCommandData;
+
 public:
 	Objects(int MAX_FRAMES_IN_FLIGHT) 
 	{
 		initUniform = new UniformBuffer(MAX_FRAMES_IN_FLIGHT, m_data.MaximumObjectsOnFrame);
 
 		initUniform->createUniformBind(0, sizeof(UniformBufferObject), VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, TypeOfUniform::GlobalUniform);
-		initUniform->createUniformBind(0, sizeof(glm::mat4), VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC, TypeOfUniform::EntityUniform);
+
+		size_t buffersize = sizeof(glm::mat4) * m_data.MaximumObjectsOnFrame;
+
+		initUniform->createUniformBind(0, buffersize, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, TypeOfUniform::EntityUniform);
 
 	}
 
@@ -77,12 +86,11 @@ public:
 		viewMatrix = glm::mat4(1.f);
 		projMatrix = glm::mat4(1.f);
 
-		alignment = initUniform->GetAlignment(sizeof(glm::mat4), VulkanCore->m_Hardwaredevice.physicalDevice);
-		size_t bufferSize = m_data.MaximumObjectsOnFrame * alignment;
-		models.model = (glm::mat4*)_aligned_malloc(bufferSize, alignment);
+		//model = new glm::mat4[200];
 
 		VulkanCore->m_Pipeline.createGraphicsPipeline(this->VulkanCore->device, "BasicShader", m_data.BasicShaders[0], m_data.BasicShaders[1], initUniform->descriptorSetLayouts);
 
+		createBuffers();
 	}
 
 	template<typename T>
@@ -93,17 +101,8 @@ public:
 	template<>
 	void PushBack<EntityVitalInfo>(EntityVitalInfo * object) {
 
-		EntityInfo objectData;
+		m_objects.push_back(*object);
 
-		objectData.data = *object;
-
-		objectData.createVertexBuffer(objectData.data.verticesInfo, VulkanCore->device, VulkanCore->m_Hardwaredevice.physicalDevice, VulkanCore->m_Hardwaredevice.graphicsQueue, *CommandPool);
-		objectData.createIndexBuffer(objectData.data.indices, VulkanCore->device, VulkanCore->m_Hardwaredevice.physicalDevice, VulkanCore->m_Hardwaredevice.graphicsQueue, *CommandPool);
-
-		m_objects.push_back(objectData);
-
-		glm::mat4* modelMat = (glm::mat4*)(((uint64_t)models.model + (m_stats.EntitiesCount * alignment)));
-		*modelMat = glm::mat4(1.f);
 
 		m_stats.EntitiesCount++;
 	}
@@ -117,23 +116,27 @@ public:
 	}
 
 	void rotate(uint32_t EntityIndex, glm::f32 radians, glm::vec3 axis) {
-		glm::mat4* modelMat = (glm::mat4*)(((uint64_t)models.model + (EntityIndex * alignment)));
+		//glm::mat4* modelMat = (glm::mat4*)(((uint64_t)models.model + (EntityIndex * alignment)));
 
-		*modelMat = glm::translate(*modelMat, m_objects[EntityIndex].data.origin);
-		*modelMat = glm::rotate(*modelMat, radians, axis);
-		*modelMat = glm::translate(*modelMat, glm::vec3(-1.f) * m_objects[EntityIndex].data.origin);
+		//*modelMat = glm::translate(*modelMat, m_objects[EntityIndex].data.origin);
+		//*modelMat = glm::rotate(*modelMat, radians, axis);
+		//*modelMat = glm::translate(*modelMat, glm::vec3(-1.f) * m_objects[EntityIndex].data.origin);
 
+		DynamicUniformsUpdate = true;
 	}
 
 	void destroy() {
-		_aligned_free(models.model);
+		RectangleVertexBuffer.cleanup(VulkanCore->device);
+		RectangleIndexBuffer.cleanup(VulkanCore->device);
 
-		for (auto& object : m_objects) {
-			object.vertices.cleanup(VulkanCore->device);
-			object.indices.cleanup(VulkanCore->device);
-		}
+		TriangleVertexBuffer.cleanup(VulkanCore->device);
+		TriangleIndexBuffer.cleanup(VulkanCore->device);
+
 		m_objects.clear();
 		initUniform->cleanup(VulkanCore->device);
+
+		vkDestroyBuffer(VulkanCore->device, DrawCommandBuffer, nullptr);
+		vkFreeMemory(VulkanCore->device, DrawCommandBufferMemory, nullptr);
 	}
 
 	inline int GetTrianglesSize() { return m_stats.triangleCount; };
@@ -156,25 +159,38 @@ private:
 
 	}
 
+	void createBuffers();
+	void addToBuffer(std::vector<Vertex> verticesInfo, std::vector<uint16_t> indices, VkCommandPool CommandPool);
+
+	void createIndirectBuffer();
+	void updateDrawCommand(VkDrawIndexedIndirectCommand*& drawCommand);
+	void updateUniforms(VkCommandBuffer& commandBuffer, uint32_t currentFrame);
+	void drawIndirect(VkCommandBuffer& commandBuffer, uint32_t currentFrame);
+
+
 	friend class CommandPool;
 	void draw2DObjects(VkCommandBuffer& commandBuffer, uint32_t currentFrame) {
 
-		UniformBufferObject ubo = { viewMatrix, projMatrix };
-		initUniform->updateStaticUniformBuffer(0, TypeOfUniform::GlobalUniform, ubo, currentFrame);
+		drawIndirect(commandBuffer, currentFrame);
 
-		vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, VulkanCore->m_Pipeline.pipelineLayout, 0, 1, &initUniform->GetDescriptorSets()[0][currentFrame], 0, nullptr);
+		//UniformBufferObject ubo = { viewMatrix, projMatrix };
+		//initUniform->updateStaticUniformBuffer(0, TypeOfUniform::GlobalUniform, ubo, currentFrame);
 
-		initUniform->updateDynamicUniformBuffer(VulkanCore->device, VulkanCore->m_Hardwaredevice.physicalDevice, 0, TypeOfUniform::EntityUniform, models.model, currentFrame,m_stats.EntitiesCount);
+		//vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, VulkanCore->m_Pipeline.pipelineLayout, 0, 1, &initUniform->GetDescriptorSets()[0][currentFrame], 0, nullptr);
 
-		vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, VulkanCore->m_Pipeline.graphicsPipeline["BasicShader"]);
+		//if (DynamicUniformsUpdate == true) {
+		//	initUniform->updateDynamicUniformBuffer(VulkanCore->device, VulkanCore->m_Hardwaredevice.physicalDevice, 0, TypeOfUniform::EntityUniform, models.model, currentFrame, m_stats.EntitiesCount);
+		//	DynamicUniformsUpdate = false;
+		//}
+		//vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, VulkanCore->m_Pipeline.graphicsPipeline["BasicShader"]);
 
-		for (size_t index = 0; index < m_stats.EntitiesCount; index++) {
-			uint32_t dynamicOffset = index * static_cast<uint32_t>(alignment);
+		//for (size_t index = 0; index < m_stats.EntitiesCount; index++) {
+		//	uint32_t dynamicOffset = index * static_cast<uint32_t>(alignment);
 
-			vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, VulkanCore->m_Pipeline.pipelineLayout, 1, 1, &initUniform->GetDescriptorSets()[1][currentFrame], 1, &dynamicOffset);
-			drawObject(commandBuffer, m_objects[index].vertices.GetVertexBuffer(), m_objects[index].indices.GetIndexBuffer(),
-				m_objects[index].indices.GetIndicies());
-		}
+		//	vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, VulkanCore->m_Pipeline.pipelineLayout, 1, 1, &initUniform->GetDescriptorSets()[1][currentFrame], 1, &dynamicOffset);
+		//	drawObject(commandBuffer, m_objects[index].vertices.GetVertexBuffer(), m_objects[index].indices.GetIndexBuffer(),
+		//		m_objects[index].indices.GetIndicies());
+		//}
 
 	}
 

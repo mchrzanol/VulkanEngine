@@ -173,6 +173,7 @@
     <ClCompile Include="src\BasicObjects\2D\Rectangle.cpp" />
     <ClCompile Include="src\BasicObjects\2D\Triangle.cpp" />
     <ClCompile Include="src\BasicObjects\3D\Square.cpp" />
+    <ClCompile Include="src\BasicObjects\Objects.cpp" />
     <ClCompile Include="src\Renderer\Buffers.cpp" />
     <ClCompile Include="src\Renderer\CommandPool.cpp" />
     <ClCompile Include="src\Renderer\UniformBuffer.cpp" />

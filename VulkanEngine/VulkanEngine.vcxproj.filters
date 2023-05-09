@@ -116,5 +116,6 @@
     </ClCompile>
     <ClCompile Include="src\BasicObjects\2D\Circle.cpp" />
     <ClCompile Include="src\BasicObjects\3D\Square.cpp" />
+    <ClCompile Include="src\BasicObjects\Objects.cpp" />
   </ItemGroup>
 </Project>

@@ -15,10 +15,12 @@ struct EntityData {
 };
 
 struct EntityVitalInfo {
-	std::vector<Vertex> verticesInfo;
-	std::vector<uint16_t> indices;
+
+	uint32_t indexCount;
 
 	glm::vec3 origin;
+
+	glm::mat4 model = glm::mat4(1.f);
 
 	EntityData data;
 };

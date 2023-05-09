@@ -88,21 +88,31 @@ public:
     void updateStaticUniformBuffer(unsigned int binding, TypeOfUniform UniformType, T& data, uint32_t currentImage) {
 
         memcpy(uniformBuffersMapped[static_cast<int>(UniformType)][(binding+currentImage) * currentImage], &data, BindingData[static_cast<int>(UniformType)][binding].sizeofData);
+    }
+
+    template<class T>
+    void updateArrayUniformBuffer(unsigned int binding, TypeOfUniform UniformType, T& data, uint32_t currentImage, uint32_t countOfData, size_t alignment) {
+
+        void* buffer = uniformBuffersMapped[static_cast<int>(UniformType)][(binding + currentImage) * currentImage];
+
+        memcpy(buffer, &data, sizeof(glm::mat4) * countOfData);
     };
+
+
     template<class T>
     void updateDynamicUniformBuffer(VkDevice device, VkPhysicalDevice physicalDevice, unsigned int binding, TypeOfUniform UniformType, T& data, uint32_t currentImage, uint32_t countOfData , uint32_t offset = 0) {
         size_t alignment = GetAlignment(BindingData[static_cast<int>(UniformType)][binding].sizeofData, physicalDevice);
 
-        int calculateOffset = offset * alignment;
+        VkDeviceSize calculateOffset = offset * alignment;
 
         void* buffer = uniformBuffersMapped[static_cast<int>(UniformType)][(binding + currentImage) * currentImage];
 
-        memcpy(buffer, data + calculateOffset, countOfData*alignment);
+        memcpy(buffer, data + offset, countOfData*alignment);
 
         VkMappedMemoryRange memoryRange;
         memoryRange.sType = VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
         memoryRange.pNext = 0;
-        memoryRange.offset = offset * alignment;
+        memoryRange.offset = calculateOffset;
         memoryRange.memory = uniformBuffersMemory[static_cast<int>(UniformType)][(binding + currentImage) * currentImage];
         memoryRange.size = alignment * countOfData;
         vkFlushMappedMemoryRanges(device, 1, &memoryRange);

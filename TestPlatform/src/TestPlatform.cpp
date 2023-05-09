@@ -29,9 +29,13 @@ void TestPlatform::Init() {
 	glm::vec3 color2[4] = { {1.0f, 0.0f, 0.0f} , {0.0f, 1.0f, 0.0f} ,{0.0f, 0.0f, 1.0f}, {0,0,0} };
 	glm::vec3 color3[4] = { {1.0f, 1.0f, 1.0f} , {1.0f, 1.0f, 1.0f} ,{1.0f, 1.0f, 1.0f}, {1,1,1} };
 
-	objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0, -1.5f), 1, color2, Orientation::Z));
-	objects->PushBack(Entity::rectangle::create(glm::vec3(0.5, 0, 0.f), 1, color3, Orientation::X));
-	objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0.5, 0.f), 1, 1, color3, Orientation::Y));
+	objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0, -0.5), 1));
+	objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0.5,0), 2));
+	//objects->PushBack(Entity::rectangle::createTest(glm::vec3(0, 0, -1.5f), 1));
+	//objects->PushBack(Entity::rectangle::create(glm::vec3(0.5, 0, 0.f), 1, color3, Orientation::X));
+	//objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0.5, 0.f), 1, 1, color3, Orientation::Y));
+
+	//objects->PushBack(Entity::triangle::create(glm::vec3(0, 0, 0), 1, color2, Orientation::X));
 
 	//TestPlatform::AddEtities();
 
@@ -76,7 +80,7 @@ void TestPlatform::AddEtities() {
 				color[1] = { (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX) , (float)rand() / (RAND_MAX) };
 				color[2] = { (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX) , (float)rand() / (RAND_MAX) };
 
-				objects->PushBack(Entity::triangle::create(glm::vec3(((float)rand() / (RAND_MAX)) * minus[0], ((float)rand() / (RAND_MAX)) * minus[1], ((float)rand() / (RAND_MAX)) * minus[1]), 0.5f, color));
+				//objects->PushBack(Entity::triangle::create(glm::vec3(((float)rand() / (RAND_MAX)) * minus[0], ((float)rand() / (RAND_MAX)) * minus[1], ((float)rand() / (RAND_MAX)) * minus[1]), 0.5f, color, Orientation::Z));
 
 				tak = false;
 			}
@@ -87,8 +91,8 @@ void TestPlatform::AddEtities() {
 				color2[2] = { (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX) , (float)rand() / (RAND_MAX) };
 				color2[3] = { (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX) , (float)rand() / (RAND_MAX) };
 
-				objects->PushBack(Entity::rectangle::create(glm::vec3(((float)rand() / (RAND_MAX)) * minus[0], ((float)rand() / (RAND_MAX)) * minus[1], ((float)rand() / (RAND_MAX)) * minus[1]),
-					(float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX), color2, Orientation::Z));
+				//objects->PushBack(Entity::rectangle::create(glm::vec3(((float)rand() / (RAND_MAX)) * minus[0], ((float)rand() / (RAND_MAX)) * minus[1], ((float)rand() / (RAND_MAX)) * minus[1]),
+				//	(float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX), color2, Orientation::Z));
 				tak = true;
 			}
 		}
@@ -112,7 +116,7 @@ void TestPlatform::OnUpdate() {
 	if (time >= 0.02) {
 		startTime = currentTime;
 		for (int i = 0; i < objects->GetEntitiesCount(); i++) {
-			objects->rotate(i, glm::radians(5.f), glm::vec3(0.0f, 1.0f, 0.0f));
+			//objects->rotate(i, glm::radians(5.f), glm::vec3(0.0f, 1.0f, 0.0f));
 		}
 	}
 }

@@ -93,6 +93,8 @@ void PickingDevice::createLogicalDevice(std::vector<const char*> validationLayer
     //deviceFeatures
     VkPhysicalDeviceFeatures deviceFeatures{};
 
+    deviceFeatures.multiDrawIndirect = VK_TRUE;
+
     //createInfo
     VkDeviceCreateInfo createInfo{};
     createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
