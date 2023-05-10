@@ -42,13 +42,14 @@ void UniformBuffer::createUniformBuffers(VkDevice device, VkPhysicalDevice physi
     for (size_t frame = 1; frame < MAX_FRAMES_IN_FLIGHT + 1; frame++) {
         for (size_t set = 0; set < 2; set++) {
             uniformBuffers[set].resize(UniformsCount[set] * frame);
-            uniformBuffersMemory[set].resize(UniformsCount[set] * frame);
+            uniformBuffersMemory[set].resize(UniformsCount[set]*frame);
             uniformBuffersMapped[set].resize(UniformsCount[set] * frame);
 
             VkDeviceSize bufferSize;
             VkDescriptorPoolSize poolSize{};
             for (int bind = 0; bind < bindingQueue[set].size();bind++) {
-                size_t i = (frame - 1) * UniformsCount[set];
+
+                size_t i = bind + ((frame - 1) * UniformsCount[set]);
 
                 if (BindingData[set][bindingQueue[set][bind]].DescriptorType == VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER) {
                     bufferSize = BindingData[set][bindingQueue[set][bind]].sizeofData;
@@ -69,9 +70,6 @@ void UniformBuffer::createUniformBuffers(VkDevice device, VkPhysicalDevice physi
                 poolSize.descriptorCount = static_cast<uint32_t>(MAX_FRAMES_IN_FLIGHT);
 
                 this->poolSize[set].push_back(poolSize);
-
-                i++;
-
             }
         }
     }

@@ -232,8 +232,8 @@ void pipeline::createGraphicsPipeline(VkDevice device, std::vector<char> vertSha
 }
 
 void pipeline::createGraphicsPipeline(VkDevice device, std::string name, std::string vertShaderPath, std::string fragShaderPath, std::vector<VkDescriptorSetLayout> descriptorSetLayouts) {
-    auto vertShaderCode = readFile("../shaders/vert.spv");
-    auto fragShaderCode = readFile("../shaders/frag.spv");
+    auto vertShaderCode = readFile(vertShaderPath);
+    auto fragShaderCode = readFile(fragShaderPath);
 
     createGraphicsPipeline(device, vertShaderCode, fragShaderCode, name, descriptorSetLayouts);
 

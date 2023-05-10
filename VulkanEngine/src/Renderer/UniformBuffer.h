@@ -87,15 +87,19 @@ public:
     template<class T>
     void updateStaticUniformBuffer(unsigned int binding, TypeOfUniform UniformType, T& data, uint32_t currentImage) {
 
-        memcpy(uniformBuffersMapped[static_cast<int>(UniformType)][(binding+currentImage) * currentImage], &data, BindingData[static_cast<int>(UniformType)][binding].sizeofData);
+        unsigned int MappedOffset = UniformsCount[static_cast<int>(UniformType)];
+
+        memcpy(uniformBuffersMapped[static_cast<int>(UniformType)][binding + (currentImage * MappedOffset)], &data, BindingData[static_cast<int>(UniformType)][binding].sizeofData);
     }
 
     template<class T>
     void updateArrayUniformBuffer(unsigned int binding, TypeOfUniform UniformType, T& data, uint32_t currentImage, uint32_t countOfData, size_t alignment) {
 
-        void* buffer = uniformBuffersMapped[static_cast<int>(UniformType)][(binding + currentImage) * currentImage];
+        unsigned int MappedOffset = binding + (currentImage * UniformsCount[static_cast<int>(UniformType)]);
 
-        memcpy(buffer, &data, sizeof(glm::mat4) * countOfData);
+        void* buffer = uniformBuffersMapped[static_cast<int>(UniformType)][MappedOffset];
+
+        memcpy(buffer, &data, alignment * countOfData);
     };
 
 
@@ -105,7 +109,9 @@ public:
 
         VkDeviceSize calculateOffset = offset * alignment;
 
-        void* buffer = uniformBuffersMapped[static_cast<int>(UniformType)][(binding + currentImage) * currentImage];
+        unsigned int MappedOffset = UniformsCount[static_cast<int>(UniformType)];
+
+        void* buffer = uniformBuffersMapped[static_cast<int>(UniformType)][binding + (currentImage * MappedOffset)];
 
         memcpy(buffer, data + offset, countOfData*alignment);
 

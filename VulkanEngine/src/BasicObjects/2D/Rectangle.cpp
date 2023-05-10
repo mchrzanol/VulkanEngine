@@ -1,7 +1,7 @@
 #include "Rectangle.h"
 namespace Entity {
 	namespace rectangle {
-		ENGINE_API EntityVitalInfo* create(glm::vec3 origin, float size, Orientation orientation) {
+		ENGINE_API EntityVitalInfo* create(glm::vec3 origin, float size, Orientation orientation, glm::vec3 color) {
 			EntityVitalInfo* data = new EntityVitalInfo();
 
 			data->origin = origin;
@@ -24,14 +24,18 @@ namespace Entity {
 				break;
 			}
 			}
+
+			data->color = color;
 		
-			data->type = EntityType::Rectangle;
+			data->vertexCount = 4;
+
+			data->ID = "Rectangle";
 
 			return data;
 		}
 
 
-		EntityVitalInfo* create(glm::vec3 origin, float sizeHorrizontal, float sizeVertical, Orientation orientation) {
+		EntityVitalInfo* create(glm::vec3 origin, float sizeHorrizontal, float sizeVertical, Orientation orientation, glm::vec3 color) {
 			EntityVitalInfo* data = new EntityVitalInfo();
 
 			data->origin = origin;
@@ -55,7 +59,12 @@ namespace Entity {
 			}
 			}
 
-			data->type = EntityType::Rectangle;
+			data->color = color;
+
+			data->vertexCount = 4;
+
+			data->ID = "Rectangle";
+
 			return data;
 		}
 	}

@@ -12,11 +12,16 @@ layout(set = 0, binding = 0) uniform UniformBufferObject {
     mat4 proj;
 } ubo;
 
+struct EntityUBO {
+    mat4 model;
+    vec3 color;
+};
+
 layout(set = 1, binding = 0) uniform modelUBO {
-    mat4 model[maxObjects];
+    EntityUBO m_UBO[maxObjects];
 };
 
 void main() {
-    gl_Position = ubo.proj * ubo.view * model[gl_InstanceIndex] *vec4(inPosition, 1.0);
-    fragColor = inColor;
+    gl_Position = ubo.proj * ubo.view * m_UBO[gl_InstanceIndex].model *vec4(inPosition, 1.0);
+    fragColor = m_UBO[gl_InstanceIndex].color;
 }

@@ -31,6 +31,11 @@ struct UniformBufferObject {
 	alignas(16) glm::mat4 proj;
 };
 
+struct modelUBO {
+	alignas(16) glm::mat4 model;
+	alignas(16) glm::vec3 color;
+};
+
 class ENGINE_API Objects {
 private:
 
@@ -39,8 +44,6 @@ private:
 	stats m_stats;
 
 	std::vector<EntityVitalInfo> m_objects;
-
-	glm::mat4 model[m_data.MaximumObjectsOnFrame];
 
 	bool DynamicUniformsUpdate = true;
 
@@ -52,18 +55,25 @@ private:
 	VkCommandPool* CommandPool;
 
 	//drawIndirect
+
 	struct IndirectBatch {
-		EntityType type;
+		std::string ID;
+
+		uint32_t vertexCount;
 
 		uint32_t first;//count of previous batch
 		uint32_t count;
 
 		std::vector<glm::mat4> model;
+		std::vector<glm::vec3> color;
 	};
+
+	modelUBO EntityUBO[m_data.MaximumObjectsOnFrame];
+	bool EntityUBOchanged = true;
 
 	std::vector<IndirectBatch> batchDraw;
 
-	std::map< EntityType, VertexBuffer> EntitiesVertexBuffer;
+	std::map< std::string, VertexBuffer> EntitiesVertexBuffer;
 
 	VkBuffer DrawCommandBuffer;
 	VkDeviceMemory DrawCommandBufferMemory;
@@ -78,9 +88,13 @@ public:
 
 		initUniform->createUniformBind(0, sizeof(UniformBufferObject), VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, TypeOfUniform::GlobalUniform);
 
-		size_t buffersize = sizeof(glm::mat4) * m_data.MaximumObjectsOnFrame;
+		size_t buffersize = sizeof(modelUBO) * m_data.MaximumObjectsOnFrame;
 
 		initUniform->createUniformBind(0, buffersize, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, TypeOfUniform::EntityUniform);
+
+		//size_t buffersize2 = sizeof(glm::vec3) * m_data.MaximumObjectsOnFrame;
+
+		//initUniform->createUniformBind(5, buffersize2, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, TypeOfUniform::EntityUniform);
 
 	}
 
@@ -94,8 +108,6 @@ public:
 
 		viewMatrix = glm::mat4(1.f);
 		projMatrix = glm::mat4(1.f);
-
-		//model = new glm::mat4[200];
 
 		VulkanCore->m_Pipeline.createGraphicsPipeline(this->VulkanCore->device, "BasicShader", m_data.BasicShaders[0], m_data.BasicShaders[1], initUniform->descriptorSetLayouts);
 

@@ -2,7 +2,7 @@
 
 namespace Entity {
 	namespace triangle {
-		EntityVitalInfo* create(glm::vec3 origin, float size, Orientation orientation) {
+		EntityVitalInfo* create(glm::vec3 origin, float size, Orientation orientation, glm::vec3 color) {
 		
 			EntityVitalInfo* data = new EntityVitalInfo();
 
@@ -27,7 +27,11 @@ namespace Entity {
 			}
 			}
 
-			data->type = EntityType::Triangle;
+			data->color = color;
+
+			data->vertexCount = 3;
+
+			data->ID = "Triangle";
 
 			return data;
 		}

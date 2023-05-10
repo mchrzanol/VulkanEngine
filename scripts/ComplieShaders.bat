@@ -1,4 +1,7 @@
+@echo off
+set /p NAME="Podaj dopisek do nazwy: "
+
 cd ..
-call external\bin\glslc\glslc.exe shaders\shader.vert -o shaders\vert.spv
-call external\bin\glslc\glslc.exe shaders\shader.frag -o shaders\frag.spv
+call external\bin\glslc\glslc.exe shaders\%NAME%Shader.vert -o shaders\%NAME%Vert.spv
+call external\bin\glslc\glslc.exe shaders\%NAME%Shader.frag -o shaders\%NAME%Frag.spv
 pause

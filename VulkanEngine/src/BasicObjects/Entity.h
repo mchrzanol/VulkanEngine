@@ -15,7 +15,11 @@ struct EntityVitalInfo {
 
 	glm::mat4 model = glm::mat4(1.f);
 
-	EntityType type;
+	glm::vec3 color;
+
+	uint16_t vertexCount;
+
+	std::string ID;
 };
 
 struct EntityInfo {
