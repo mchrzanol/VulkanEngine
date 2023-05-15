@@ -39,53 +39,37 @@ void Objects::createBuffers() {
 	vkMapMemory(VulkanCore->device, DrawCommandBufferMemory, 0, bufferSize, 0, &DrawCommandData);
 }
 
-std::vector<Objects::IndirectBatch> Objects::compact_draw() {
-	std::vector<IndirectBatch> draws;
-	std::map<std::string, int> indexOfDraw;
+void Objects::compact_draw(int index) {
 
-	IndirectBatch firstdraw;
-	firstdraw.ID = m_objects[0].ID;
-	firstdraw.vertexCount = m_objects[0].vertexCount;
-	firstdraw.first = 0;
-	firstdraw.count = 1;
-	firstdraw.model.push_back(m_objects[0].model);
-	firstdraw.color.push_back(m_objects[0].color);
+		if (auto search = indexOfDraw.find(m_objects[index].ID); search != indexOfDraw.end()) {
+			batchDraw[search->second].count++;
+			batchDraw[search->second].model.push_back(m_objects[index].model);
+			batchDraw[search->second].color.push_back(m_objects[index].color);
 
-	draws.push_back(firstdraw);
-
-	indexOfDraw[m_objects[0].ID] = 0;
-
-	for (int i = 1; i < m_stats.EntitiesCount; i++) {
-
-		if (auto search = indexOfDraw.find(m_objects[i].ID); search != indexOfDraw.end()) {
-			draws[search->second].count++;
-			draws[search->second].model.push_back(m_objects[i].model);
-			draws[search->second].color.push_back(m_objects[i].color);
-
-			for (int j = search->second+1; j < draws.size(); j++) {
-				draws[j].first++;
+			for (int j = search->second+1; j < batchDraw.size(); j++) {
+				batchDraw[j].first++;
 			}
 		}
 		else
 		{
 			IndirectBatch newDraw;
-			newDraw.ID = m_objects[i].ID;
-			newDraw.vertexCount = m_objects[i].vertexCount;
-			newDraw.first = draws.back().count + draws.back().first;
+			newDraw.ID = m_objects[index].ID;
+			newDraw.vertexCount = m_objects[index].vertexCount;
+			if (batchDraw.size() > 0)
+				newDraw.first = batchDraw.back().count + batchDraw.back().first;
+			else
+				newDraw.first = 0;
 			newDraw.count = 1;
-			newDraw.model.push_back(m_objects[i].model);
-			newDraw.color.push_back(m_objects[i].color);
+			newDraw.model.push_back(m_objects[index].model);
+			newDraw.color.push_back(m_objects[index].color);
 
-			draws.push_back(newDraw);
+			batchDraw.push_back(newDraw);
 
-			indexOfDraw[m_objects[i].ID] = draws.size()-1;
+			indexOfDraw[m_objects[index].ID] = batchDraw.size()-1;
 		}
-	}
-
-	return draws;
 }
 
-VkDrawIndirectCommand* Objects::updateDrawCommand() {
+VkDrawIndirectCommand* Objects::updateDrawCommand() {//do zoptymalizowania
 	VkDrawIndirectCommand* drawCommand = new VkDrawIndirectCommand[m_stats.EntitiesCount];
 
 	for (auto draw : batchDraw) {
@@ -113,7 +97,8 @@ void Objects::updateUniforms(VkCommandBuffer& commandBuffer, uint32_t currentFra
 	initUniform->updateStaticUniformBuffer(0, TypeOfUniform::GlobalUniform, ubo, currentFrame);
 
 	if (EntityUBOchanged == true) {
-		initUniform->updateArrayUniformBuffer(0, TypeOfUniform::EntityUniform, EntityUBO, currentFrame, m_stats.EntitiesCount, initUniform->GetAlignment(sizeof(modelUBO), VulkanCore->m_Hardwaredevice.physicalDevice));
+		initUniform->updateArrayUniformBuffer(0, TypeOfUniform::EntityUniform, EntityUBO, 0, m_stats.EntitiesCount, initUniform->GetAlignment(sizeof(modelUBO), VulkanCore->m_Hardwaredevice.physicalDevice));
+		initUniform->updateArrayUniformBuffer(0, TypeOfUniform::EntityUniform, EntityUBO, 1, m_stats.EntitiesCount, initUniform->GetAlignment(sizeof(modelUBO), VulkanCore->m_Hardwaredevice.physicalDevice));
 		EntityUBOchanged = false;
 	}
 	//initUniform->updateArrayUniformBuffer(5, TypeOfUniform::EntityUniform, color, currentFrame, m_stats.EntitiesCount, initUniform->GetAlignment(sizeof(glm::vec3), VulkanCore->m_Hardwaredevice.physicalDevice));

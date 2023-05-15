@@ -70,6 +70,7 @@
     <ClInclude Include="src\VulkanStructure\DepthBuffer\DepthBuffer.h" />
     <ClInclude Include="src\VulkanStructure\FrameBuffer\FrameBuffer.h" />
     <ClInclude Include="src\VulkanStructure\Structures.h" />
+    <ClInclude Include="src\Initializers\initializers.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BasicObjects\2D\Rectangle.cpp">
@@ -117,5 +118,6 @@
     <ClCompile Include="src\BasicObjects\2D\Circle.cpp" />
     <ClCompile Include="src\BasicObjects\3D\Square.cpp" />
     <ClCompile Include="src\BasicObjects\Objects.cpp" />
+    <ClCompile Include="src\Initializers\initializers.cpp" />
   </ItemGroup>
 </Project>

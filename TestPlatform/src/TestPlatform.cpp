@@ -55,7 +55,7 @@ void TestPlatform::AddEtities() {
 
 	int minus[2] = { 1, 1 };
 	bool tak = true;
-	for (int i = 0; i < 10000000; i++)
+	for (int i = 0; i < 200000000; i++)
 	{
 		if (i % 100000 == 0) {
 			for (int& a : minus)
@@ -112,11 +112,9 @@ void TestPlatform::OnUpdate() {
 	auto currentTime = std::chrono::high_resolution_clock::now();
 	float time = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - startTime).count();
 
-	if (time >= 0.02) {
+	if (time >= 0.2) {
 		startTime = currentTime;
-		for (int i = 0; i < objects->GetEntitiesCount(); i++) {
-			//objects->rotate(i, glm::radians(5.f), glm::vec3(0.0f, 1.0f, 0.0f));
-		}
+		objects->rotate();
 	}
 }
 
@@ -152,6 +150,11 @@ void TestPlatform::mainLoop() {
 
 		if (initInput->keyState[KEY_P].release == true) {
 			initInput->CursorLock = !initInput->CursorLock;
+		}
+		if (initInput->keyState[KEY_E].release == true) {
+			std::cout << "Object no: " << objects->GetEntitiesCount() + 1 << std::endl;
+			//objects->PushBack(Entity::rectangle::create(glm::vec3(2, 0, -0.5), 1, Orientation::Z));
+			objects->PushBack(Entity::rectangle::create(glm::vec3(((float)rand() / (RAND_MAX)), ((float)rand() / (RAND_MAX)) , ((float)rand() / (RAND_MAX))*3 ), (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX), Orientation::Z));
 		}
 
 		view.UpdateFront({ initInput->deltaCursorPos.x, initInput->deltaCursorPos.y });

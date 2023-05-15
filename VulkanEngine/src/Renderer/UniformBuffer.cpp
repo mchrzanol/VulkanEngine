@@ -2,23 +2,11 @@
 
 void UniformBuffer::createDecriptorSetsLayout(VkDevice device) {
 
-    VkDescriptorSetLayoutCreateInfo GloballayoutInfo{};
-    GloballayoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-    GloballayoutInfo.bindingCount = uboLayoutBinding[0].size();
-    GloballayoutInfo.pBindings =  uboLayoutBinding[0].data();
+    //GlobalLayout
+    vkinit::create_descriptorSetLayout(device, &descriptorSetLayouts[0], uboLayoutBinding[0].size(), uboLayoutBinding[0].data());
 
-    if (vkCreateDescriptorSetLayout(device, &GloballayoutInfo, nullptr, &descriptorSetLayouts[0]) != VK_SUCCESS) {
-        throw std::runtime_error("failed to create Global descriptor set layout!");
-    }
-
-    VkDescriptorSetLayoutCreateInfo LocallayoutInfo{};
-    LocallayoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-    LocallayoutInfo.bindingCount = uboLayoutBinding[1].size();
-    LocallayoutInfo.pBindings = uboLayoutBinding[1].data();
-
-    if (vkCreateDescriptorSetLayout(device, &LocallayoutInfo, nullptr, &descriptorSetLayouts[1]) != VK_SUCCESS) {
-        throw std::runtime_error("failed to create Local descriptor set layout!");
-    }
+    //LocalLayout/Entity
+    vkinit::create_descriptorSetLayout(device, &descriptorSetLayouts[1], uboLayoutBinding[1].size(), uboLayoutBinding[1].data());
 }
 void UniformBuffer::createUniformBind(unsigned int binding, size_t sizeofBindingValue, VkDescriptorType DescriptorType, TypeOfUniform UniformType) {
 
@@ -36,120 +24,109 @@ void UniformBuffer::createUniformBind(unsigned int binding, size_t sizeofBinding
     uboLayoutBinding[set][UniformsCount[set] - 1].descriptorCount = 1;
 
     uboLayoutBinding[set][UniformsCount[set] - 1].stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
+
+    //to do ogarniecia pozniej jak sie zacznie wywalac/jak mi sie zachce
 }
 
 void UniformBuffer::createUniformBuffers(VkDevice device, VkPhysicalDevice physicalDevice) {
-    for (size_t frame = 1; frame < MAX_FRAMES_IN_FLIGHT + 1; frame++) {
-        for (size_t set = 0; set < 2; set++) {
-            uniformBuffers[set].resize(UniformsCount[set] * frame);
-            uniformBuffersMemory[set].resize(UniformsCount[set]*frame);
-            uniformBuffersMapped[set].resize(UniformsCount[set] * frame);
+    uniformBuffers[0].resize(2);
+    uniformBuffersMemory[0].resize(2);
+    uniformBuffersMapped[0].resize(2);
 
-            VkDeviceSize bufferSize;
-            VkDescriptorPoolSize poolSize{};
-            for (int bind = 0; bind < bindingQueue[set].size();bind++) {
+    uniformBuffers[1].resize(2);
+    uniformBuffersMemory[1].resize(2);
+    uniformBuffersMapped[1].resize(2);
 
-                size_t i = bind + ((frame - 1) * UniformsCount[set]);
+    for (size_t frame = 0; frame < MAX_FRAMES_IN_FLIGHT ; frame++) {
 
-                if (BindingData[set][bindingQueue[set][bind]].DescriptorType == VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER) {
-                    bufferSize = BindingData[set][bindingQueue[set][bind]].sizeofData;
+        //set 0
+        VkDeviceSize bufferSize;
+        VkDescriptorPoolSize poolSize{};
 
-                    createBuffer(bufferSize, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
-                        uniformBuffers[set][i], uniformBuffersMemory[set][i], device, physicalDevice);
-                }
-                else {
-                    bufferSize = GetAlignment(BindingData[set][bindingQueue[set][bind]].sizeofData, physicalDevice) * MaximumObjectsOnFrame;
+        bufferSize = BindingData[0][0].sizeofData;
+        createBuffer(bufferSize, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+            uniformBuffers[0][frame], uniformBuffersMemory[0][frame], device, physicalDevice);
 
-                    createBuffer(bufferSize, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT,
-                        uniformBuffers[set][i], uniformBuffersMemory[set][i], device, physicalDevice);
-                }
+        vkMapMemory(device, uniformBuffersMemory[0][frame], 0, bufferSize, 0, &uniformBuffersMapped[0][frame]);
 
-                vkMapMemory(device, uniformBuffersMemory[set][i], 0, bufferSize, 0, &uniformBuffersMapped[set][i]);
+        poolSize.type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+        poolSize.descriptorCount = static_cast<uint32_t>(MAX_FRAMES_IN_FLIGHT);
 
-                poolSize.type = BindingData[set][bindingQueue[set][bind]].DescriptorType;
-                poolSize.descriptorCount = static_cast<uint32_t>(MAX_FRAMES_IN_FLIGHT);
+        this->poolSize[0].push_back(poolSize);
 
-                this->poolSize[set].push_back(poolSize);
-            }
-        }
+
+        //set 1
+        bufferSize = BindingData[1][0].sizeofData;
+        createBuffer(bufferSize, VK_BUFFER_USAGE_STORAGE_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+            uniformBuffers[1][frame], uniformBuffersMemory[1][frame], device, physicalDevice);
+
+        vkMapMemory(device, uniformBuffersMemory[1][frame], 0, bufferSize, 0, &uniformBuffersMapped[1][frame]);
+
+        poolSize.type = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
+        poolSize.descriptorCount = static_cast<uint32_t>(MAX_FRAMES_IN_FLIGHT);
+
+        this->poolSize[1].push_back(poolSize);
     }
 }
 
 void UniformBuffer::createDescriptorPool(VkDevice device) {
 
-    VkDescriptorPoolCreateInfo global_poolInfo{};
-    global_poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
-    global_poolInfo.poolSizeCount = UniformsCount[0];
-    global_poolInfo.pPoolSizes = poolSize[0].data();
+    //GlobalPool
+    vkinit::create_descriptorPool(device, &descriptorPool[0], UniformsCount[0], poolSize[0].data(), MAX_FRAMES_IN_FLIGHT);
 
-    global_poolInfo.maxSets = static_cast<uint32_t>(MAX_FRAMES_IN_FLIGHT);
+    //LocalPool/Entity
+    vkinit::create_descriptorPool(device, &descriptorPool[1], UniformsCount[1], poolSize[1].data(), MAX_FRAMES_IN_FLIGHT);
 
-
-    if (vkCreateDescriptorPool(device, &global_poolInfo, nullptr, &descriptorPool[0]) != VK_SUCCESS) {
-        throw std::runtime_error("failed to create Global descriptor pool!");
-    }
-
-    VkDescriptorPoolCreateInfo local_poolInfo{};
-    local_poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
-    local_poolInfo.poolSizeCount = UniformsCount[1];
-    local_poolInfo.pPoolSizes = poolSize[1].data();
-
-    local_poolInfo.maxSets = static_cast<uint32_t>(MAX_FRAMES_IN_FLIGHT);
-
-
-    if (vkCreateDescriptorPool(device, &local_poolInfo, nullptr, &descriptorPool[1]) != VK_SUCCESS) {
-        throw std::runtime_error("failed to create Local descriptor pool!");
-    }
 }
 
 void UniformBuffer::createDescriptorSets(VkDevice device, VkPhysicalDevice physicalDevice) {
+    VkDescriptorSetAllocateInfo allocInfo{};
 
-    for (size_t set = 0; set <2;set++)
-    {
-        std::vector<VkDescriptorSetLayout> layouts(MAX_FRAMES_IN_FLIGHT, descriptorSetLayouts[set]);
-        VkDescriptorSetAllocateInfo allocInfo{};
+    //set 0
+        std::vector<VkDescriptorSetLayout> layouts(MAX_FRAMES_IN_FLIGHT, descriptorSetLayouts[0]);
         allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
-        allocInfo.descriptorPool = descriptorPool[set];
+        allocInfo.descriptorPool = descriptorPool[0];
         allocInfo.descriptorSetCount = static_cast<uint32_t>(MAX_FRAMES_IN_FLIGHT);
         allocInfo.pSetLayouts = layouts.data();
 
-        descriptorSets[set].resize(MAX_FRAMES_IN_FLIGHT);
-        if (vkAllocateDescriptorSets(device, &allocInfo, descriptorSets[set].data()) != VK_SUCCESS) {
+        descriptorSets[0].resize(MAX_FRAMES_IN_FLIGHT);
+        if (vkAllocateDescriptorSets(device, &allocInfo, descriptorSets[0].data()) != VK_SUCCESS) {
             throw std::runtime_error("failed to allocate descriptor sets!");
         }
 
-        for (size_t i = 1; i < MAX_FRAMES_IN_FLIGHT +1; i++) {
-            std::vector< VkWriteDescriptorSet> m_descriptorWrite(UniformsCount[set]);
-
-            for (size_t bind = 0; bind < UniformsCount[set]; bind++) {
+        for (size_t frame = 0; frame < MAX_FRAMES_IN_FLIGHT; frame++) {
+            std::vector< VkWriteDescriptorSet> m_descriptorWrite(1);
                 VkDescriptorBufferInfo bufferInfo{};
-                bufferInfo.buffer = uniformBuffers[set][bind + bind*(i-1)];
+                bufferInfo.buffer = uniformBuffers[0][frame];
                 bufferInfo.offset = 0;
+                bufferInfo.range = BindingData[0][0].sizeofData;;
 
-                if (BindingData[set][bindingQueue[set][bind]].DescriptorType == VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER) {
-                    bufferInfo.range =  BindingData[set][bindingQueue[set][bind]].sizeofData;
-                }
-                else {
-                    bufferInfo.range =  GetAlignment(BindingData[set][bindingQueue[set][bind]].sizeofData, physicalDevice);
-                }
-
-                VkWriteDescriptorSet descriptorWrite{};
-                descriptorWrite.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-                descriptorWrite.dstSet = descriptorSets[set][i-1];
-                descriptorWrite.dstBinding = bindingQueue[set][bind];
-                descriptorWrite.dstArrayElement = 0;
-                descriptorWrite.descriptorType = BindingData[set][bindingQueue[set][bind]].DescriptorType;
-                descriptorWrite.descriptorCount = 1;
-                descriptorWrite.pBufferInfo = &bufferInfo;
-                descriptorWrite.pImageInfo = nullptr; // Optional
-                descriptorWrite.pTexelBufferView = nullptr; // Optional
-
-                m_descriptorWrite[bind] = descriptorWrite;
-            }
-
-            vkUpdateDescriptorSets(device, UniformsCount[set], m_descriptorWrite.data(), 0, nullptr);
+                m_descriptorWrite[0] = vkinit::write_descriptor_buffer(BindingData[0][0].DescriptorType, descriptorSets[0][frame], &bufferInfo, 0);
+            vkUpdateDescriptorSets(device, 1, m_descriptorWrite.data(), 0, nullptr);
         }
-    }
+
+    //set 1
+        std::vector<VkDescriptorSetLayout> layouts2(MAX_FRAMES_IN_FLIGHT, descriptorSetLayouts[1]);
+        allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+        allocInfo.descriptorPool = descriptorPool[1];
+        allocInfo.descriptorSetCount = static_cast<uint32_t>(MAX_FRAMES_IN_FLIGHT);
+        allocInfo.pSetLayouts = layouts2.data();
+
+        descriptorSets[1].resize(MAX_FRAMES_IN_FLIGHT);
+        if (vkAllocateDescriptorSets(device, &allocInfo, descriptorSets[1].data()) != VK_SUCCESS) {
+            throw std::runtime_error("failed to allocate descriptor sets!");
+        }
+
+        for (size_t frame = 0; frame < MAX_FRAMES_IN_FLIGHT; frame++) {
+            std::vector< VkWriteDescriptorSet> m_descriptorWrite(1);
+            VkDescriptorBufferInfo bufferInfo{};
+            bufferInfo.buffer = uniformBuffers[1][frame];
+            bufferInfo.offset = 0;
+            bufferInfo.range = BindingData[1][0].sizeofData;
+
+            m_descriptorWrite[0] = vkinit::write_descriptor_buffer(VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, descriptorSets[1][frame], &bufferInfo, 0);
+            vkUpdateDescriptorSets(device, 1, m_descriptorWrite.data(), 0, nullptr);
+        }
 
 }
 

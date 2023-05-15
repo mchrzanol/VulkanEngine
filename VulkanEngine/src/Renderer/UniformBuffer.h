@@ -2,6 +2,7 @@
 
 #include "Libraries.h"
 #include "Buffers.h"
+#include "Initializers/initializers.h"
 
 enum class TypeOfUniform {
     GlobalUniform = 0,
@@ -89,7 +90,7 @@ public:
 
         unsigned int MappedOffset = UniformsCount[static_cast<int>(UniformType)];
 
-        memcpy(uniformBuffersMapped[static_cast<int>(UniformType)][binding + (currentImage * MappedOffset)], &data, BindingData[static_cast<int>(UniformType)][binding].sizeofData);
+        memcpy(uniformBuffersMapped[static_cast<int>(UniformType)][currentImage], &data, BindingData[static_cast<int>(UniformType)][binding].sizeofData);
     }
 
     template<class T>
@@ -97,7 +98,7 @@ public:
 
         unsigned int MappedOffset = binding + (currentImage * UniformsCount[static_cast<int>(UniformType)]);
 
-        void* buffer = uniformBuffersMapped[static_cast<int>(UniformType)][MappedOffset];
+        void* buffer = uniformBuffersMapped[static_cast<int>(UniformType)][currentImage];
 
         memcpy(buffer, &data, alignment * countOfData);
     };

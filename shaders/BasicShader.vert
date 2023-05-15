@@ -1,7 +1,5 @@
 #version 450
 
-#define maxObjects 200
-
 layout(location = 0) in vec3 inPosition;
 layout(location = 1) in vec3 inColor;
 
@@ -17,8 +15,8 @@ struct EntityUBO {
     vec3 color;
 };
 
-layout(set = 1, binding = 0) uniform modelUBO {
-    EntityUBO m_UBO[maxObjects];
+layout(set = 1, binding = 0) readonly buffer modelUBO {
+    EntityUBO m_UBO[];
 };
 
 void main() {

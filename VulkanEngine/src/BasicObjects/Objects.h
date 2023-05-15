@@ -3,7 +3,7 @@
 #include "2D/Rectangle.h"
 #include "VulkanStructure/VulkanStructure.h"
 const static struct data {
-	const static uint32_t MaximumObjectsOnFrame = 200;
+	const static uint32_t MaximumObjectsOnFrame = 10000;
 
 	const std::string BasicShaders[2] = {
 		"../shaders/BasicVert.spv",
@@ -72,6 +72,7 @@ private:
 	bool EntityUBOchanged = true;
 
 	std::vector<IndirectBatch> batchDraw;
+	std::map<std::string, int> indexOfDraw;
 
 	std::map< std::string, VertexBuffer> EntitiesVertexBuffer;
 
@@ -90,7 +91,7 @@ public:
 
 		size_t buffersize = sizeof(modelUBO) * m_data.MaximumObjectsOnFrame;
 
-		initUniform->createUniformBind(0, buffersize, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, TypeOfUniform::EntityUniform);
+		initUniform->createUniformBind(0, buffersize, VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, TypeOfUniform::EntityUniform);
 
 		//size_t buffersize2 = sizeof(glm::vec3) * m_data.MaximumObjectsOnFrame;
 
@@ -124,12 +125,15 @@ public:
 
 		m_objects.push_back(*object);
 
+		compact_draw(m_stats.EntitiesCount);
+
 		m_stats.EntitiesCount++;
 
-		batchDraw = compact_draw();
 
 		delete[] drawCommands;
 		drawCommands = updateDrawCommand();
+
+		EntityUBOchanged = true;
 	}
 
 	void UpdateView(glm::mat4 viewMatrix) {
@@ -140,14 +144,17 @@ public:
 		this->projMatrix = projMatrix;
 	}
 
-	void rotate(uint32_t EntityIndex, glm::f32 radians, glm::vec3 axis) {
-		//glm::mat4* modelMat = (glm::mat4*)(((uint64_t)models.model + (EntityIndex * alignment)));
+	void rotate() {
+		for (int i = 0; i < m_stats.EntitiesCount; i++) {
+			EntityUBO[i].model = glm::translate(EntityUBO[i].model, m_objects[i].origin);
+			EntityUBO[i].model = glm::rotate(EntityUBO[i].model, glm::radians(10.f), glm::vec3(1, 0, 0));
+			EntityUBO[i].model = glm::translate(EntityUBO[i].model, glm::vec3(-1.f) * m_objects[i].origin);
+		}
 
 		//*modelMat = glm::translate(*modelMat, m_objects[EntityIndex].data.origin);
 		//*modelMat = glm::rotate(*modelMat, radians, axis);
 		//*modelMat = glm::translate(*modelMat, glm::vec3(-1.f) * m_objects[EntityIndex].data.origin);
-
-		DynamicUniformsUpdate = true;
+		EntityUBOchanged = true;
 	}
 
 	void destroy() {
@@ -187,7 +194,7 @@ private:
 	void addToBuffer(std::vector<Vertex> verticesInfo, std::vector<uint16_t> indices, VkCommandPool CommandPool);
 
 	void createIndirectBuffer();
-	std::vector<IndirectBatch> compact_draw();
+	void compact_draw(int index);
 	VkDrawIndirectCommand* updateDrawCommand();
 	void updateUniforms(VkCommandBuffer& commandBuffer, uint32_t currentFrame);
 	void drawIndirect(VkCommandBuffer& commandBuffer, uint32_t currentFrame);
