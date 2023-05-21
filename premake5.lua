@@ -17,6 +17,7 @@ IncludeDir["Vulkan"] = "VulkanEngine/external/Vulkan/Include"
 IncludeDir["imgui"] = "VulkanEngine/external/imgui"
 IncludeDir["glm"] = "VulkanEngine/external/glm"
 IncludeDir["optick"] = "VulkanEngine/external/optick"
+IncludeDir["stb_image"] = "VulkanEngine/external/stb-master"
 
 vulkanPath ="VulkanEngine/external/Vulkan"
 
@@ -48,7 +49,8 @@ project "VulkanEngine"
 		"%{IncludeDir.Vulkan}",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.imgui}",
-		"%{IncludeDir.optick}"
+		"%{IncludeDir.optick}",
+		"%{IncludeDir.stb_image}"
 	}
 
 	libdirs { "VulkanEngine/external/Vulkan/Lib" }
@@ -106,7 +108,8 @@ project "TestPlatform"
 			"%{IncludeDir.GLFW}",
 			"%{IncludeDir.glm}",
 			"%{IncludeDir.imgui}",
-			"%{IncludeDir.optick}"
+			"%{IncludeDir.optick}",
+			"%{IncludeDir.stb_image}"
 		}
 
 		libdirs { "bin/" .. outputdir .. "/VulkanEngine" }

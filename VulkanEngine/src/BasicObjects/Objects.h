@@ -2,8 +2,12 @@
 #include "2D/Triangle.h"
 #include "2D/Rectangle.h"
 #include "VulkanStructure/VulkanStructure.h"
+
+#include "BasicObjects/TextureImage/texture_Image.h"
+
 const static struct data {
 	const static uint32_t MaximumObjectsOnFrame = 10000;
+	const static uint32_t MaximumTextures = 100;
 
 	const std::string BasicShaders[2] = {
 		"../shaders/BasicVert.spv",
@@ -24,16 +28,6 @@ struct stats
 
 	uint32_t triangleCount = 0;
 	uint32_t rectangleCount = 0;
-};
-
-struct UniformBufferObject {
-	alignas(16) glm::mat4 view;
-	alignas(16) glm::mat4 proj;
-};
-
-struct modelUBO {
-	alignas(16) glm::mat4 model;
-	alignas(16) glm::vec3 color;
 };
 
 class ENGINE_API Objects {
@@ -69,6 +63,7 @@ private:
 	};
 
 	modelUBO EntityUBO[m_data.MaximumObjectsOnFrame];
+
 	bool EntityUBOchanged = true;
 
 	std::vector<IndirectBatch> batchDraw;
@@ -82,21 +77,13 @@ private:
 
 	VkDrawIndirectCommand* drawCommands = nullptr;
 
+
+	texturesLoading texture;
+
 public:
 	Objects(int MAX_FRAMES_IN_FLIGHT) 
 	{
-		initUniform = new UniformBuffer(MAX_FRAMES_IN_FLIGHT, m_data.MaximumObjectsOnFrame);
-
-		initUniform->createUniformBind(0, sizeof(UniformBufferObject), VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, TypeOfUniform::GlobalUniform);
-
-		size_t buffersize = sizeof(modelUBO) * m_data.MaximumObjectsOnFrame;
-
-		initUniform->createUniformBind(0, buffersize, VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, TypeOfUniform::EntityUniform);
-
-		//size_t buffersize2 = sizeof(glm::vec3) * m_data.MaximumObjectsOnFrame;
-
-		//initUniform->createUniformBind(5, buffersize2, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, TypeOfUniform::EntityUniform);
-
+		initUniform = new UniformBuffer(MAX_FRAMES_IN_FLIGHT, m_data.MaximumObjectsOnFrame, m_data.MaximumTextures);
 	}
 
 	void Init(VulkanStruct* Vulkan, VkCommandPool* CommandPool) {
@@ -112,6 +99,13 @@ public:
 
 		VulkanCore->m_Pipeline.createGraphicsPipeline(this->VulkanCore->device, "BasicShader", m_data.BasicShaders[0], m_data.BasicShaders[1], initUniform->descriptorSetLayouts);
 
+		texture.createTextureSampler(VulkanCore->device, VulkanCore->m_Hardwaredevice.physicalDevice);
+
+		initUniform->createUniformBuffers(Vulkan->device, Vulkan->m_Hardwaredevice.physicalDevice);
+		initUniform->createDescriptorPool(Vulkan->device);
+
+		addTexture("dupa", "../textures/test.jpg");
+		//initUniform->createDescriptorSets(Vulkan->device, Vulkan->m_Hardwaredevice.physicalDevice, texture.textureSampler, texture.textures);
 		createBuffers();
 	}
 
@@ -136,6 +130,8 @@ public:
 		EntityUBOchanged = true;
 	}
 
+	void addTexture(std::string NameOftexture, std::string path);
+
 	void UpdateView(glm::mat4 viewMatrix) {
 		this->viewMatrix = viewMatrix;
 	}
@@ -145,19 +141,15 @@ public:
 	}
 
 	void rotate() {
-		for (int i = 0; i < m_stats.EntitiesCount; i++) {
-			EntityUBO[i].model = glm::translate(EntityUBO[i].model, m_objects[i].origin);
+		for (int i = 0; i < m_stats.EntitiesCount; i++) {//jakies rozruznianie obiektow
 			EntityUBO[i].model = glm::rotate(EntityUBO[i].model, glm::radians(10.f), glm::vec3(1, 0, 0));
-			EntityUBO[i].model = glm::translate(EntityUBO[i].model, glm::vec3(-1.f) * m_objects[i].origin);
 		}
-
-		//*modelMat = glm::translate(*modelMat, m_objects[EntityIndex].data.origin);
-		//*modelMat = glm::rotate(*modelMat, radians, axis);
-		//*modelMat = glm::translate(*modelMat, glm::vec3(-1.f) * m_objects[EntityIndex].data.origin);
 		EntityUBOchanged = true;
 	}
 
 	void destroy() {
+
+		texture.cleanup(VulkanCore->device);
 
 		for (auto& VertexBuffer : EntitiesVertexBuffer) {
 			VertexBuffer.second.cleanup(VulkanCore->device);

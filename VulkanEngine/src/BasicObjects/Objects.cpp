@@ -9,10 +9,10 @@ void Objects::createBuffers() {
 
 	std::vector<Vertex> verticesinfo(4);
 
-	verticesinfo[0] = { testVertex[0], color[0] };
-	verticesinfo[1] = { testVertex[1], color[1] };
-	verticesinfo[2] = { testVertex[2], color[2] };
-	verticesinfo[3] = { testVertex[3], color[3] };
+	verticesinfo[0] = { testVertex[0], color[0], {1.0f, 1.0f} };
+	verticesinfo[1] = { testVertex[1], color[1], {0.0f, 1.0f} };
+	verticesinfo[2] = { testVertex[2], color[2], {0.0f, 0.0f} };
+	verticesinfo[3] = { testVertex[3], color[3], {1.0f, 0.0f} };
 
 
 	RectangleVertexBuffer.createVertexBuffer(verticesinfo, VulkanCore->device, VulkanCore->m_Hardwaredevice.physicalDevice, VulkanCore->m_Hardwaredevice.graphicsQueue, *CommandPool);
@@ -24,9 +24,9 @@ void Objects::createBuffers() {
 
 	std::vector<Vertex> verticesinfo2(3);
 
-	verticesinfo2[0] = { testVertex2[0], color2[0] };
-	verticesinfo2[1] = { testVertex2[1], color2[1] };
-	verticesinfo2[2] = { testVertex2[2], color2[2] };
+	verticesinfo2[0] = { testVertex2[0], color2[0], {-1,-1} };
+	verticesinfo2[1] = { testVertex2[1], color2[1], {-1,-1} };
+	verticesinfo2[2] = { testVertex2[2], color2[2], {-1,-1} };
 
 	TriangleVertexBuffer.createVertexBuffer(verticesinfo2, VulkanCore->device, VulkanCore->m_Hardwaredevice.physicalDevice, VulkanCore->m_Hardwaredevice.graphicsQueue, *CommandPool);
 	
@@ -37,6 +37,13 @@ void Objects::createBuffers() {
 	createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_STORAGE_BUFFER_BIT | VK_BUFFER_USAGE_INDIRECT_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, DrawCommandBuffer, DrawCommandBufferMemory, VulkanCore->device, VulkanCore->m_Hardwaredevice.physicalDevice);
 
 	vkMapMemory(VulkanCore->device, DrawCommandBufferMemory, 0, bufferSize, 0, &DrawCommandData);
+}
+
+void Objects::addTexture(std::string NameOfTexture, std::string path) {
+	texture.createTextureImage(VulkanCore->device, VulkanCore->m_Hardwaredevice.physicalDevice, *CommandPool, VulkanCore->m_Hardwaredevice.graphicsQueue, NameOfTexture, path);
+	texture.createTextureImageView(VulkanCore->device, NameOfTexture);
+
+	initUniform->createDescriptorSets(VulkanCore->device, VulkanCore->m_Hardwaredevice.physicalDevice, texture.textureSampler, texture.textures["dupa"].textureImageView);
 }
 
 void Objects::compact_draw(int index) {

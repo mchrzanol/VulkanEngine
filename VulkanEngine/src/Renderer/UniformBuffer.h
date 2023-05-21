@@ -3,6 +3,7 @@
 #include "Libraries.h"
 #include "Buffers.h"
 #include "Initializers/initializers.h"
+#include "BasicObjects/TextureImage/texture_Image.h"
 
 enum class TypeOfUniform {
     GlobalUniform = 0,
@@ -19,12 +20,23 @@ struct UniformList {
     unsigned int bind;
 };
 
+struct UniformBufferObject {
+    alignas(16) glm::mat4 view;
+    alignas(16) glm::mat4 proj;
+};
+
+struct modelUBO {
+    alignas(16) glm::mat4 model;
+    alignas(16) glm::vec3 color;
+};
+
 class ENGINE_API UniformBuffer {
 private:
 
     int MAX_FRAMES_IN_FLIGHT;
 
     uint32_t MaximumObjectsOnFrame;
+    uint32_t MaximumTextures;
 
     std::vector<std::vector< VkDescriptorSetLayoutBinding>> uboLayoutBinding;
     std::vector < std::vector<VkBuffer>> uniformBuffers;
@@ -49,8 +61,8 @@ public:
     std::vector < std::vector<VkDeviceMemory>> uniformBuffersMemory;
     std::vector<VkDescriptorSetLayout> descriptorSetLayouts;
 
-    UniformBuffer(int MAX_FRAMES_IN_FLIGHT, uint32_t MaximumObjectsOnFrame)
-        :MAX_FRAMES_IN_FLIGHT(MAX_FRAMES_IN_FLIGHT), MaximumObjectsOnFrame(MaximumObjectsOnFrame){
+    UniformBuffer(int MAX_FRAMES_IN_FLIGHT, uint32_t MaximumObjectsOnFrame, uint32_t MaximumTextures)
+        :MAX_FRAMES_IN_FLIGHT(MAX_FRAMES_IN_FLIGHT), MaximumObjectsOnFrame(MaximumObjectsOnFrame), MaximumTextures(MaximumTextures){
         uboLayoutBinding.resize(2);
         descriptorSetLayouts.resize(2);
         uniformBuffers.resize(2);
@@ -70,7 +82,7 @@ public:
 
     void createUniformBuffers(VkDevice device, VkPhysicalDevice physicalDevice);
     void createDescriptorPool(VkDevice device);
-    void createDescriptorSets(VkDevice device, VkPhysicalDevice physicalDevice);
+    void createDescriptorSets(VkDevice device, VkPhysicalDevice physicalDevice, VkSampler sampler, VkImageView textureData);
 
     size_t GetAlignment(size_t sizeOfData, VkPhysicalDevice physicalDevice) {
         VkPhysicalDeviceProperties deviceProps;
@@ -90,7 +102,7 @@ public:
 
         unsigned int MappedOffset = UniformsCount[static_cast<int>(UniformType)];
 
-        memcpy(uniformBuffersMapped[static_cast<int>(UniformType)][currentImage], &data, BindingData[static_cast<int>(UniformType)][binding].sizeofData);
+        memcpy(uniformBuffersMapped[static_cast<int>(UniformType)][currentImage], &data, sizeof(UniformBufferObject));
     }
 
     template<class T>

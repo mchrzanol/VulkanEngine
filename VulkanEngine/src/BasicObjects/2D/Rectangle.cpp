@@ -42,7 +42,7 @@ namespace Entity {
 
 			data->model = glm::translate(data->model, origin);
 
-			data->model = glm::scale(data->model, glm::vec3(sizeHorrizontal,sizeVertical, 0));
+			data->model = glm::scale(data->model, glm::vec3(sizeHorrizontal,sizeVertical, 1));
 
 			switch (static_cast<int>(orientation)) {
 			case 0:

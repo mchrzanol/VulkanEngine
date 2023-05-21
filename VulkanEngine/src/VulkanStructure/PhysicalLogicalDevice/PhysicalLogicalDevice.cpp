@@ -94,6 +94,7 @@ void PickingDevice::createLogicalDevice(std::vector<const char*> validationLayer
     VkPhysicalDeviceFeatures deviceFeatures{};
 
     deviceFeatures.multiDrawIndirect = VK_TRUE;
+    deviceFeatures.samplerAnisotropy = VK_TRUE;
 
     //createInfo
     VkDeviceCreateInfo createInfo{};

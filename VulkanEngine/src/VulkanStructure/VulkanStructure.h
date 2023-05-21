@@ -44,9 +44,9 @@ public:
         m_DepthBuffer.createDepthBuffer(device, m_Hardwaredevice.physicalDevice, m_SwapChain.swapChainExtent);
         m_FrameBuffer.createFramebuffer(device, m_SwapChain.swapChainImageViews, m_DepthBuffer.depthImageView, m_SwapChain.swapChainExtent, m_Pipeline.renderPass);
 
-        uniformBuffer->createUniformBuffers(device, m_Hardwaredevice.physicalDevice);
-        uniformBuffer->createDescriptorPool(device);
-        uniformBuffer->createDescriptorSets(device, m_Hardwaredevice.physicalDevice);
+        //uniformBuffer->createUniformBuffers(device, m_Hardwaredevice.physicalDevice);
+        //uniformBuffer->createDescriptorPool(device);
+       // uniformBuffer->createDescriptorSets(device, m_Hardwaredevice.physicalDevice);
     }
 
     void cleanup() {

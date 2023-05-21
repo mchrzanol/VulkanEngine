@@ -29,15 +29,17 @@ void TestPlatform::Init() {
 	glm::vec3 color2[4] = { {1.0f, 0.0f, 0.0f} , {0.0f, 1.0f, 0.0f} ,{0.0f, 0.0f, 1.0f}, {0,0,0} };
 	glm::vec3 color3[4] = { {1.0f, 1.0f, 1.0f} , {1.0f, 1.0f, 1.0f} ,{1.0f, 1.0f, 1.0f}, {1,1,1} };
 
-	//objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0, -0.5), 2, Orientation::Z, glm::vec3(1,1,0)));
+	//objects->addTexture("dupa", "../textures/test.jpg");
+
+	objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0, -0.5), 2, Orientation::Z, glm::vec3(1,1,0)));
 	//objects->PushBack(Entity::rectangle::create(glm::vec3(2, 0, -0.5), 1, Orientation::Z));
-	//objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0, -0.5), 1, Orientation::X));
+	//objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0, -0.5), 1, 1.5, Orientation::X));
 	//objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0.5,0), 2));
 	//objects->PushBack(Entity::triangle::create(glm::vec3(0, -1, 0), 1, Orientation::X, glm::vec3(1, 0, 0)));
 	//objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0.5, 0), 2, Orientation::Y));
 
 
-	TestPlatform::AddEtities();
+	//TestPlatform::AddEtities();
 
 	initCommandPool->createCommandBuffers();
 	initCommandPool->createSyncObjects();
@@ -55,7 +57,7 @@ void TestPlatform::AddEtities() {
 
 	int minus[2] = { 1, 1 };
 	bool tak = true;
-	for (int i = 0; i < 200000000; i++)
+	for (int i = 0; i < 10000000; i++)
 	{
 		if (i % 100000 == 0) {
 			for (int& a : minus)
@@ -114,7 +116,7 @@ void TestPlatform::OnUpdate() {
 
 	if (time >= 0.2) {
 		startTime = currentTime;
-		objects->rotate();
+	//	objects->rotate();
 	}
 }
 

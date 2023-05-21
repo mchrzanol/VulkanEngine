@@ -7,11 +7,12 @@
 #include "window/window.h"
 #include "BasicObjects/Objects.h"
 
+#include "BasicObjects/TextureImage/texture_Image.h"
+
 class ENGINE_API CommandPool {
 private:
     VulkanStruct* VulkanCore;
     windowClass* Window;
-
 
     VkCommandPool commandPool;
     std::vector<VkCommandBuffer> commandBuffers;

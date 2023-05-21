@@ -3,9 +3,32 @@
 void UniformBuffer::createDecriptorSetsLayout(VkDevice device) {
 
     //GlobalLayout
+    uboLayoutBinding[0].resize(1);
+    uboLayoutBinding[0][0].binding = 0;
+    uboLayoutBinding[0][0].descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+    uboLayoutBinding[0][0].descriptorCount = 1;
+
+    uboLayoutBinding[0][0].stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
+
     vkinit::create_descriptorSetLayout(device, &descriptorSetLayouts[0], uboLayoutBinding[0].size(), uboLayoutBinding[0].data());
 
     //LocalLayout/Entity
+    uboLayoutBinding[1].resize(1);
+    uboLayoutBinding[1][0].binding = 0;
+    uboLayoutBinding[1][0].descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
+    uboLayoutBinding[1][0].descriptorCount = 1;
+
+    uboLayoutBinding[1][0].stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
+
+    //Test-Textures
+    uboLayoutBinding[1].resize(2);
+    uboLayoutBinding[1][1].binding = 1;
+    uboLayoutBinding[1][1].descriptorCount = 1;
+    uboLayoutBinding[1][1].descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+    uboLayoutBinding[1][1].pImmutableSamplers = nullptr;
+
+    uboLayoutBinding[1][1].stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT;
+
     vkinit::create_descriptorSetLayout(device, &descriptorSetLayouts[1], uboLayoutBinding[1].size(), uboLayoutBinding[1].data());
 }
 void UniformBuffer::createUniformBind(unsigned int binding, size_t sizeofBindingValue, VkDescriptorType DescriptorType, TypeOfUniform UniformType) {
@@ -29,13 +52,15 @@ void UniformBuffer::createUniformBind(unsigned int binding, size_t sizeofBinding
 }
 
 void UniformBuffer::createUniformBuffers(VkDevice device, VkPhysicalDevice physicalDevice) {
+
+    //Po jednym bindzie na set
     uniformBuffers[0].resize(2);
     uniformBuffersMemory[0].resize(2);
     uniformBuffersMapped[0].resize(2);
 
-    uniformBuffers[1].resize(2);
-    uniformBuffersMemory[1].resize(2);
-    uniformBuffersMapped[1].resize(2);
+    uniformBuffers[1].resize(4);
+    uniformBuffersMemory[1].resize(4);
+    uniformBuffersMapped[1].resize(4);
 
     for (size_t frame = 0; frame < MAX_FRAMES_IN_FLIGHT ; frame++) {
 
@@ -43,7 +68,7 @@ void UniformBuffer::createUniformBuffers(VkDevice device, VkPhysicalDevice physi
         VkDeviceSize bufferSize;
         VkDescriptorPoolSize poolSize{};
 
-        bufferSize = BindingData[0][0].sizeofData;
+        bufferSize = sizeof(UniformBufferObject);
         createBuffer(bufferSize, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
             uniformBuffers[0][frame], uniformBuffersMemory[0][frame], device, physicalDevice);
 
@@ -54,9 +79,8 @@ void UniformBuffer::createUniformBuffers(VkDevice device, VkPhysicalDevice physi
 
         this->poolSize[0].push_back(poolSize);
 
-
         //set 1
-        bufferSize = BindingData[1][0].sizeofData;
+        bufferSize = sizeof(modelUBO) * MaximumObjectsOnFrame;
         createBuffer(bufferSize, VK_BUFFER_USAGE_STORAGE_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
             uniformBuffers[1][frame], uniformBuffersMemory[1][frame], device, physicalDevice);
 
@@ -66,20 +90,26 @@ void UniformBuffer::createUniformBuffers(VkDevice device, VkPhysicalDevice physi
         poolSize.descriptorCount = static_cast<uint32_t>(MAX_FRAMES_IN_FLIGHT);
 
         this->poolSize[1].push_back(poolSize);
+
+        //Test-testures
+        poolSize.type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+        poolSize.descriptorCount = static_cast<uint32_t>(MAX_FRAMES_IN_FLIGHT);
+
+        this->poolSize[1].push_back(poolSize);
     }
 }
 
 void UniformBuffer::createDescriptorPool(VkDevice device) {
 
     //GlobalPool
-    vkinit::create_descriptorPool(device, &descriptorPool[0], UniformsCount[0], poolSize[0].data(), MAX_FRAMES_IN_FLIGHT);
+    vkinit::create_descriptorPool(device, &descriptorPool[0], 1, poolSize[0].data(), MAX_FRAMES_IN_FLIGHT);
 
     //LocalPool/Entity
-    vkinit::create_descriptorPool(device, &descriptorPool[1], UniformsCount[1], poolSize[1].data(), MAX_FRAMES_IN_FLIGHT);
+    vkinit::create_descriptorPool(device, &descriptorPool[1], 1, poolSize[1].data(), MAX_FRAMES_IN_FLIGHT);
 
 }
 
-void UniformBuffer::createDescriptorSets(VkDevice device, VkPhysicalDevice physicalDevice) {
+void UniformBuffer::createDescriptorSets(VkDevice device, VkPhysicalDevice physicalDevice, VkSampler sampler, VkImageView textureData) {
     VkDescriptorSetAllocateInfo allocInfo{};
 
     //set 0
@@ -99,9 +129,9 @@ void UniformBuffer::createDescriptorSets(VkDevice device, VkPhysicalDevice physi
                 VkDescriptorBufferInfo bufferInfo{};
                 bufferInfo.buffer = uniformBuffers[0][frame];
                 bufferInfo.offset = 0;
-                bufferInfo.range = BindingData[0][0].sizeofData;;
+                bufferInfo.range = sizeof(UniformBufferObject);
 
-                m_descriptorWrite[0] = vkinit::write_descriptor_buffer(BindingData[0][0].DescriptorType, descriptorSets[0][frame], &bufferInfo, 0);
+                m_descriptorWrite[0] = vkinit::write_descriptor_buffer(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, descriptorSets[0][frame], &bufferInfo,0, 0, 1);
             vkUpdateDescriptorSets(device, 1, m_descriptorWrite.data(), 0, nullptr);
         }
 
@@ -118,14 +148,34 @@ void UniformBuffer::createDescriptorSets(VkDevice device, VkPhysicalDevice physi
         }
 
         for (size_t frame = 0; frame < MAX_FRAMES_IN_FLIGHT; frame++) {
-            std::vector< VkWriteDescriptorSet> m_descriptorWrite(1);
+            std::vector< VkWriteDescriptorSet> m_descriptorWrite(2);
             VkDescriptorBufferInfo bufferInfo{};
             bufferInfo.buffer = uniformBuffers[1][frame];
             bufferInfo.offset = 0;
-            bufferInfo.range = BindingData[1][0].sizeofData;
+            bufferInfo.range = sizeof(modelUBO)*MaximumObjectsOnFrame;
 
-            m_descriptorWrite[0] = vkinit::write_descriptor_buffer(VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, descriptorSets[1][frame], &bufferInfo, 0);
-            vkUpdateDescriptorSets(device, 1, m_descriptorWrite.data(), 0, nullptr);
+            std::vector<VkDescriptorImageInfo> imageInfo;
+            imageInfo.push_back(VkDescriptorImageInfo{});
+            imageInfo.back().imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+            imageInfo.back().imageView = textureData;
+            imageInfo.back().sampler = sampler;
+            //for (auto texture : textureData) {
+            //    imageInfo.push_back(VkDescriptorImageInfo{});
+            //    imageInfo.back().imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+            //    imageInfo.back().imageView = texture.second.textureImageView;
+            //    imageInfo.back().sampler = sampler;
+            //}
+            //imageInfo.resize(MaximumTextures);
+            //for (int i = imageInfo.size(); i < MaximumTextures; i++) {
+            //    imageInfo[i].imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+            //    imageInfo[i].imageView = nullptr;
+            //    imageInfo[i].sampler = sampler;
+            //}
+
+            m_descriptorWrite[0] = vkinit::write_descriptor_buffer(VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, descriptorSets[1][frame], &bufferInfo,0, 0, 1);
+
+            m_descriptorWrite[1] = vkinit::write_descriptor_buffer(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, descriptorSets[1][frame], 0, imageInfo.data(), 1, 1);
+            vkUpdateDescriptorSets(device, 2, m_descriptorWrite.data(), 0, nullptr);
         }
 
 }
