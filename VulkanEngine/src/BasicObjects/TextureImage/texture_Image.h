@@ -3,7 +3,7 @@
 #include "Renderer/Buffers.h"
 #include "Initializers/initializers.h"
 
-class ENGINE_API texturesLoading {
+class texturesLoading {
 private:
 
 	friend class UniformBuffer;
@@ -11,6 +11,8 @@ private:
 		VkImage textureImage;
 		VkDeviceMemory textureImageMemory;
 		VkImageView textureImageView;
+
+		uint32_t index;
 	};
 
 public:
@@ -18,9 +20,13 @@ public:
 
 	std::map<std::string, textureData> textures;
 
+	textureData glitchedTexture;
+
 	void createTextureImage(VkDevice device, VkPhysicalDevice physicalDevice, VkCommandPool commandPool, VkQueue graphicsQueue, std::string name, std::string path);
 	void createTextureImageView(VkDevice device, std::string name);
 	void createTextureSampler(VkDevice device, VkPhysicalDevice physicalDevice);
+
+	void addGlitchedTexture(VkDevice device, VkPhysicalDevice physicalDevice, VkCommandPool commandPool, VkQueue graphicsQueue, std::string path);
 
 	void cleanup(VkDevice device);
 private:

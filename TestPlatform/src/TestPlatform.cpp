@@ -26,20 +26,18 @@ void TestPlatform::Init() {
 
 	objects->Init(VulkanCore, initCommandPool->GetCommandPool());
 
-	glm::vec3 color2[4] = { {1.0f, 0.0f, 0.0f} , {0.0f, 1.0f, 0.0f} ,{0.0f, 0.0f, 1.0f}, {0,0,0} };
-	glm::vec3 color3[4] = { {1.0f, 1.0f, 1.0f} , {1.0f, 1.0f, 1.0f} ,{1.0f, 1.0f, 1.0f}, {1,1,1} };
 
-	//objects->addTexture("dupa", "../textures/test.jpg");
+	//objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0, -0.5), 2, Orientation::Z, glm::vec3(1,1,1)));
 
-	objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0, -0.5), 2, Orientation::Z, glm::vec3(1,1,0)));
-	//objects->PushBack(Entity::rectangle::create(glm::vec3(2, 0, -0.5), 1, Orientation::Z));
-	//objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0, -0.5), 1, 1.5, Orientation::X));
+	objects->PushBack(Entity::rectangle::create(glm::vec3(0.5, 0, -0.5), 1, Orientation::Z, "dupa"));
+	objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0, 4), 10, Orientation::Z, "invalid"));
+	//objects->PushBack(Entity::rectangle::create(glm::vec3(0, 1, -0.5), 1, 1.5, Orientation::Z));
 	//objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0.5,0), 2));
 	//objects->PushBack(Entity::triangle::create(glm::vec3(0, -1, 0), 1, Orientation::X, glm::vec3(1, 0, 0)));
 	//objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0.5, 0), 2, Orientation::Y));
 
 
-	//TestPlatform::AddEtities();
+	TestPlatform::AddEtities();
 
 	initCommandPool->createCommandBuffers();
 	initCommandPool->createSyncObjects();
@@ -57,7 +55,7 @@ void TestPlatform::AddEtities() {
 
 	int minus[2] = { 1, 1 };
 	bool tak = true;
-	for (int i = 0; i < 10000000; i++)
+	for (int i = 0; i < 90000000; i++)
 	{
 		if (i % 100000 == 0) {
 			for (int& a : minus)
@@ -82,7 +80,7 @@ void TestPlatform::AddEtities() {
 				color[1] = { (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX) , (float)rand() / (RAND_MAX) };
 				color[2] = { (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX) , (float)rand() / (RAND_MAX) };
 
-				objects->PushBack(Entity::triangle::create(glm::vec3(((float)rand() / (RAND_MAX)) * minus[0], ((float)rand() / (RAND_MAX)) * minus[1], ((float)rand() / (RAND_MAX)) * minus[1]), 0.5f, Orientation::Z, color[0]));
+				//objects->PushBack(Entity::triangle::create(glm::vec3(((float)rand() / (RAND_MAX)) * minus[0], ((float)rand() / (RAND_MAX)) * minus[1], ((float)rand() / (RAND_MAX)) * minus[1]), 0.5f, Orientation::Z, color[0]));
 
 				tak = false;
 			}
@@ -93,7 +91,7 @@ void TestPlatform::AddEtities() {
 				color2[2] = { (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX) , (float)rand() / (RAND_MAX) };
 				color2[3] = { (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX) , (float)rand() / (RAND_MAX) };
 
-				objects->PushBack(Entity::rectangle::create(glm::vec3(((float)rand() / (RAND_MAX)) * minus[0], ((float)rand() / (RAND_MAX)) * minus[1], ((float)rand() / (RAND_MAX)) * minus[1]),(float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX), Orientation::Z, color[0]));
+				objects->PushBack(Entity::rectangle::create(glm::vec3(((float)rand() / (RAND_MAX)) * minus[0], ((float)rand() / (RAND_MAX)) * minus[1], ((float)rand() / (RAND_MAX)) * minus[1]),(float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX), Orientation::Z, "invalid"));
 				tak = true;
 			}
 		}
@@ -102,8 +100,6 @@ void TestPlatform::AddEtities() {
 }
 
 void TestPlatform::OnUpdate() {
-
-	//glm::mat4 view2 = glm::lookAt(glm::vec3(0.0f, 0.0f, 1.f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 	glm::mat4 proj = glm::perspective(glm::radians(90.0f), (float)VulkanCore->GetSwapChainExtent().width / (float)VulkanCore->GetSwapChainExtent().height, 0.1f, 10.0f);
 	proj[1][1] *= -1;
@@ -154,9 +150,13 @@ void TestPlatform::mainLoop() {
 			initInput->CursorLock = !initInput->CursorLock;
 		}
 		if (initInput->keyState[KEY_E].release == true) {
-			std::cout << "Object no: " << objects->GetEntitiesCount() + 1 << std::endl;
+			objects->addTexture("dupa", "../textures/test.jpg");
+			//std::cout << "Object no: " << objects->GetEntitiesCount() + 1 << std::endl;
 			//objects->PushBack(Entity::rectangle::create(glm::vec3(2, 0, -0.5), 1, Orientation::Z));
-			objects->PushBack(Entity::rectangle::create(glm::vec3(((float)rand() / (RAND_MAX)), ((float)rand() / (RAND_MAX)) , ((float)rand() / (RAND_MAX))*3 ), (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX), Orientation::Z));
+			//objects->PushBack(Entity::rectangle::create(glm::vec3(((float)rand() / (RAND_MAX)), ((float)rand() / (RAND_MAX)) , ((float)rand() / (RAND_MAX))*3 ), (float)rand() / (RAND_MAX), (float)rand() / (RAND_MAX), Orientation::Z));
+		}
+		if (initInput->keyState[KEY_R].release == true) {
+			objects->addTexture("invalid", "../textures/pudzian.jpg");
 		}
 
 		view.UpdateFront({ initInput->deltaCursorPos.x, initInput->deltaCursorPos.y });

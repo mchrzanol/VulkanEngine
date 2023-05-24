@@ -7,7 +7,7 @@
 
 const static struct data {
 	const static uint32_t MaximumObjectsOnFrame = 10000;
-	const static uint32_t MaximumTextures = 100;
+	const static uint32_t MaximumTextures = 20;
 
 	const std::string BasicShaders[2] = {
 		"../shaders/BasicVert.spv",
@@ -60,6 +60,7 @@ private:
 
 		std::vector<glm::mat4> model;
 		std::vector<glm::vec3> color;
+		std::vector<std::string> textureName;
 	};
 
 	modelUBO EntityUBO[m_data.MaximumObjectsOnFrame];
@@ -77,8 +78,11 @@ private:
 
 	VkDrawIndirectCommand* drawCommands = nullptr;
 
-
+	//textures
 	texturesLoading texture;
+	int textureIndexing[m_data.MaximumObjectsOnFrame];
+	bool textureIndexingChanged = true;
+
 
 public:
 	Objects(int MAX_FRAMES_IN_FLIGHT) 
@@ -104,8 +108,10 @@ public:
 		initUniform->createUniformBuffers(Vulkan->device, Vulkan->m_Hardwaredevice.physicalDevice);
 		initUniform->createDescriptorPool(Vulkan->device);
 
-		addTexture("dupa", "../textures/test.jpg");
-		//initUniform->createDescriptorSets(Vulkan->device, Vulkan->m_Hardwaredevice.physicalDevice, texture.textureSampler, texture.textures);
+		texture.addGlitchedTexture(VulkanCore->device, VulkanCore->m_Hardwaredevice.physicalDevice, *CommandPool, VulkanCore->m_Hardwaredevice.graphicsQueue, "../textures/glitched.jpg");
+
+		initUniform->createDescriptorSets(Vulkan->device, Vulkan->m_Hardwaredevice.physicalDevice, texture.textureSampler, texture.textures, texture.glitchedTexture);
+
 		createBuffers();
 	}
 
@@ -130,7 +136,11 @@ public:
 		EntityUBOchanged = true;
 	}
 
+	//Textures
 	void addTexture(std::string NameOftexture, std::string path);
+	void deleteTexture(std::string nameOfTexture);
+	void clearAllTextures();
+	void updateTextures();
 
 	void UpdateView(glm::mat4 viewMatrix) {
 		this->viewMatrix = viewMatrix;

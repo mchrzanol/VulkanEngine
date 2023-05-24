@@ -26,8 +26,9 @@ struct UniformBufferObject {
 };
 
 struct modelUBO {
-    alignas(16) glm::mat4 model;
-    alignas(16) glm::vec3 color;
+    glm::mat4 model;
+    glm::vec3 color;
+   
 };
 
 class ENGINE_API UniformBuffer {
@@ -46,15 +47,6 @@ private:
 
     std::vector < std::vector<VkDescriptorSet>> descriptorSets;
 
-    std::vector<UniformList> StaticUniformList;
-    std::vector<UniformList> DynamicUniformList;
-
-    std::vector < std::map<unsigned int, BindingData>> BindingData;//binding, bindingdata
-
-    std::vector<std::vector<unsigned int>> bindingQueue;
-
-    std::vector<unsigned int> UniformsCount = { 0,0 };
-
 
 public:
     std::vector < std::vector<void*>> uniformBuffersMapped;
@@ -71,9 +63,6 @@ public:
         poolSize.resize(2);
         descriptorPool.resize(2);
         descriptorSets.resize(2);
-        BindingData.resize(2);
-        bindingQueue.resize(2);
-
     };
 
     void createUniformBind(unsigned int binding, size_t sizeofBindingValue, VkDescriptorType DescriptorType, TypeOfUniform UniformType);
@@ -82,8 +71,9 @@ public:
 
     void createUniformBuffers(VkDevice device, VkPhysicalDevice physicalDevice);
     void createDescriptorPool(VkDevice device);
-    void createDescriptorSets(VkDevice device, VkPhysicalDevice physicalDevice, VkSampler sampler, VkImageView textureData);
-
+    void createDescriptorSets(VkDevice device, VkPhysicalDevice physicalDevice, VkSampler sampler, std::map<std::string, texturesLoading::textureData> & textures, texturesLoading::textureData& glitched);
+    void updateTextureLoaded(VkDevice device, VkPhysicalDevice physicalDevice, VkSampler sampler, std::map<std::string, texturesLoading::textureData>& textures, texturesLoading::textureData& glitched);
+  
     size_t GetAlignment(size_t sizeOfData, VkPhysicalDevice physicalDevice) {
         VkPhysicalDeviceProperties deviceProps;
 
@@ -100,7 +90,7 @@ public:
     template<class T>
     void updateStaticUniformBuffer(unsigned int binding, TypeOfUniform UniformType, T& data, uint32_t currentImage) {
 
-        unsigned int MappedOffset = UniformsCount[static_cast<int>(UniformType)];
+       // unsigned int MappedOffset = UniformsCount[static_cast<int>(UniformType)];
 
         memcpy(uniformBuffersMapped[static_cast<int>(UniformType)][currentImage], &data, sizeof(UniformBufferObject));
     }
@@ -108,7 +98,7 @@ public:
     template<class T>
     void updateArrayUniformBuffer(unsigned int binding, TypeOfUniform UniformType, T& data, uint32_t currentImage, uint32_t countOfData, size_t alignment) {
 
-        unsigned int MappedOffset = binding + (currentImage * UniformsCount[static_cast<int>(UniformType)]);
+        //unsigned int MappedOffset = binding + (currentImage * UniformsCount[static_cast<int>(UniformType)]);
 
         void* buffer = uniformBuffersMapped[static_cast<int>(UniformType)][currentImage];
 
@@ -122,9 +112,9 @@ public:
 
         VkDeviceSize calculateOffset = offset * alignment;
 
-        unsigned int MappedOffset = UniformsCount[static_cast<int>(UniformType)];
+        //unsigned int MappedOffset = UniformsCount[static_cast<int>(UniformType)];
 
-        void* buffer = uniformBuffersMapped[static_cast<int>(UniformType)][binding + (currentImage * MappedOffset)];
+        void* buffer = uniformBuffersMapped[static_cast<int>(UniformType)][binding + (currentImage * 0)];
 
         memcpy(buffer, data + offset, countOfData*alignment);
 

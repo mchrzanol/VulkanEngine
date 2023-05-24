@@ -40,10 +40,53 @@ void Objects::createBuffers() {
 }
 
 void Objects::addTexture(std::string NameOfTexture, std::string path) {
+	if (auto search = texture.textures.find(NameOfTexture); search != texture.textures.end()) {
+		std::cout << "That name is used. Type diffrent.\n";
+
+		return;
+	}
+	std::cout << "Avaiable texture slots: " << m_data.MaximumTextures - texture.textures.size()-1 << '\n';
+	if (texture.textures.size() == m_data.MaximumTextures) {
+		std::cout << "To many textures has been load. Delete some to add new." << '\n';
+
+		return;
+	}
+
 	texture.createTextureImage(VulkanCore->device, VulkanCore->m_Hardwaredevice.physicalDevice, *CommandPool, VulkanCore->m_Hardwaredevice.graphicsQueue, NameOfTexture, path);
 	texture.createTextureImageView(VulkanCore->device, NameOfTexture);
 
-	initUniform->createDescriptorSets(VulkanCore->device, VulkanCore->m_Hardwaredevice.physicalDevice, texture.textureSampler, texture.textures["dupa"].textureImageView);
+
+	updateTextures();
+
+	delete[] drawCommands;
+	drawCommands = updateDrawCommand();
+
+	textureIndexingChanged = true;
+}
+
+void Objects::updateTextures() {
+	initUniform->updateTextureLoaded(VulkanCore->device, VulkanCore->m_Hardwaredevice.physicalDevice, texture.textureSampler, texture.textures, texture.glitchedTexture);
+
+	std::cout << "Textures have been updated.\n";
+}
+
+void Objects::deleteTexture(std::string nameOfTexture) {
+	if (auto search = texture.textures.find(nameOfTexture); search != texture.textures.end()) {
+		texture.textures.erase(nameOfTexture);
+
+		std::cout << "Texture " << nameOfTexture << " has been deleted.\n";
+	}
+	else
+		std::cout << "Gived texture doesn't exist.\n";
+}
+
+void Objects::clearAllTextures() {
+	for (auto it = texture.textures.begin(); it != texture.textures.end();)
+	{
+		texture.textures.erase(it);
+	}
+
+	std::cout << "All textured have been deleted.\n";
 }
 
 void Objects::compact_draw(int index) {
@@ -52,6 +95,7 @@ void Objects::compact_draw(int index) {
 			batchDraw[search->second].count++;
 			batchDraw[search->second].model.push_back(m_objects[index].model);
 			batchDraw[search->second].color.push_back(m_objects[index].color);
+			batchDraw[search->second].textureName.push_back(m_objects[index].textureName);
 
 			for (int j = search->second+1; j < batchDraw.size(); j++) {
 				batchDraw[j].first++;
@@ -69,6 +113,7 @@ void Objects::compact_draw(int index) {
 			newDraw.count = 1;
 			newDraw.model.push_back(m_objects[index].model);
 			newDraw.color.push_back(m_objects[index].color);
+			newDraw.textureName.push_back(m_objects[index].textureName);
 
 			batchDraw.push_back(newDraw);
 
@@ -88,7 +133,19 @@ VkDrawIndirectCommand* Objects::updateDrawCommand() {//do zoptymalizowania
 			drawCommand[i].firstInstance = i; //used to access object matrix in the shader
 
 			EntityUBO[i].model = draw.model[i-draw.first];
-			EntityUBO[i].color = draw.color[i - draw.first];
+			EntityUBO[i].color = glm::vec3(1, 1, 1);// draw.color[i - draw.first];
+			
+			if (draw.textureName[i - draw.first] == "") {
+				textureIndexing[i] = -1;
+			}
+			else {
+				if (auto search = texture.textures.find(draw.textureName[i - draw.first]); search != texture.textures.end()) {
+					textureIndexing[i] = texture.textures[draw.textureName[i - draw.first]].index;
+				}
+				else {
+					textureIndexing[i] = 0;
+				}
+			}
 		}
 	}
 
@@ -108,7 +165,11 @@ void Objects::updateUniforms(VkCommandBuffer& commandBuffer, uint32_t currentFra
 		initUniform->updateArrayUniformBuffer(0, TypeOfUniform::EntityUniform, EntityUBO, 1, m_stats.EntitiesCount, initUniform->GetAlignment(sizeof(modelUBO), VulkanCore->m_Hardwaredevice.physicalDevice));
 		EntityUBOchanged = false;
 	}
-	//initUniform->updateArrayUniformBuffer(5, TypeOfUniform::EntityUniform, color, currentFrame, m_stats.EntitiesCount, initUniform->GetAlignment(sizeof(glm::vec3), VulkanCore->m_Hardwaredevice.physicalDevice));
+	if (textureIndexingChanged == true) {
+		initUniform->updateArrayUniformBuffer(0, TypeOfUniform::EntityUniform, textureIndexing, 2, m_stats.EntitiesCount, initUniform->GetAlignment(sizeof(int), VulkanCore->m_Hardwaredevice.physicalDevice));
+		initUniform->updateArrayUniformBuffer(0, TypeOfUniform::EntityUniform, textureIndexing, 3, m_stats.EntitiesCount, initUniform->GetAlignment(sizeof(int), VulkanCore->m_Hardwaredevice.physicalDevice));
+		textureIndexingChanged = false;
+	}
 
 	vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, VulkanCore->m_Pipeline.pipelineLayout, 0, 1, &initUniform->GetDescriptorSets()[0][currentFrame], 0, nullptr);
 	vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, VulkanCore->m_Pipeline.pipelineLayout, 1, 1, &initUniform->GetDescriptorSets()[1][currentFrame], 0, nullptr);

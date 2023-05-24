@@ -17,6 +17,8 @@ struct EntityVitalInfo {
 
 	glm::vec3 color;
 
+	std::string textureName = "";
+
 	uint16_t vertexCount;
 
 	std::string ID;

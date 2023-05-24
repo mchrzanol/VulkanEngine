@@ -64,7 +64,7 @@ project "VulkanEngine"
 
 	filter "system:windows"
 		cppdialect "C++17"
-		staticruntime "On"
+		staticruntime "Off"
 
 		systemversion "latest"
 
@@ -122,7 +122,7 @@ project "TestPlatform"
 
 		filter "system:windows"
 			cppdialect "C++20"
-			staticruntime "On"
+			staticruntime "Off"
 
 			systemversion "latest"
 

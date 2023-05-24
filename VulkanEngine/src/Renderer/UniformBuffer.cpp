@@ -23,32 +23,31 @@ void UniformBuffer::createDecriptorSetsLayout(VkDevice device) {
     //Test-Textures
     uboLayoutBinding[1].resize(2);
     uboLayoutBinding[1][1].binding = 1;
-    uboLayoutBinding[1][1].descriptorCount = 1;
-    uboLayoutBinding[1][1].descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+    uboLayoutBinding[1][1].descriptorCount = MaximumTextures+1;
+    uboLayoutBinding[1][1].descriptorType = VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE;
     uboLayoutBinding[1][1].pImmutableSamplers = nullptr;
 
     uboLayoutBinding[1][1].stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT;
 
+    //sampler
+    uboLayoutBinding[1].resize(3);
+    uboLayoutBinding[1][2].binding = 2;
+    uboLayoutBinding[1][2].descriptorCount = 1;
+    uboLayoutBinding[1][2].descriptorType = VK_DESCRIPTOR_TYPE_SAMPLER;
+    uboLayoutBinding[1][2].pImmutableSamplers = nullptr;
+
+    uboLayoutBinding[1][2].stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT;
+
+    //textureIndexing
+    uboLayoutBinding[1].resize(4);
+    uboLayoutBinding[1][3].binding = 3;
+    uboLayoutBinding[1][3].descriptorCount = 1;
+    uboLayoutBinding[1][3].descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
+    uboLayoutBinding[1][3].pImmutableSamplers = nullptr;
+
+    uboLayoutBinding[1][3].stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
+
     vkinit::create_descriptorSetLayout(device, &descriptorSetLayouts[1], uboLayoutBinding[1].size(), uboLayoutBinding[1].data());
-}
-void UniformBuffer::createUniformBind(unsigned int binding, size_t sizeofBindingValue, VkDescriptorType DescriptorType, TypeOfUniform UniformType) {
-
-    unsigned int set = static_cast<int>(UniformType);
-
-    bindingQueue[set].push_back(binding);
-
-    UniformsCount[set]++;
-
-    BindingData[set][binding] = { sizeofBindingValue, DescriptorType };
-
-    uboLayoutBinding[set].resize(UniformsCount[set]);
-    uboLayoutBinding[set][UniformsCount[set] -1].binding = binding;
-    uboLayoutBinding[set][UniformsCount[set] - 1].descriptorType = DescriptorType;
-    uboLayoutBinding[set][UniformsCount[set] - 1].descriptorCount = 1;
-
-    uboLayoutBinding[set][UniformsCount[set] - 1].stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
-
-    //to do ogarniecia pozniej jak sie zacznie wywalac/jak mi sie zachce
 }
 
 void UniformBuffer::createUniformBuffers(VkDevice device, VkPhysicalDevice physicalDevice) {
@@ -80,7 +79,9 @@ void UniformBuffer::createUniformBuffers(VkDevice device, VkPhysicalDevice physi
         this->poolSize[0].push_back(poolSize);
 
         //set 1
-        bufferSize = sizeof(modelUBO) * MaximumObjectsOnFrame;
+         
+        //modelUBO
+        bufferSize = GetAlignment(sizeof(modelUBO), physicalDevice) * MaximumObjectsOnFrame;
         createBuffer(bufferSize, VK_BUFFER_USAGE_STORAGE_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
             uniformBuffers[1][frame], uniformBuffersMemory[1][frame], device, physicalDevice);
 
@@ -92,8 +93,27 @@ void UniformBuffer::createUniformBuffers(VkDevice device, VkPhysicalDevice physi
         this->poolSize[1].push_back(poolSize);
 
         //Test-testures
-        poolSize.type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+
+        poolSize.type = VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE;
         poolSize.descriptorCount = static_cast<uint32_t>(MAX_FRAMES_IN_FLIGHT);
+
+        this->poolSize[1].push_back(poolSize);
+
+        //sampler
+        poolSize.type = VK_DESCRIPTOR_TYPE_SAMPLER;
+        poolSize.descriptorCount = static_cast<uint32_t>(MAX_FRAMES_IN_FLIGHT);
+
+        //textureIndexing
+        bufferSize = GetAlignment(sizeof(int), physicalDevice) * MaximumObjectsOnFrame;
+        createBuffer(bufferSize, VK_BUFFER_USAGE_STORAGE_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+            uniformBuffers[1][frame+2], uniformBuffersMemory[1][frame+2], device, physicalDevice);
+
+        vkMapMemory(device, uniformBuffersMemory[1][frame+2], 0, bufferSize, 0, &uniformBuffersMapped[1][frame+2]);
+
+        poolSize.type = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
+        poolSize.descriptorCount = static_cast<uint32_t>(MAX_FRAMES_IN_FLIGHT);
+
+        this->poolSize[1].push_back(poolSize);
 
         this->poolSize[1].push_back(poolSize);
     }
@@ -109,7 +129,7 @@ void UniformBuffer::createDescriptorPool(VkDevice device) {
 
 }
 
-void UniformBuffer::createDescriptorSets(VkDevice device, VkPhysicalDevice physicalDevice, VkSampler sampler, VkImageView textureData) {
+void UniformBuffer::createDescriptorSets(VkDevice device, VkPhysicalDevice physicalDevice, VkSampler sampler, std::map<std::string, texturesLoading::textureData> & textures, texturesLoading::textureData & glitched) {
     VkDescriptorSetAllocateInfo allocInfo{};
 
     //set 0
@@ -148,36 +168,129 @@ void UniformBuffer::createDescriptorSets(VkDevice device, VkPhysicalDevice physi
         }
 
         for (size_t frame = 0; frame < MAX_FRAMES_IN_FLIGHT; frame++) {
-            std::vector< VkWriteDescriptorSet> m_descriptorWrite(2);
+            std::vector< VkWriteDescriptorSet> m_descriptorWriteSet1(4);
+
+            //modelUBO
             VkDescriptorBufferInfo bufferInfo{};
             bufferInfo.buffer = uniformBuffers[1][frame];
             bufferInfo.offset = 0;
-            bufferInfo.range = sizeof(modelUBO)*MaximumObjectsOnFrame;
+            bufferInfo.range = GetAlignment(sizeof(modelUBO), physicalDevice) *MaximumObjectsOnFrame;
+
+            m_descriptorWriteSet1[0] = vkinit::write_descriptor_buffer(VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, descriptorSets[1][frame], &bufferInfo, 0, 0, 1);
+
+            //Textures
 
             std::vector<VkDescriptorImageInfo> imageInfo;
+
             imageInfo.push_back(VkDescriptorImageInfo{});
             imageInfo.back().imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-            imageInfo.back().imageView = textureData;
-            imageInfo.back().sampler = sampler;
-            //for (auto texture : textureData) {
-            //    imageInfo.push_back(VkDescriptorImageInfo{});
-            //    imageInfo.back().imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-            //    imageInfo.back().imageView = texture.second.textureImageView;
-            //    imageInfo.back().sampler = sampler;
-            //}
-            //imageInfo.resize(MaximumTextures);
-            //for (int i = imageInfo.size(); i < MaximumTextures; i++) {
-            //    imageInfo[i].imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-            //    imageInfo[i].imageView = nullptr;
-            //    imageInfo[i].sampler = sampler;
-            //}
+            imageInfo.back().imageView = glitched.textureImageView;
+            imageInfo.back().sampler = nullptr;
 
-            m_descriptorWrite[0] = vkinit::write_descriptor_buffer(VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, descriptorSets[1][frame], &bufferInfo,0, 0, 1);
+            uint32_t textureIndex = 1;//index 0 is reserved for invalid texture
+            for (auto& texture : textures) {
+                imageInfo.push_back(VkDescriptorImageInfo{});
+                imageInfo.back().imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+                imageInfo.back().imageView = texture.second.textureImageView;
+                imageInfo.back().sampler = nullptr;
 
-            m_descriptorWrite[1] = vkinit::write_descriptor_buffer(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, descriptorSets[1][frame], 0, imageInfo.data(), 1, 1);
-            vkUpdateDescriptorSets(device, 2, m_descriptorWrite.data(), 0, nullptr);
+                texture.second.index = textureIndex;
+
+                textureIndex++;
+            }
+
+            imageInfo.resize(MaximumTextures+1);
+            for (int i = textures.size()+1; i < MaximumTextures+1; i++) {
+                imageInfo[i].imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+                imageInfo[i].imageView = glitched.textureImageView;
+                imageInfo[i].sampler = nullptr;
+            }
+
+            m_descriptorWriteSet1[1] = vkinit::write_descriptor_buffer(VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE, descriptorSets[1][frame],0, imageInfo.data(), 1, MaximumTextures+1);
+           
+            //sampler
+            VkDescriptorImageInfo samplerInfo;
+            samplerInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+            samplerInfo.imageView = nullptr;
+            samplerInfo.sampler = sampler;
+
+            m_descriptorWriteSet1[2] = vkinit::write_descriptor_buffer(VK_DESCRIPTOR_TYPE_SAMPLER, descriptorSets[1][frame], 0, &samplerInfo, 2, 1);
+
+            //textureIndexing
+            VkDescriptorBufferInfo bufferInfo2{};
+            bufferInfo2.buffer = uniformBuffers[1][frame+2];
+            bufferInfo2.offset = 0;
+            bufferInfo2.range = GetAlignment(sizeof(int), physicalDevice) * MaximumObjectsOnFrame;
+
+            m_descriptorWriteSet1[3] = vkinit::write_descriptor_buffer(VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, descriptorSets[1][frame], &bufferInfo2, 0, 3, 1);
+
+
+            vkUpdateDescriptorSets(device, 4, m_descriptorWriteSet1.data(), 0, nullptr);
         }
 
+}
+
+void UniformBuffer::updateTextureLoaded(VkDevice device, VkPhysicalDevice physicalDevice, VkSampler sampler, std::map<std::string, texturesLoading::textureData>& textures, texturesLoading::textureData& glitched) {
+    //set 1
+
+    for (size_t frame = 0; frame < MAX_FRAMES_IN_FLIGHT; frame++) {
+        std::vector< VkWriteDescriptorSet> m_descriptorWriteSet1(4);
+
+        //modelUBO
+        VkDescriptorBufferInfo bufferInfo{};
+        bufferInfo.buffer = uniformBuffers[1][frame];
+        bufferInfo.offset = 0;
+        bufferInfo.range = GetAlignment(sizeof(modelUBO), physicalDevice) * MaximumObjectsOnFrame;
+
+        m_descriptorWriteSet1[0] = vkinit::write_descriptor_buffer(VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, descriptorSets[1][frame], &bufferInfo, 0, 0, 1);
+
+        //Textures
+        std::vector<VkDescriptorImageInfo> imageInfo;
+
+        imageInfo.push_back(VkDescriptorImageInfo{});
+        imageInfo.back().imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+        imageInfo.back().imageView = glitched.textureImageView;
+        imageInfo.back().sampler = nullptr;
+
+        uint32_t textureIndex = 1;//index 0 is reserved for invalid texture
+        for (auto& texture : textures) {
+            imageInfo.push_back(VkDescriptorImageInfo{});
+            imageInfo.back().imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+            imageInfo.back().imageView = texture.second.textureImageView;
+            imageInfo.back().sampler = nullptr;
+
+            texture.second.index = textureIndex;
+
+            textureIndex++;
+        }
+
+        imageInfo.resize(MaximumTextures+1);
+        for (int i = textures.size()+1; i < MaximumTextures+1; i++) {
+            imageInfo[i].imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+            imageInfo[i].imageView = glitched.textureImageView;
+            imageInfo[i].sampler = nullptr;
+        }
+
+        m_descriptorWriteSet1[1] = vkinit::write_descriptor_buffer(VK_DESCRIPTOR_TYPE_SAMPLED_IMAGE, descriptorSets[1][frame], 0, imageInfo.data(), 1, MaximumTextures+1);
+
+        //sampler
+        VkDescriptorImageInfo samplerInfo;
+        samplerInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+        samplerInfo.imageView = nullptr;
+        samplerInfo.sampler = sampler;
+
+        m_descriptorWriteSet1[2] = vkinit::write_descriptor_buffer(VK_DESCRIPTOR_TYPE_SAMPLER, descriptorSets[1][frame], 0, &samplerInfo, 2, 1);
+
+        //textureIndexing
+        VkDescriptorBufferInfo bufferInfo2{};
+        bufferInfo2.buffer = uniformBuffers[1][frame + 2];
+        bufferInfo2.offset = 0;
+        bufferInfo2.range = GetAlignment(sizeof(int), physicalDevice) * MaximumObjectsOnFrame;
+
+        m_descriptorWriteSet1[3] = vkinit::write_descriptor_buffer(VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, descriptorSets[1][frame], &bufferInfo2, 0, 3, 1);
+
+        vkUpdateDescriptorSets(device, 4, m_descriptorWriteSet1.data(), 0, nullptr);
+    }
 }
 
 
