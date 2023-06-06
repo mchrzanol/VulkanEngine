@@ -18,6 +18,7 @@ IncludeDir["imgui"] = "VulkanEngine/external/imgui"
 IncludeDir["glm"] = "VulkanEngine/external/glm"
 IncludeDir["optick"] = "VulkanEngine/external/optick"
 IncludeDir["stb_image"] = "VulkanEngine/external/stb-master"
+IncludeDir["tinyobjloader"] = "VulkanEngine/external/tinyobjloader"
 
 vulkanPath ="VulkanEngine/external/Vulkan"
 
@@ -50,7 +51,8 @@ project "VulkanEngine"
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.imgui}",
 		"%{IncludeDir.optick}",
-		"%{IncludeDir.stb_image}"
+		"%{IncludeDir.stb_image}",
+		"%{IncludeDir.tinyobjloader}"
 	}
 
 	libdirs { "VulkanEngine/external/Vulkan/Lib" }
@@ -109,7 +111,8 @@ project "TestPlatform"
 			"%{IncludeDir.glm}",
 			"%{IncludeDir.imgui}",
 			"%{IncludeDir.optick}",
-			"%{IncludeDir.stb_image}"
+			"%{IncludeDir.stb_image}",
+			"%{IncludeDir.tinyobjloader}"
 		}
 
 		libdirs { "bin/" .. outputdir .. "/VulkanEngine" }
@@ -147,4 +150,3 @@ project "TestPlatform"
 		filter "configurations:Dist"
 			runtime "Release"
 			optimize	"On"
-

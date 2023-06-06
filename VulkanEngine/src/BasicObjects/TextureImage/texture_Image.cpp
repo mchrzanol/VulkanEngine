@@ -196,7 +196,7 @@ void texturesLoading::createTextureSampler(VkDevice device, VkPhysicalDevice phy
 
 }
 
-void texturesLoading::addGlitchedTexture(VkDevice device, VkPhysicalDevice physicalDevice, VkCommandPool commandPool, VkQueue graphicsQueue,std::string path) {
+textureData texturesLoading::createIndependentTexture(VkDevice device, VkPhysicalDevice physicalDevice, VkCommandPool commandPool, VkQueue graphicsQueue,std::string path) {
     int texWidth, texHeight, texChannels;
     stbi_uc* pixels = stbi_load(path.c_str(), &texWidth, &texHeight, &texChannels, STBI_rgb_alpha);
     VkDeviceSize imageSize = texWidth * texHeight * 4;
@@ -229,13 +229,17 @@ void texturesLoading::addGlitchedTexture(VkDevice device, VkPhysicalDevice physi
     vkDestroyBuffer(device, stagingBuffer, nullptr);
     vkFreeMemory(device, stagingBufferMemory, nullptr);
 
-    glitchedTexture.textureImage = textureImage;
-    glitchedTexture.textureImageMemory = textureImageMemory;
+    textureData independentTexture;
+
+    independentTexture.textureImage = textureImage;
+    independentTexture.textureImageMemory = textureImageMemory;
 
     VkImageView textureImageView;
     textureImageView = vkinit::createImageView(device, textureImage, VK_FORMAT_R8G8B8A8_SRGB);
 
-    glitchedTexture.textureImageView = textureImageView;
+    independentTexture.textureImageView = textureImageView;
+
+    return independentTexture;
 }
 
 void texturesLoading::cleanup(VkDevice device) {

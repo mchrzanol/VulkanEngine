@@ -25,7 +25,7 @@ void VertexBuffer::cleanup(VkDevice device) {
     vkFreeMemory(device, vertexBufferMemory, nullptr);
 }
 
-void IndexBuffer::createIndexBuffer(std::vector<uint16_t>  indices, VkDevice device, VkPhysicalDevice physicalDevice, VkQueue graphicsQueue, VkCommandPool CommandPool) {
+void IndexBuffer::createIndexBuffer(std::vector<uint32_t>  indices, VkDevice device, VkPhysicalDevice physicalDevice, VkQueue graphicsQueue, VkCommandPool CommandPool) {
     VkDeviceSize bufferSize = sizeof(indices[0]) * indices.size();
 
     m_indices = indices;

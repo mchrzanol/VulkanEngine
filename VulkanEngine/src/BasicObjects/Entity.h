@@ -34,7 +34,7 @@ struct EntityInfo {
 		this->vertices.createVertexBuffer(vertices, device, physicalDevice, graphicsQueue, CommandPool);
 	}
 
-	void createIndexBuffer(std::vector<uint16_t> indices, VkDevice device, VkPhysicalDevice physicalDevice, VkQueue graphicsQueue, VkCommandPool CommandPool) {
+	void createIndexBuffer(std::vector<uint32_t> indices, VkDevice device, VkPhysicalDevice physicalDevice, VkQueue graphicsQueue, VkCommandPool CommandPool) {
 		this->indices.createIndexBuffer(indices, device, physicalDevice, graphicsQueue,CommandPool);
 	}
 

@@ -13,6 +13,9 @@
     <Filter Include="BasicObjects\TextureImage">
       <UniqueIdentifier>{34663585-A028-690F-E9D8-F79B55DA41ED}</UniqueIdentifier>
     </Filter>
+    <Filter Include="BasicObjects\modelLoading">
+      <UniqueIdentifier>{EF3806BC-5BFB-3946-A4AB-C8D210AD1224}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Initializers">
       <UniqueIdentifier>{5C2B0622-488E-95C6-F113-CE7CDD556149}</UniqueIdentifier>
     </Filter>
@@ -71,6 +74,9 @@
     </ClInclude>
     <ClInclude Include="src\BasicObjects\TextureImage\texture_Image.h">
       <Filter>BasicObjects\TextureImage</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BasicObjects\modelLoading\modelLoading.h">
+      <Filter>BasicObjects\modelLoading</Filter>
     </ClInclude>
     <ClInclude Include="src\Core.h" />
     <ClInclude Include="src\Engine.h" />
@@ -142,6 +148,9 @@
     </ClCompile>
     <ClCompile Include="src\BasicObjects\TextureImage\texture_Image.cpp">
       <Filter>BasicObjects\TextureImage</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BasicObjects\modelLoading\modelLoading.cpp">
+      <Filter>BasicObjects\modelLoading</Filter>
     </ClCompile>
     <ClCompile Include="src\Initializers\initializers.cpp">
       <Filter>Initializers</Filter>

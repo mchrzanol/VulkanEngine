@@ -100,7 +100,7 @@ VkShaderModule ENGINE_API createShaderModule(const std::vector<char>& code, VkDe
 
 }
 
-void pipeline::createGraphicsPipeline(VkDevice device, std::vector<char> vertShaderCode, std::vector<char> fragShaderCode, std::string name, std::vector<VkDescriptorSetLayout> descriptorSetLayouts)
+void pipeline::createGraphicsPipeline(VkDevice device, std::vector<char> vertShaderCode, std::vector<char> fragShaderCode, std::string name, std::vector<VkDescriptorSetLayout> descriptorSetLayouts, VkPrimitiveTopology topology)
 {
 
     VkShaderModule vertShaderModule = createShaderModule(vertShaderCode, device);
@@ -133,7 +133,7 @@ void pipeline::createGraphicsPipeline(VkDevice device, std::vector<char> vertSha
 
     VkPipelineInputAssemblyStateCreateInfo inputAssembly{};
     inputAssembly.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
-    inputAssembly.topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_FAN;
+    inputAssembly.topology = topology;// VK_PRIMITIVE_TOPOLOGY_TRIANGLE_FAN;
     inputAssembly.primitiveRestartEnable = VK_FALSE;
 
     VkPipelineViewportStateCreateInfo viewportState{};
@@ -202,7 +202,7 @@ void pipeline::createGraphicsPipeline(VkDevice device, std::vector<char> vertSha
     pipelineLayoutInfo.pSetLayouts = descriptorSetLayouts.data();
     pipelineLayoutInfo.pushConstantRangeCount = 0;
 
-    if (vkCreatePipelineLayout(device, &pipelineLayoutInfo, nullptr, &pipelineLayout) != VK_SUCCESS) {
+    if (vkCreatePipelineLayout(device, &pipelineLayoutInfo, nullptr, &graphicsPipeline[name].pipelineLayout) != VK_SUCCESS) {
         throw std::runtime_error("failed to create pipeline layout!");
     }
 
@@ -218,12 +218,12 @@ void pipeline::createGraphicsPipeline(VkDevice device, std::vector<char> vertSha
     pipelineInfo.pDepthStencilState = &depthStencil;
     pipelineInfo.pColorBlendState = &colorBlending;
     pipelineInfo.pDynamicState = &dynamicState;
-    pipelineInfo.layout = pipelineLayout;
+    pipelineInfo.layout = graphicsPipeline[name].pipelineLayout;
     pipelineInfo.renderPass = renderPass;
     pipelineInfo.subpass = 0;
     pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
 
-    if (vkCreateGraphicsPipelines(device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &graphicsPipeline[name]) != VK_SUCCESS) {
+    if (vkCreateGraphicsPipelines(device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &graphicsPipeline[name].pipeline) != VK_SUCCESS) {
         throw std::runtime_error("failed to create graphics pipeline!");
     }
 
@@ -231,17 +231,18 @@ void pipeline::createGraphicsPipeline(VkDevice device, std::vector<char> vertSha
     vkDestroyShaderModule(device, vertShaderModule, nullptr);
 }
 
-void pipeline::createGraphicsPipeline(VkDevice device, std::string name, std::string vertShaderPath, std::string fragShaderPath, std::vector<VkDescriptorSetLayout> descriptorSetLayouts) {
+void pipeline::createGraphicsPipeline(VkDevice device, std::string name, std::string vertShaderPath, std::string fragShaderPath, std::vector<VkDescriptorSetLayout> descriptorSetLayouts, VkPrimitiveTopology topology) {
     auto vertShaderCode = readFile(vertShaderPath);
     auto fragShaderCode = readFile(fragShaderPath);
 
-    createGraphicsPipeline(device, vertShaderCode, fragShaderCode, name, descriptorSetLayouts);
+    createGraphicsPipeline(device, vertShaderCode, fragShaderCode, name, descriptorSetLayouts, topology);
 
 }
 
 void pipeline::cleanup(VkDevice device) {
-    for (auto& pipeline : graphicsPipeline)
-        vkDestroyPipeline(device, pipeline.second, nullptr);
-    vkDestroyPipelineLayout(device, pipelineLayout, nullptr);
+    for (auto& pipeline : graphicsPipeline) {
+        vkDestroyPipeline(device, pipeline.second.pipeline, nullptr);
+        vkDestroyPipelineLayout(device, pipeline.second.pipelineLayout, nullptr);
+    }
     vkDestroyRenderPass(device, renderPass, nullptr);
 }

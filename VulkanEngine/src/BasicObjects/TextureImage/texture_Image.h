@@ -3,17 +3,16 @@
 #include "Renderer/Buffers.h"
 #include "Initializers/initializers.h"
 
+struct textureData {
+	VkImage textureImage;
+	VkDeviceMemory textureImageMemory;
+	VkImageView textureImageView;
+
+	uint32_t index;
+};
+
 class texturesLoading {
 private:
-
-	friend class UniformBuffer;
-	struct textureData {
-		VkImage textureImage;
-		VkDeviceMemory textureImageMemory;
-		VkImageView textureImageView;
-
-		uint32_t index;
-	};
 
 public:
 	VkSampler textureSampler;
@@ -26,7 +25,7 @@ public:
 	void createTextureImageView(VkDevice device, std::string name);
 	void createTextureSampler(VkDevice device, VkPhysicalDevice physicalDevice);
 
-	void addGlitchedTexture(VkDevice device, VkPhysicalDevice physicalDevice, VkCommandPool commandPool, VkQueue graphicsQueue, std::string path);
+	textureData createIndependentTexture(VkDevice device, VkPhysicalDevice physicalDevice, VkCommandPool commandPool, VkQueue graphicsQueue, std::string path);
 
 	void cleanup(VkDevice device);
 private:

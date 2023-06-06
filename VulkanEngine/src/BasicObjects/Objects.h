@@ -4,6 +4,7 @@
 #include "VulkanStructure/VulkanStructure.h"
 
 #include "BasicObjects/TextureImage/texture_Image.h"
+#include "BasicObjects/modelLoading/modelLoading.h"
 
 const static struct data {
 	const static uint32_t MaximumObjectsOnFrame = 10000;
@@ -17,6 +18,11 @@ const static struct data {
 	const std::string CircleShaders[2] = {
 		"",
 		""
+	};
+
+	const std::string ModelShaders[2] = {
+		"../shaders/ModelVert.spv",
+		"../shaders/ModelFrag.spv"
 	};
 }m_data;
 
@@ -83,6 +89,16 @@ private:
 	int textureIndexing[m_data.MaximumObjectsOnFrame];
 	bool textureIndexingChanged = true;
 
+	//modeltest
+	std::string MODEL_PATH = "../models/doritos.obj";
+	std::string TEXTURE_PATH = "../textures/doritos.png";
+
+	textureData modelTexture;
+
+	modelLoading model;
+
+	VertexBuffer model_vertexBuffer;
+	IndexBuffer model_IndexBuffer;
 
 public:
 	Objects(int MAX_FRAMES_IN_FLIGHT) 
@@ -101,17 +117,23 @@ public:
 		viewMatrix = glm::mat4(1.f);
 		projMatrix = glm::mat4(1.f);
 
-		VulkanCore->m_Pipeline.createGraphicsPipeline(this->VulkanCore->device, "BasicShader", m_data.BasicShaders[0], m_data.BasicShaders[1], initUniform->descriptorSetLayouts);
+		VulkanCore->m_Pipeline.createGraphicsPipeline(this->VulkanCore->device, "BasicShader", m_data.BasicShaders[0], m_data.BasicShaders[1], initUniform->descriptorSetLayouts, VK_PRIMITIVE_TOPOLOGY_TRIANGLE_FAN);
+		VulkanCore->m_Pipeline.createGraphicsPipeline(this->VulkanCore->device, "ModelShader", m_data.ModelShaders[0], m_data.ModelShaders[1], initUniform->model_descriptorSetLayouts, VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST);
 
 		texture.createTextureSampler(VulkanCore->device, VulkanCore->m_Hardwaredevice.physicalDevice);
 
 		initUniform->createUniformBuffers(Vulkan->device, Vulkan->m_Hardwaredevice.physicalDevice);
 		initUniform->createDescriptorPool(Vulkan->device);
 
-		texture.addGlitchedTexture(VulkanCore->device, VulkanCore->m_Hardwaredevice.physicalDevice, *CommandPool, VulkanCore->m_Hardwaredevice.graphicsQueue, "../textures/glitched.jpg");
+		texture.glitchedTexture = texture.createIndependentTexture(VulkanCore->device, VulkanCore->m_Hardwaredevice.physicalDevice, *CommandPool, VulkanCore->m_Hardwaredevice.graphicsQueue, "../textures/glitched.jpg");
 
-		initUniform->createDescriptorSets(Vulkan->device, Vulkan->m_Hardwaredevice.physicalDevice, texture.textureSampler, texture.textures, texture.glitchedTexture);
+		initUniform->createBasicDescriptorSets(Vulkan->device, Vulkan->m_Hardwaredevice.physicalDevice, texture.textureSampler, texture.textures, texture.glitchedTexture);
 
+		//test-model
+		modelTexture = texture.createIndependentTexture(VulkanCore->device, VulkanCore->m_Hardwaredevice.physicalDevice, *CommandPool, VulkanCore->m_Hardwaredevice.graphicsQueue, TEXTURE_PATH);
+		initUniform->createModelDescriptorSets(Vulkan->device, Vulkan->m_Hardwaredevice.physicalDevice, texture.textureSampler, modelTexture);
+		model.loadModel(MODEL_PATH, VulkanCore->device, VulkanCore->m_Hardwaredevice.physicalDevice, VulkanCore->m_Hardwaredevice.graphicsQueue, *CommandPool);
+		
 		createBuffers();
 	}
 
@@ -206,26 +228,6 @@ private:
 	void draw2DObjects(VkCommandBuffer& commandBuffer, uint32_t currentFrame) {
 
 		drawIndirect(commandBuffer, currentFrame);
-
-		//UniformBufferObject ubo = { viewMatrix, projMatrix };
-		//initUniform->updateStaticUniformBuffer(0, TypeOfUniform::GlobalUniform, ubo, currentFrame);
-
-		//vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, VulkanCore->m_Pipeline.pipelineLayout, 0, 1, &initUniform->GetDescriptorSets()[0][currentFrame], 0, nullptr);
-
-		//if (DynamicUniformsUpdate == true) {
-		//	initUniform->updateDynamicUniformBuffer(VulkanCore->device, VulkanCore->m_Hardwaredevice.physicalDevice, 0, TypeOfUniform::EntityUniform, models.model, currentFrame, m_stats.EntitiesCount);
-		//	DynamicUniformsUpdate = false;
-		//}
-		//vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, VulkanCore->m_Pipeline.graphicsPipeline["BasicShader"]);
-
-		//for (size_t index = 0; index < m_stats.EntitiesCount; index++) {
-		//	uint32_t dynamicOffset = index * static_cast<uint32_t>(alignment);
-
-		//	vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, VulkanCore->m_Pipeline.pipelineLayout, 1, 1, &initUniform->GetDescriptorSets()[1][currentFrame], 1, &dynamicOffset);
-		//	drawObject(commandBuffer, m_objects[index].vertices.GetVertexBuffer(), m_objects[index].indices.GetIndexBuffer(),
-		//		m_objects[index].indices.GetIndicies());
-		//}
-
 	}
 
 };

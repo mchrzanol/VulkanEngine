@@ -30,14 +30,14 @@ void TestPlatform::Init() {
 	//objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0, -0.5), 2, Orientation::Z, glm::vec3(1,1,1)));
 
 	objects->PushBack(Entity::rectangle::create(glm::vec3(0.5, 0, -0.5), 1, Orientation::Z, "dupa"));
-	objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0, 4), 10, Orientation::Z, "invalid"));
+	//objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0, 4), 10, Orientation::Z, "invalid"));
 	//objects->PushBack(Entity::rectangle::create(glm::vec3(0, 1, -0.5), 1, 1.5, Orientation::Z));
 	//objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0.5,0), 2));
 	//objects->PushBack(Entity::triangle::create(glm::vec3(0, -1, 0), 1, Orientation::X, glm::vec3(1, 0, 0)));
 	//objects->PushBack(Entity::rectangle::create(glm::vec3(0, 0.5, 0), 2, Orientation::Y));
 
 
-	TestPlatform::AddEtities();
+	//TestPlatform::AddEtities();
 
 	initCommandPool->createCommandBuffers();
 	initCommandPool->createSyncObjects();
@@ -101,7 +101,7 @@ void TestPlatform::AddEtities() {
 
 void TestPlatform::OnUpdate() {
 
-	glm::mat4 proj = glm::perspective(glm::radians(90.0f), (float)VulkanCore->GetSwapChainExtent().width / (float)VulkanCore->GetSwapChainExtent().height, 0.1f, 10.0f);
+	glm::mat4 proj = glm::perspective(glm::radians(90.0f), (float)VulkanCore->GetSwapChainExtent().width / (float)VulkanCore->GetSwapChainExtent().height, 0.1f, 100.0f);
 	proj[1][1] *= -1;
 
 	objects->UpdateView(view.GetView());

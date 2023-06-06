@@ -78,7 +78,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\VulkanEngine\src;..\VulkanEngine\external\Vulkan\Include;..\VulkanEngine\external\GLFW\include;..\VulkanEngine\external\glm;..\VulkanEngine\external\imgui;..\VulkanEngine\external\optick;..\VulkanEngine\external\stb-master;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\VulkanEngine\src;..\VulkanEngine\external\Vulkan\Include;..\VulkanEngine\external\GLFW\include;..\VulkanEngine\external\glm;..\VulkanEngine\external\imgui;..\VulkanEngine\external\optick;..\VulkanEngine\external\stb-master;..\VulkanEngine\external\tinyobjloader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -99,7 +99,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\VulkanEngine\src;..\VulkanEngine\external\Vulkan\Include;..\VulkanEngine\external\GLFW\include;..\VulkanEngine\external\glm;..\VulkanEngine\external\imgui;..\VulkanEngine\external\optick;..\VulkanEngine\external\stb-master;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\VulkanEngine\src;..\VulkanEngine\external\Vulkan\Include;..\VulkanEngine\external\GLFW\include;..\VulkanEngine\external\glm;..\VulkanEngine\external\imgui;..\VulkanEngine\external\optick;..\VulkanEngine\external\stb-master;..\VulkanEngine\external\tinyobjloader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -124,7 +124,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\VulkanEngine\src;..\VulkanEngine\external\Vulkan\Include;..\VulkanEngine\external\GLFW\include;..\VulkanEngine\external\glm;..\VulkanEngine\external\imgui;..\VulkanEngine\external\optick;..\VulkanEngine\external\stb-master;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\VulkanEngine\src;..\VulkanEngine\external\Vulkan\Include;..\VulkanEngine\external\GLFW\include;..\VulkanEngine\external\glm;..\VulkanEngine\external\imgui;..\VulkanEngine\external\optick;..\VulkanEngine\external\stb-master;..\VulkanEngine\external\tinyobjloader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>

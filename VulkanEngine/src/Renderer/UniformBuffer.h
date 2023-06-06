@@ -42,10 +42,18 @@ private:
     std::vector<std::vector< VkDescriptorSetLayoutBinding>> uboLayoutBinding;
     std::vector < std::vector<VkBuffer>> uniformBuffers;
 
+    std::vector<std::vector< VkDescriptorSetLayoutBinding>> model_uboLayoutBinding;
+    std::vector < std::vector<VkBuffer>> model_uniformBuffers;
+
     std::vector < std::vector<VkDescriptorPoolSize>> poolSize;
     std::vector < VkDescriptorPool> descriptorPool;
 
     std::vector < std::vector<VkDescriptorSet>> descriptorSets;
+
+    std::vector < std::vector<VkDescriptorPoolSize>> model_poolSize;
+    std::vector < VkDescriptorPool> model_descriptorPool;
+
+    std::vector < std::vector<VkDescriptorSet>> model_descriptorSets;
 
 
 public:
@@ -53,26 +61,55 @@ public:
     std::vector < std::vector<VkDeviceMemory>> uniformBuffersMemory;
     std::vector<VkDescriptorSetLayout> descriptorSetLayouts;
 
+    std::vector < std::vector<void*>> model_uniformBuffersMapped;
+    std::vector < std::vector<VkDeviceMemory>> model_uniformBuffersMemory;
+    std::vector< VkDescriptorSetLayout> model_descriptorSetLayouts;
+
     UniformBuffer(int MAX_FRAMES_IN_FLIGHT, uint32_t MaximumObjectsOnFrame, uint32_t MaximumTextures)
         :MAX_FRAMES_IN_FLIGHT(MAX_FRAMES_IN_FLIGHT), MaximumObjectsOnFrame(MaximumObjectsOnFrame), MaximumTextures(MaximumTextures){
         uboLayoutBinding.resize(2);
+        model_uboLayoutBinding.resize(2);
+
         descriptorSetLayouts.resize(2);
+        model_descriptorSetLayouts.resize(2);
+
         uniformBuffers.resize(2);
         uniformBuffersMemory.resize(2);
         uniformBuffersMapped.resize(2);
+
+        model_uniformBuffers.resize(2);
+        model_uniformBuffersMemory.resize(2);
+        model_uniformBuffersMapped.resize(2);
+
         poolSize.resize(2);
         descriptorPool.resize(2);
         descriptorSets.resize(2);
+    
+        model_poolSize.resize(2);
+        model_descriptorPool.resize(2);
+        model_descriptorSets.resize(2);
+    
     };
 
     void createUniformBind(unsigned int binding, size_t sizeofBindingValue, VkDescriptorType DescriptorType, TypeOfUniform UniformType);
 
+    void createBasicDescriptorSetsLayout(VkDevice device);
+    void createModelDescriptorSetsLayout(VkDevice device);
 	void createDecriptorSetsLayout(VkDevice device);
 
+    void createBasicUniformBuffers(VkDevice device, VkPhysicalDevice physicalDevice);
+    void createModelUniformBuffers(VkDevice device, VkPhysicalDevice physicalDevice);
     void createUniformBuffers(VkDevice device, VkPhysicalDevice physicalDevice);
+
     void createDescriptorPool(VkDevice device);
-    void createDescriptorSets(VkDevice device, VkPhysicalDevice physicalDevice, VkSampler sampler, std::map<std::string, texturesLoading::textureData> & textures, texturesLoading::textureData& glitched);
-    void updateTextureLoaded(VkDevice device, VkPhysicalDevice physicalDevice, VkSampler sampler, std::map<std::string, texturesLoading::textureData>& textures, texturesLoading::textureData& glitched);
+
+
+    void createBasicDescriptorSets(VkDevice device, VkPhysicalDevice physicalDevice, VkSampler sampler, std::map<std::string, textureData> & textures, textureData& glitched);
+    void createModelDescriptorSets(VkDevice device, VkPhysicalDevice physicalDevice, VkSampler sampler, textureData& texture);
+
+    void updateBasicTextureLoaded(VkDevice device, VkPhysicalDevice physicalDevice, VkSampler sampler, std::map<std::string, textureData>& textures, textureData& glitched);
+    void updateModelTexture(VkDevice device, VkPhysicalDevice physicalDevice, VkSampler sampler, textureData& texture);
+
   
     size_t GetAlignment(size_t sizeOfData, VkPhysicalDevice physicalDevice) {
         VkPhysicalDeviceProperties deviceProps;
@@ -94,6 +131,24 @@ public:
 
         memcpy(uniformBuffersMapped[static_cast<int>(UniformType)][currentImage], &data, sizeof(UniformBufferObject));
     }
+
+    template<class T>
+    void updateModelStaticUniformBuffer(unsigned int binding, TypeOfUniform UniformType, T& data, uint32_t currentImage) {
+
+        // unsigned int MappedOffset = UniformsCount[static_cast<int>(UniformType)];
+
+        memcpy(model_uniformBuffersMapped[static_cast<int>(UniformType)][currentImage], &data, sizeof(UniformBufferObject));
+    }
+
+    template<class T>
+    void updateModelArrayUniformBuffer(unsigned int binding, TypeOfUniform UniformType, T& data, uint32_t currentImage, uint32_t countOfData, size_t alignment) {
+
+        //unsigned int MappedOffset = binding + (currentImage * UniformsCount[static_cast<int>(UniformType)]);
+
+        void* buffer = model_uniformBuffersMapped[static_cast<int>(UniformType)][currentImage];
+
+        memcpy(buffer, &data, alignment * countOfData);
+    };
 
     template<class T>
     void updateArrayUniformBuffer(unsigned int binding, TypeOfUniform UniformType, T& data, uint32_t currentImage, uint32_t countOfData, size_t alignment) {
@@ -131,5 +186,6 @@ public:
     void cleanup(VkDevice device);
 
     std::vector<std::vector<VkDescriptorSet>> GetDescriptorSets() { return descriptorSets; };
+    std::vector<std::vector<VkDescriptorSet>> GetModelDescriptorSets() { return model_descriptorSets; };
     std::vector<VkDescriptorSetLayout> GetDescriptorSetLayouts() { return descriptorSetLayouts; };
 };

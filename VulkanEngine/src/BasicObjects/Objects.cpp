@@ -37,6 +37,9 @@ void Objects::createBuffers() {
 	createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_STORAGE_BUFFER_BIT | VK_BUFFER_USAGE_INDIRECT_BUFFER_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, DrawCommandBuffer, DrawCommandBufferMemory, VulkanCore->device, VulkanCore->m_Hardwaredevice.physicalDevice);
 
 	vkMapMemory(VulkanCore->device, DrawCommandBufferMemory, 0, bufferSize, 0, &DrawCommandData);
+
+	model_vertexBuffer.createVertexBuffer(model.vertices, VulkanCore->device, VulkanCore->m_Hardwaredevice.physicalDevice, VulkanCore->m_Hardwaredevice.graphicsQueue, *CommandPool);
+	model_IndexBuffer.createIndexBuffer(model.indices, VulkanCore->device, VulkanCore->m_Hardwaredevice.physicalDevice, VulkanCore->m_Hardwaredevice.graphicsQueue, *CommandPool);
 }
 
 void Objects::addTexture(std::string NameOfTexture, std::string path) {
@@ -65,7 +68,7 @@ void Objects::addTexture(std::string NameOfTexture, std::string path) {
 }
 
 void Objects::updateTextures() {
-	initUniform->updateTextureLoaded(VulkanCore->device, VulkanCore->m_Hardwaredevice.physicalDevice, texture.textureSampler, texture.textures, texture.glitchedTexture);
+	initUniform->updateBasicTextureLoaded(VulkanCore->device, VulkanCore->m_Hardwaredevice.physicalDevice, texture.textureSampler, texture.textures, texture.glitchedTexture);
 
 	std::cout << "Textures have been updated.\n";
 }
@@ -160,26 +163,26 @@ void Objects::updateUniforms(VkCommandBuffer& commandBuffer, uint32_t currentFra
 	UniformBufferObject ubo = { viewMatrix, projMatrix };
 	initUniform->updateStaticUniformBuffer(0, TypeOfUniform::GlobalUniform, ubo, currentFrame);
 
-	if (EntityUBOchanged == true) {
+	if (EntityUBOchanged == true) {//frame 0 and 1
 		initUniform->updateArrayUniformBuffer(0, TypeOfUniform::EntityUniform, EntityUBO, 0, m_stats.EntitiesCount, initUniform->GetAlignment(sizeof(modelUBO), VulkanCore->m_Hardwaredevice.physicalDevice));
 		initUniform->updateArrayUniformBuffer(0, TypeOfUniform::EntityUniform, EntityUBO, 1, m_stats.EntitiesCount, initUniform->GetAlignment(sizeof(modelUBO), VulkanCore->m_Hardwaredevice.physicalDevice));
 		EntityUBOchanged = false;
 	}
-	if (textureIndexingChanged == true) {
+	if (textureIndexingChanged == true) {//frame 0 and 1
 		initUniform->updateArrayUniformBuffer(0, TypeOfUniform::EntityUniform, textureIndexing, 2, m_stats.EntitiesCount, initUniform->GetAlignment(sizeof(int), VulkanCore->m_Hardwaredevice.physicalDevice));
 		initUniform->updateArrayUniformBuffer(0, TypeOfUniform::EntityUniform, textureIndexing, 3, m_stats.EntitiesCount, initUniform->GetAlignment(sizeof(int), VulkanCore->m_Hardwaredevice.physicalDevice));
 		textureIndexingChanged = false;
 	}
 
-	vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, VulkanCore->m_Pipeline.pipelineLayout, 0, 1, &initUniform->GetDescriptorSets()[0][currentFrame], 0, nullptr);
-	vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, VulkanCore->m_Pipeline.pipelineLayout, 1, 1, &initUniform->GetDescriptorSets()[1][currentFrame], 0, nullptr);
+	vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, VulkanCore->m_Pipeline.graphicsPipeline["BasicShader"].pipelineLayout, 0, 1, &initUniform->GetDescriptorSets()[0][currentFrame], 0, nullptr);
+	vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, VulkanCore->m_Pipeline.graphicsPipeline["BasicShader"].pipelineLayout, 1, 1, &initUniform->GetDescriptorSets()[1][currentFrame], 0, nullptr);
 }
 
 void Objects::drawIndirect(VkCommandBuffer& commandBuffer, uint32_t currentFrame) {
 
-	updateUniforms(commandBuffer, currentFrame);
+	vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, VulkanCore->m_Pipeline.graphicsPipeline["BasicShader"].pipeline);
 
-	vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, VulkanCore->m_Pipeline.graphicsPipeline["BasicShader"]);
+	updateUniforms(commandBuffer, currentFrame);
 
 	for (IndirectBatch& draw : batchDraw) {
 		VkBuffer vertexBuffers[] = { EntitiesVertexBuffer[draw.ID].GetVertexBuffer() };
@@ -192,4 +195,24 @@ void Objects::drawIndirect(VkCommandBuffer& commandBuffer, uint32_t currentFrame
 		//execute the draw command buffer on each section as defined by the array of draws
 		vkCmdDrawIndirect(commandBuffer, DrawCommandBuffer, indirect_offset, draw.count, draw_stride);
 	}
+
+	vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, VulkanCore->m_Pipeline.graphicsPipeline["ModelShader"].pipeline);
+
+	VkBuffer vertexBuffers[] = { model_vertexBuffer.GetVertexBuffer() };
+	VkDeviceSize offsets[] = { 0 };
+	vkCmdBindVertexBuffers(commandBuffer, 0, 1, vertexBuffers, offsets);
+
+	vkCmdBindIndexBuffer(commandBuffer, model_IndexBuffer.GetIndexBuffer(), 0, VK_INDEX_TYPE_UINT32); 
+
+	UniformBufferObject ubo = { viewMatrix, projMatrix };
+	initUniform->updateModelStaticUniformBuffer(0, TypeOfUniform::GlobalUniform, ubo, currentFrame);
+
+	modelUBO model = { glm::scale(glm::mat4(1.f), glm::vec3(0.5f)), glm::vec3(1)};
+
+	initUniform->updateModelArrayUniformBuffer(0, TypeOfUniform::EntityUniform, model, currentFrame, 1, sizeof(modelUBO));
+
+	vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, VulkanCore->m_Pipeline.graphicsPipeline["ModelShader"].pipelineLayout, 0, 1, &initUniform->GetModelDescriptorSets()[0][currentFrame], 0, nullptr);
+	vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, VulkanCore->m_Pipeline.graphicsPipeline["ModelShader"].pipelineLayout, 1, 1, &initUniform->GetModelDescriptorSets()[1][currentFrame], 0, nullptr);
+
+	vkCmdDrawIndexed(commandBuffer, static_cast<uint32_t>(model_IndexBuffer.GetIndicies().size()), 1, 0, 0, 0);
 }

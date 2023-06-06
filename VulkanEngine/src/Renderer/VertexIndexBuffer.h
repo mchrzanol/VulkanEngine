@@ -41,6 +41,10 @@ struct Vertex {
         //attributeDescriptions[2].offset = offsetof(Vertex, model);
         return attributeDescriptions;
     }
+
+    bool operator==(const Vertex& other) const {
+        return pos == other.pos && color == other.color && texCoord == other.texCoord;
+    }
 };
 
 class ENGINE_API VertexBuffer {
@@ -62,14 +66,14 @@ private:
     VkBuffer indexBuffer;
     VkDeviceMemory indexBufferMemory;
 
-    std::vector<uint16_t> m_indices;
+    std::vector<uint32_t> m_indices;
 
 public:
 
-    void createIndexBuffer(std::vector<uint16_t> indices, VkDevice device, VkPhysicalDevice physicalDevice, VkQueue graphicsQueue, VkCommandPool CommandPool);
+    void createIndexBuffer(std::vector<uint32_t> indices, VkDevice device, VkPhysicalDevice physicalDevice, VkQueue graphicsQueue, VkCommandPool CommandPool);
 
     void cleanup(VkDevice device);
 
     VkBuffer GetIndexBuffer() { return indexBuffer; };
-    std::vector<uint16_t> GetIndicies() { return m_indices; };
+    std::vector<uint32_t> GetIndicies() { return m_indices; };
 };

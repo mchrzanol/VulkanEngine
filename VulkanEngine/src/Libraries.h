@@ -18,12 +18,16 @@
 #define GLM_FORCE_DEFAULT_ALIGNED_GENTYPES
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/hash.hpp>
 
 #include <imgui.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 #define STB_IMAGE_STATIC
 #include <stb_image.h>
+
+#include <tiny_obj_loader.h>
 
 #include <CppCoreCheck\Warnings.h>
 
