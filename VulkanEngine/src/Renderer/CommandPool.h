@@ -1,21 +1,18 @@
 #pragma once
 
 #include "Libraries.h"
-#include "VulkanClass/VulkanClass.h"
+#include "VulkanStructure/VulkanStructure.h"
 #include "UniformBuffer.h"
 #include "VertexIndexBuffer.h"
 #include "window/window.h"
+#include "BasicObjects/Objects.h"
 
-extern GlobalUtl utils;
+#include "BasicObjects/TextureImage/texture_Image.h"
 
 class ENGINE_API CommandPool {
 private:
-    VulkanClass* initVulkan;
-    UniformBuffer* initUniform;
-    IndexBuffer* initIndeces;
-    VertexBuffer* initVertices;
-    windowClass* initWindow;
-
+    VulkanStruct* VulkanCore;
+    windowClass* Window;
 
     VkCommandPool commandPool;
     std::vector<VkCommandBuffer> commandBuffers;
@@ -27,19 +24,21 @@ private:
 
     int MAX_FRAMES_IN_FLIGHT;
 public:
-    CommandPool(VulkanClass*& initVulkan, UniformBuffer*& initUniform, IndexBuffer*& initIndeces, VertexBuffer*& initVertices, windowClass*& initWindow, int MAX_FRAMES_IN_FLIGHT)
-        :initVulkan(initVulkan), initUniform(initUniform), initIndeces(initIndeces), initVertices(initVertices),initWindow(initWindow),MAX_FRAMES_IN_FLIGHT(MAX_FRAMES_IN_FLIGHT){};
+    CommandPool(VulkanStruct*& Vulkan, windowClass*& Window, int MAX_FRAMES_IN_FLIGHT)
+        :VulkanCore(Vulkan),Window(Window),MAX_FRAMES_IN_FLIGHT(MAX_FRAMES_IN_FLIGHT){};
     void createCommandPool();
     void createCommandBuffers();
-    void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex, VkRenderPass& renderPass,
-        std::vector<VkFramebuffer>& swapChainFramebuffers, VkPipeline& graphicsPipeline);
+    void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex,
+        std::vector<VkFramebuffer>& swapChainFramebuffers, Objects& objects);
     void createSyncObjects();
 
-    void drawFrame();
+    void drawFrame(Objects& objects);
 
     void cleanup();
 
-    VkCommandPool GetCommandPool() { return commandPool; };
+    inline VkCommandPool* GetCommandPool() { return &commandPool; };
+
+    inline uint32_t GetCurrentFrame() { return currentFrame; };
 
 
 };

@@ -78,10 +78,10 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\VulkanEngine\src;..\VulkanEngine\external\Vulkan\Include;..\VulkanEngine\external\GLFW\include;..\VulkanEngine\external\glm;..\VulkanEngine\external\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\VulkanEngine\src;..\VulkanEngine\external\Vulkan\Include;..\VulkanEngine\external\GLFW\include;..\VulkanEngine\external\glm;..\VulkanEngine\external\imgui;..\VulkanEngine\external\optick;..\VulkanEngine\external\stb-master;..\VulkanEngine\external\tinyobjloader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -99,13 +99,13 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\VulkanEngine\src;..\VulkanEngine\external\Vulkan\Include;..\VulkanEngine\external\GLFW\include;..\VulkanEngine\external\glm;..\VulkanEngine\external\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\VulkanEngine\src;..\VulkanEngine\external\Vulkan\Include;..\VulkanEngine\external\GLFW\include;..\VulkanEngine\external\glm;..\VulkanEngine\external\imgui;..\VulkanEngine\external\optick;..\VulkanEngine\external\stb-master;..\VulkanEngine\external\tinyobjloader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -124,13 +124,13 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\VulkanEngine\src;..\VulkanEngine\external\Vulkan\Include;..\VulkanEngine\external\GLFW\include;..\VulkanEngine\external\glm;..\VulkanEngine\external\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\VulkanEngine\src;..\VulkanEngine\external\Vulkan\Include;..\VulkanEngine\external\GLFW\include;..\VulkanEngine\external\glm;..\VulkanEngine\external\imgui;..\VulkanEngine\external\optick;..\VulkanEngine\external\stb-master;..\VulkanEngine\external\tinyobjloader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>

@@ -1,18 +1,16 @@
 #include "CommandPool.h"
 
 void CommandPool::createCommandPool() {
-    QueueFamilyIndices queueFamilyIndices = initVulkan->findQueueFamilies(initVulkan->GetPhyscicalDevice());
+    QueueFamilyIndices queueFamilyIndices = VulkanCore->m_Hardwaredevice.findQueueFamilies(VulkanCore->m_Hardwaredevice.physicalDevice, VulkanCore->surface);
 
     VkCommandPoolCreateInfo poolInfo{};
     poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
     poolInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
     poolInfo.queueFamilyIndex = queueFamilyIndices.graphicsFamily.value();
 
-    if (vkCreateCommandPool(initVulkan->GetDevice(), &poolInfo, nullptr, &commandPool) != VK_SUCCESS) {
+    if (vkCreateCommandPool(VulkanCore->device, &poolInfo, nullptr, &commandPool) != VK_SUCCESS) {
         throw std::runtime_error("failed to create command pool!");
     }
-
-    utils.BindCommandPool(commandPool);
 }
 
 void CommandPool::createCommandBuffers() {
@@ -24,13 +22,13 @@ void CommandPool::createCommandBuffers() {
     allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
     allocInfo.commandBufferCount = (uint32_t)commandBuffers.size();;
 
-    if (vkAllocateCommandBuffers(initVulkan->GetDevice(), &allocInfo, commandBuffers.data()) != VK_SUCCESS) {
+    if (vkAllocateCommandBuffers(VulkanCore->device, &allocInfo, commandBuffers.data()) != VK_SUCCESS) {
         throw std::runtime_error("failed to allocate command buffers!");
     }
 }
 
-void CommandPool::recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex, VkRenderPass& renderPass,
-    std::vector<VkFramebuffer>& swapChainFramebuffers, VkPipeline& graphicsPipeline) {
+void CommandPool::recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex,
+    std::vector<VkFramebuffer>& swapChainFramebuffers, Objects & objects) {
     VkCommandBufferBeginInfo beginInfo{};
     beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
     beginInfo.flags = VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT;//from comment(it works without it but idk i've just added it)
@@ -41,46 +39,37 @@ void CommandPool::recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t im
 
     VkRenderPassBeginInfo renderPassInfo{};
     renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-    renderPassInfo.renderPass = renderPass;
+    renderPassInfo.renderPass = VulkanCore->m_Pipeline.renderPass;
     renderPassInfo.framebuffer = swapChainFramebuffers[imageIndex];
     renderPassInfo.renderArea.offset = { 0, 0 };
-    renderPassInfo.renderArea.extent = initVulkan->GetSwapChainExtent();
+    renderPassInfo.renderArea.extent.width = VulkanCore->m_SwapChain.swapChainExtent.width;
+    renderPassInfo.renderArea.extent.height = VulkanCore->m_SwapChain.swapChainExtent.height;
 
-    VkClearValue clearColor = { {{0.0f, 0.0f, 0.0f, 1.0f}} };
-    renderPassInfo.clearValueCount = 1;
-    renderPassInfo.pClearValues = &clearColor;
+    std::array<VkClearValue, 2> clearValues{};
+    clearValues[0].color = { {0.0f, 0.0f, 0.0f, 1.0f} };
+    clearValues[1].depthStencil = { 1.0f, 0 };
+
+    renderPassInfo.clearValueCount = static_cast<uint32_t>(clearValues.size());
+    renderPassInfo.pClearValues = clearValues.data();
 
     vkCmdBeginRenderPass(commandBuffer, &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
-
-    vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, graphicsPipeline);
 
     VkViewport viewport{};
     viewport.x = 0.0f;
     viewport.y = 0.0f;
-    viewport.width = (float)initVulkan->GetSwapChainExtent().width;
-    viewport.height = (float)initVulkan->GetSwapChainExtent().height;
+    viewport.width = (float)VulkanCore->m_SwapChain.swapChainExtent.width;
+    viewport.height = (float)VulkanCore->m_SwapChain.swapChainExtent.height;
     viewport.minDepth = 0.0f;
     viewport.maxDepth = 1.0f;
     vkCmdSetViewport(commandBuffer, 0, 1, &viewport);
 
     VkRect2D scissor{};
     scissor.offset = { 0, 0 };
-    scissor.extent = initVulkan->GetSwapChainExtent();
+    scissor.extent.width = VulkanCore->m_SwapChain.swapChainExtent.width;
+    scissor.extent.height = VulkanCore->m_SwapChain.swapChainExtent.height;
     vkCmdSetScissor(commandBuffer, 0, 1, &scissor);
 
-    vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, graphicsPipeline);
-
-    VkBuffer vertexBuffers[] = { initVertices->GetVertexBuffer()};
-    VkDeviceSize offsets[] = { 0 };
-    vkCmdBindVertexBuffers(commandBuffer, 0, 1, vertexBuffers, offsets);
-
-    vkCmdBindIndexBuffer(commandBuffer, initIndeces->GetIndexBuffer(), 0, VK_INDEX_TYPE_UINT16);//uint16 as type of variable
-
-    vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, initVulkan->GetPipelineLayout(), 0, 1, &initUniform->GetDescriptorSets()[currentFrame], 0, nullptr);
-    vkCmdDrawIndexed(commandBuffer, static_cast<uint32_t>(initIndeces->GetIndicies().size()), 1, 0, 0, 0);
-
-    //vkCmdDraw(commandBuffer, static_cast<uint32_t>(vertices.size()), 1, 0, 0);
-    vkCmdDrawIndexed(commandBuffer, static_cast<uint32_t>(initIndeces->GetIndicies().size()), 1, 0, 0, 0);
+    objects.draw2DObjects(commandBuffer, currentFrame);
 
     vkCmdEndRenderPass(commandBuffer);
 
@@ -102,36 +91,37 @@ void CommandPool::createSyncObjects() {
     fenceInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;
 
     for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
-        if (vkCreateSemaphore(initVulkan->GetDevice(), &semaphoreInfo, nullptr, &imageAvailableSemaphores[i]) != VK_SUCCESS ||
-            vkCreateSemaphore(initVulkan->GetDevice(), &semaphoreInfo, nullptr, &renderFinishedSemaphores[i]) != VK_SUCCESS ||
-            vkCreateFence(initVulkan->GetDevice(), &fenceInfo, nullptr, &inFlightFences[i]) != VK_SUCCESS) {
+        if (vkCreateSemaphore(VulkanCore->device, &semaphoreInfo, nullptr, &imageAvailableSemaphores[i]) != VK_SUCCESS ||
+            vkCreateSemaphore(VulkanCore->device, &semaphoreInfo, nullptr, &renderFinishedSemaphores[i]) != VK_SUCCESS ||
+            vkCreateFence(VulkanCore->device, &fenceInfo, nullptr, &inFlightFences[i]) != VK_SUCCESS) {
 
             throw std::runtime_error("failed to create synchronization objects for a frame!");
         }
     }
 }
 
-void CommandPool::drawFrame() {
-    vkWaitForFences(initVulkan->GetDevice(), 1, &inFlightFences[currentFrame], VK_TRUE, UINT64_MAX);
+void CommandPool::drawFrame(Objects& objects) {
+    vkWaitForFences(VulkanCore->device, 1, &inFlightFences[currentFrame], VK_TRUE, UINT64_MAX);
 
     uint32_t imageIndex;
-    VkResult result = vkAcquireNextImageKHR(initVulkan->GetDevice(), initVulkan->GetSwapChain(), UINT64_MAX, imageAvailableSemaphores[currentFrame], VK_NULL_HANDLE, &imageIndex);
+    VkResult result = vkAcquireNextImageKHR(VulkanCore->device, VulkanCore->m_SwapChain.swapChain, UINT64_MAX, imageAvailableSemaphores[currentFrame], VK_NULL_HANDLE, &imageIndex);
 
     if (result == VK_ERROR_OUT_OF_DATE_KHR) {
-        initWindow->UpdateWindowSize();
-        initVulkan->recreateSwapChain(initWindow->m_Data);
+        Window->UpdateWindowSize();
+        VulkanCore->recreateSwapChain();
         return;
     }
     else if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR) {
         throw std::runtime_error("failed to acquire swap chain image!");
     }
 
-    initUniform->updateUniformBuffer(currentFrame, initVulkan->GetSwapChainExtent());
-
-    vkResetFences(initVulkan->GetDevice(), 1, &inFlightFences[currentFrame]);
+    vkResetFences(VulkanCore->device, 1, &inFlightFences[currentFrame]);
 
     vkResetCommandBuffer(commandBuffers[currentFrame], /*VkCommandBufferResetFlagBits*/ 0);
-    recordCommandBuffer(commandBuffers[currentFrame], imageIndex, initVulkan->GetRenderPass(), initVulkan->GetSwapChainFrameBuffers(), initVulkan->GetGraphicsPipeline());
+
+
+    recordCommandBuffer(commandBuffers[currentFrame], imageIndex, VulkanCore->m_FrameBuffer.swapChainFramebuffers, objects);
+
 
     VkSubmitInfo submitInfo{};
     submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
@@ -149,7 +139,7 @@ void CommandPool::drawFrame() {
     submitInfo.signalSemaphoreCount = 1;
     submitInfo.pSignalSemaphores = signalSemaphores;
 
-    if (vkQueueSubmit(initVulkan->GetGraphicsQueue(), 1, &submitInfo, inFlightFences[currentFrame]) != VK_SUCCESS) {
+    if (vkQueueSubmit(VulkanCore->m_Hardwaredevice.graphicsQueue, 1, &submitInfo, inFlightFences[currentFrame]) != VK_SUCCESS) {
         throw std::runtime_error("failed to submit draw command buffer!");
     }
 
@@ -159,17 +149,17 @@ void CommandPool::drawFrame() {
     presentInfo.waitSemaphoreCount = 1;
     presentInfo.pWaitSemaphores = signalSemaphores;
 
-    VkSwapchainKHR swapChains[] = { initVulkan->GetSwapChain() };
+    VkSwapchainKHR swapChains[] = { VulkanCore->m_SwapChain.swapChain };
     presentInfo.swapchainCount = 1;
     presentInfo.pSwapchains = swapChains;
 
     presentInfo.pImageIndices = &imageIndex;
 
-    result = vkQueuePresentKHR(initVulkan->GetPresentQueue(), &presentInfo);
+    result = vkQueuePresentKHR(VulkanCore->m_Hardwaredevice.presentQueue, &presentInfo);
 
-    if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || initWindow->m_Data.framebufferResized) {
-        initWindow->UpdateWindowSize();
-        initVulkan->recreateSwapChain(initWindow->m_Data);//daj tutaj funkcje sprawdzajaca rozmiar okna z klasy okno 
+    if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || Window->m_Data.framebufferResized) {
+        Window->UpdateWindowSize();
+        VulkanCore->recreateSwapChain();
     }
     else if (result != VK_SUCCESS) {
         throw std::runtime_error("failed to present swap chain image!");
@@ -180,12 +170,12 @@ void CommandPool::drawFrame() {
 
 void CommandPool::cleanup() {
 
-    vkDestroyCommandPool(initVulkan->GetDevice(), commandPool, nullptr);
+    vkDestroyCommandPool(VulkanCore->device, commandPool, nullptr);
 
     for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
-        vkDestroySemaphore(initVulkan->GetDevice(), renderFinishedSemaphores[i], nullptr);
-        vkDestroySemaphore(initVulkan->GetDevice(), imageAvailableSemaphores[i], nullptr);
-        vkDestroyFence(initVulkan->GetDevice(), inFlightFences[i], nullptr);
+        vkDestroySemaphore(VulkanCore->device, renderFinishedSemaphores[i], nullptr);
+        vkDestroySemaphore(VulkanCore->device, imageAvailableSemaphores[i], nullptr);
+        vkDestroyFence(VulkanCore->device, inFlightFences[i], nullptr);
     }
 }
 

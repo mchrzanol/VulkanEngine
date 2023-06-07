@@ -1,14 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="EventHandling">
-      <UniqueIdentifier>{0CF58129-78B5-FD5F-41F0-46DDAD6F423C}</UniqueIdentifier>
+    <Filter Include="BasicObjects">
+      <UniqueIdentifier>{D1EC4922-BD4F-D9C6-66D5-117D5217A549}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BasicObjects\2D">
+      <UniqueIdentifier>{D6D5856B-4261-F32F-4B72-7624B77C4F30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BasicObjects\3D">
+      <UniqueIdentifier>{F7D5856B-6361-F32F-6C72-7624D87C4F30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BasicObjects\TextureImage">
+      <UniqueIdentifier>{34663585-A028-690F-E9D8-F79B55DA41ED}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BasicObjects\modelLoading">
+      <UniqueIdentifier>{EF3806BC-5BFB-3946-A4AB-C8D210AD1224}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Initializers">
+      <UniqueIdentifier>{5C2B0622-488E-95C6-F113-CE7CDD556149}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{953A660D-014F-8EBE-CAD0-311E36A48AEF}</UniqueIdentifier>
     </Filter>
     <Filter Include="Renderer">
       <UniqueIdentifier>{7CCE658F-689B-C09A-91B4-AE427DE0F528}</UniqueIdentifier>
     </Filter>
-    <Filter Include="VulkanClass">
-      <UniqueIdentifier>{2C6FC8A5-9824-419B-2119-3B728DCD379F}</UniqueIdentifier>
+    <Filter Include="VulkanStructure">
+      <UniqueIdentifier>{074BC2EF-73D6-2FB4-7CE7-B2A8E8F18BB4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="VulkanStructure\DepthBuffer">
+      <UniqueIdentifier>{E588FF93-5196-2D7A-DA7C-29654689F930}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="VulkanStructure\FrameBuffer">
+      <UniqueIdentifier>{9B2A3CA3-0738-6A89-901E-6674FC2A3640}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="VulkanStructure\PhysicalLogicalDevice">
+      <UniqueIdentifier>{DE541D25-4A19-1C15-137F-4CDF7F02B84A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="VulkanStructure\Pipeline">
+      <UniqueIdentifier>{0C4B81D5-F86F-D055-21BB-B5E50D3FCF73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="VulkanStructure\SwapChain">
+      <UniqueIdentifier>{1424D262-80E6-05ED-C996-94793598DECA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WorldMatricies">
+      <UniqueIdentifier>{2ED45EBE-1AA2-52C4-0336-C3EAEFA22E29}</UniqueIdentifier>
     </Filter>
     <Filter Include="logging">
       <UniqueIdentifier>{CC00C087-38E0-3E23-41F8-C9F9AD56A584}</UniqueIdentifier>
@@ -18,9 +54,38 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\BasicObjects\2D\Circle.h">
+      <Filter>BasicObjects\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BasicObjects\2D\Rectangle.h">
+      <Filter>BasicObjects\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BasicObjects\2D\Triangle.h">
+      <Filter>BasicObjects\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BasicObjects\3D\Square.h">
+      <Filter>BasicObjects\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BasicObjects\Entity.h">
+      <Filter>BasicObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BasicObjects\Objects.h">
+      <Filter>BasicObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BasicObjects\TextureImage\texture_Image.h">
+      <Filter>BasicObjects\TextureImage</Filter>
+    </ClInclude>
+    <ClInclude Include="src\BasicObjects\modelLoading\modelLoading.h">
+      <Filter>BasicObjects\modelLoading</Filter>
+    </ClInclude>
     <ClInclude Include="src\Core.h" />
     <ClInclude Include="src\Engine.h" />
-    <ClInclude Include="src\GlobalVariables.h" />
+    <ClInclude Include="src\Initializers\initializers.h">
+      <Filter>Initializers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Input\Input.h">
+      <Filter>Input</Filter>
+    </ClInclude>
     <ClInclude Include="src\Libraries.h" />
     <ClInclude Include="src\Renderer\Buffers.h">
       <Filter>Renderer</Filter>
@@ -34,8 +99,29 @@
     <ClInclude Include="src\Renderer\VertexIndexBuffer.h">
       <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="src\VulkanClass\VulkanClass.h">
-      <Filter>VulkanClass</Filter>
+    <ClInclude Include="src\VulkanStructure\DepthBuffer\DepthBuffer.h">
+      <Filter>VulkanStructure\DepthBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\VulkanStructure\FrameBuffer\FrameBuffer.h">
+      <Filter>VulkanStructure\FrameBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\VulkanStructure\PhysicalLogicalDevice\PhysicalLogicalDevice.h">
+      <Filter>VulkanStructure\PhysicalLogicalDevice</Filter>
+    </ClInclude>
+    <ClInclude Include="src\VulkanStructure\Pipeline\Pipeline.h">
+      <Filter>VulkanStructure\Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="src\VulkanStructure\Structures.h">
+      <Filter>VulkanStructure</Filter>
+    </ClInclude>
+    <ClInclude Include="src\VulkanStructure\SwapChain\SwapChain.h">
+      <Filter>VulkanStructure\SwapChain</Filter>
+    </ClInclude>
+    <ClInclude Include="src\VulkanStructure\VulkanStructure.h">
+      <Filter>VulkanStructure</Filter>
+    </ClInclude>
+    <ClInclude Include="src\WorldMatricies\ViewMatricies.h">
+      <Filter>WorldMatricies</Filter>
     </ClInclude>
     <ClInclude Include="src\logging\logging.h">
       <Filter>logging</Filter>
@@ -43,10 +129,32 @@
     <ClInclude Include="src\window\window.h">
       <Filter>window</Filter>
     </ClInclude>
-    <ClInclude Include="src\Input\Input.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\GlobalVariables.cpp" />
+    <ClCompile Include="src\BasicObjects\2D\Circle.cpp">
+      <Filter>BasicObjects\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BasicObjects\2D\Rectangle.cpp">
+      <Filter>BasicObjects\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BasicObjects\2D\Triangle.cpp">
+      <Filter>BasicObjects\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BasicObjects\3D\Square.cpp">
+      <Filter>BasicObjects\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BasicObjects\Objects.cpp">
+      <Filter>BasicObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BasicObjects\TextureImage\texture_Image.cpp">
+      <Filter>BasicObjects\TextureImage</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BasicObjects\modelLoading\modelLoading.cpp">
+      <Filter>BasicObjects\modelLoading</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Initializers\initializers.cpp">
+      <Filter>Initializers</Filter>
+    </ClCompile>
     <ClCompile Include="src\Renderer\Buffers.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
@@ -59,20 +167,23 @@
     <ClCompile Include="src\Renderer\VertexIndexBuffer.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="src\VulkanClass\FrameBuffer.cpp">
-      <Filter>VulkanClass</Filter>
+    <ClCompile Include="src\VulkanStructure\DepthBuffer\DepthBuffer.cpp">
+      <Filter>VulkanStructure\DepthBuffer</Filter>
     </ClCompile>
-    <ClCompile Include="src\VulkanClass\General.cpp">
-      <Filter>VulkanClass</Filter>
+    <ClCompile Include="src\VulkanStructure\FrameBuffer\FrameBuffer.cpp">
+      <Filter>VulkanStructure\FrameBuffer</Filter>
     </ClCompile>
-    <ClCompile Include="src\VulkanClass\PhysicalLogicalDevice.cpp">
-      <Filter>VulkanClass</Filter>
+    <ClCompile Include="src\VulkanStructure\General.cpp">
+      <Filter>VulkanStructure</Filter>
     </ClCompile>
-    <ClCompile Include="src\VulkanClass\Pipeline.cpp">
-      <Filter>VulkanClass</Filter>
+    <ClCompile Include="src\VulkanStructure\PhysicalLogicalDevice\PhysicalLogicalDevice.cpp">
+      <Filter>VulkanStructure\PhysicalLogicalDevice</Filter>
     </ClCompile>
-    <ClCompile Include="src\VulkanClass\SwapChain.cpp">
-      <Filter>VulkanClass</Filter>
+    <ClCompile Include="src\VulkanStructure\Pipeline\Pipeline.cpp">
+      <Filter>VulkanStructure\Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VulkanStructure\SwapChain\SwapChain.cpp">
+      <Filter>VulkanStructure\SwapChain</Filter>
     </ClCompile>
     <ClCompile Include="src\logging\logging.cpp">
       <Filter>logging</Filter>

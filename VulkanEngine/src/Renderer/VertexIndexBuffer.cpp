@@ -1,51 +1,53 @@
 #include "VertexIndexBuffer.h"
 
-void VertexBuffer::createVertexBuffer() {
+void VertexBuffer::createVertexBuffer(std::vector<Vertex> & vertices, VkDevice device, VkPhysicalDevice physicalDevice, VkQueue graphicsQueue, VkCommandPool CommandPool) {
     VkDeviceSize bufferSize = sizeof(vertices[0]) * vertices.size();
 
     VkBuffer stagingBuffer;
     VkDeviceMemory stagingBufferMemory;
-    createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, stagingBuffer, stagingBufferMemory, utils.GetDevice(), utils.GetPhyscicalDevice());
+    createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, stagingBuffer, stagingBufferMemory, device, physicalDevice);
 
     void* data;
-    vkMapMemory(utils.GetDevice(), stagingBufferMemory, 0, bufferSize, 0, &data);
+    vkMapMemory(device, stagingBufferMemory, 0, bufferSize, 0, &data);
     memcpy(data, vertices.data(), (size_t)bufferSize);
-    vkUnmapMemory(utils.GetDevice(), stagingBufferMemory);
+    vkUnmapMemory(device, stagingBufferMemory);
 
-    createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, vertexBuffer, vertexBufferMemory, utils.GetDevice(), utils.GetPhyscicalDevice());
+    createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, vertexBuffer, vertexBufferMemory, device, physicalDevice);
 
-    copyBuffer(stagingBuffer, vertexBuffer, bufferSize, utils.GetCommandPool(), utils.GetDevice(), utils.GetGraphicsQueue());
+    copyBuffer(stagingBuffer, 0, vertexBuffer,0,  bufferSize, CommandPool, device, graphicsQueue);
 
-    vkDestroyBuffer(utils.GetDevice(), stagingBuffer, nullptr);
-    vkFreeMemory(utils.GetDevice(), stagingBufferMemory, nullptr);
+    vkDestroyBuffer(device, stagingBuffer, nullptr);
+    vkFreeMemory(device, stagingBufferMemory, nullptr);
 }
 
-void VertexBuffer::cleanup() {
-    vkDestroyBuffer(utils.GetDevice(), vertexBuffer, nullptr);
-    vkFreeMemory(utils.GetDevice(), vertexBufferMemory, nullptr);
+void VertexBuffer::cleanup(VkDevice device) {
+    vkDestroyBuffer(device, vertexBuffer, nullptr);
+    vkFreeMemory(device, vertexBufferMemory, nullptr);
 }
 
-void IndexBuffer::createIndexBuffer() {
+void IndexBuffer::createIndexBuffer(std::vector<uint32_t>  indices, VkDevice device, VkPhysicalDevice physicalDevice, VkQueue graphicsQueue, VkCommandPool CommandPool) {
     VkDeviceSize bufferSize = sizeof(indices[0]) * indices.size();
+
+    m_indices = indices;
 
     VkBuffer stagingBuffer;
     VkDeviceMemory stagingBufferMemory;
-    createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, stagingBuffer, stagingBufferMemory, utils.GetDevice(), utils.GetPhyscicalDevice());
+    createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, stagingBuffer, stagingBufferMemory, device, physicalDevice);
 
     void* data;
-    vkMapMemory(utils.GetDevice(), stagingBufferMemory, 0, bufferSize, 0, &data);
+    vkMapMemory(device, stagingBufferMemory, 0, bufferSize, 0, &data);
     memcpy(data, indices.data(), (size_t)bufferSize);
-    vkUnmapMemory(utils.GetDevice(), stagingBufferMemory);
+    vkUnmapMemory(device, stagingBufferMemory);
 
-    createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, indexBuffer, indexBufferMemory, utils.GetDevice(), utils.GetPhyscicalDevice());
+    createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, indexBuffer, indexBufferMemory, device, physicalDevice);
 
-    copyBuffer(stagingBuffer, indexBuffer, bufferSize, utils.GetCommandPool(), utils.GetDevice(), utils.GetGraphicsQueue());
+    copyBuffer(stagingBuffer,0, indexBuffer, 0,bufferSize, CommandPool, device, graphicsQueue);
 
-    vkDestroyBuffer(utils.GetDevice(), stagingBuffer, nullptr);
-    vkFreeMemory(utils.GetDevice(), stagingBufferMemory, nullptr);
+    vkDestroyBuffer(device, stagingBuffer, nullptr);
+    vkFreeMemory(device, stagingBufferMemory, nullptr);
 }
 
-void IndexBuffer::cleanup() {
-    vkDestroyBuffer(utils.GetDevice(), indexBuffer, nullptr);
-    vkFreeMemory(utils.GetDevice(), indexBufferMemory, nullptr);
+void IndexBuffer::cleanup(VkDevice device) {
+    vkDestroyBuffer(device, indexBuffer, nullptr);
+    vkFreeMemory(device, indexBufferMemory, nullptr);
 }

@@ -16,6 +16,9 @@ IncludeDir["GLFW"] = "VulkanEngine/external/GLFW/include"
 IncludeDir["Vulkan"] = "VulkanEngine/external/Vulkan/Include"
 IncludeDir["imgui"] = "VulkanEngine/external/imgui"
 IncludeDir["glm"] = "VulkanEngine/external/glm"
+IncludeDir["optick"] = "VulkanEngine/external/optick"
+IncludeDir["stb_image"] = "VulkanEngine/external/stb-master"
+IncludeDir["tinyobjloader"] = "VulkanEngine/external/tinyobjloader"
 
 vulkanPath ="VulkanEngine/external/Vulkan"
 
@@ -46,7 +49,10 @@ project "VulkanEngine"
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Vulkan}",
 		"%{IncludeDir.glm}",
-		"%{IncludeDir.imgui}"
+		"%{IncludeDir.imgui}",
+		"%{IncludeDir.optick}",
+		"%{IncludeDir.stb_image}",
+		"%{IncludeDir.tinyobjloader}"
 	}
 
 	libdirs { "VulkanEngine/external/Vulkan/Lib" }
@@ -60,7 +66,7 @@ project "VulkanEngine"
 
 	filter "system:windows"
 		cppdialect "C++17"
-		staticruntime "On"
+		staticruntime "Off"
 
 		systemversion "latest"
 
@@ -82,10 +88,10 @@ project "VulkanEngine"
 		optimize	"On"
 
 		
-	project "TestPlatform"
-		location "TestPlatform"
-		kind "ConsoleApp"
-		language "C++"
+project "TestPlatform"
+	location "TestPlatform"
+	kind "ConsoleApp"
+	language "C++"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin/" .. outputdir.. "/%{prj.name}/obj")
@@ -103,7 +109,10 @@ project "VulkanEngine"
 			"%{IncludeDir.Vulkan}",
 			"%{IncludeDir.GLFW}",
 			"%{IncludeDir.glm}",
-			"%{IncludeDir.imgui}"
+			"%{IncludeDir.imgui}",
+			"%{IncludeDir.optick}",
+			"%{IncludeDir.stb_image}",
+			"%{IncludeDir.tinyobjloader}"
 		}
 
 		libdirs { "bin/" .. outputdir .. "/VulkanEngine" }
@@ -116,7 +125,7 @@ project "VulkanEngine"
 
 		filter "system:windows"
 			cppdialect "C++20"
-			staticruntime "On"
+			staticruntime "Off"
 
 			systemversion "latest"
 
@@ -141,4 +150,3 @@ project "VulkanEngine"
 		filter "configurations:Dist"
 			runtime "Release"
 			optimize	"On"
-
