@@ -1,7 +1,7 @@
 # VulkanEngine
 
 
-TO DO(in close period):
+TO DO:
 
 -drawing simple object(2D as 3D) - in progress
 
